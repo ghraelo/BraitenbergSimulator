@@ -1,0 +1,149 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\Braitenberg">
+      <UniqueIdentifier>{199ceeb6-257e-4ac5-8e53-7309401ec4bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Framework">
+      <UniqueIdentifier>{48276602-a3c0-4749-8902-35fa3dbaef23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Tests">
+      <UniqueIdentifier>{81654e6b-55aa-498a-80c5-dee62ba6a23b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="YAML">
+      <UniqueIdentifier>{bbf7e64a-4326-46b5-ab32-9b3743b2cc80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Controller">
+      <UniqueIdentifier>{bc8a9108-3cb5-46f3-9960-5043e652c7fc}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\imgui.h">
+      <Filter>Source Files\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DebugDraw.h">
+      <Filter>Source Files\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RenderGL3.h">
+      <Filter>Source Files\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="src\stb_truetype.h">
+      <Filter>Source Files\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Test.h">
+      <Filter>Source Files\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="src\main.h">
+      <Filter>Source Files\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Braitenberg.h">
+      <Filter>Source Files\Tests</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MyRayCastCallback.h">
+      <Filter>Source Files\Braitenberg</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Vehicle.h">
+      <Filter>Source Files\Braitenberg</Filter>
+    </ClInclude>
+    <ClInclude Include="src\VehicleRenderer.h">
+      <Filter>Source Files\Braitenberg</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ConfigLoader.h">
+      <Filter>Source Files\Braitenberg</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CSL.h">
+      <Filter>Source Files\Braitenberg</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LightRenderer.h">
+      <Filter>Source Files\Braitenberg</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LightSensor.h">
+      <Filter>Source Files\Braitenberg</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LightSource.h">
+      <Filter>Source Files\Braitenberg</Filter>
+    </ClInclude>
+    <ClInclude Include="src\YAMLConverters.h">
+      <Filter>Source Files\Braitenberg</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Controller.h">
+      <Filter>Source Files\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="CSLController.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="BraitenbergSimulator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\imgui.cpp">
+      <Filter>Source Files\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DebugDraw.cpp">
+      <Filter>Source Files\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Main.cpp">
+      <Filter>Source Files\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RenderGL3.cpp">
+      <Filter>Source Files\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Test.cpp">
+      <Filter>Source Files\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TestEntries.cpp">
+      <Filter>Source Files\Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Vehicle.cpp">
+      <Filter>Source Files\Braitenberg</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ConfigLoader.cpp">
+      <Filter>Source Files\Braitenberg</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CSL.cpp">
+      <Filter>Source Files\Braitenberg</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LightRenderer.cpp">
+      <Filter>Source Files\Braitenberg</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LightSensor.cpp">
+      <Filter>Source Files\Braitenberg</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LightSource.cpp">
+      <Filter>Source Files\Braitenberg</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Controller.cpp">
+      <Filter>Source Files\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="CSLController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="yaml\testVehicle.yaml">
+      <Filter>YAML</Filter>
+    </None>
+  </ItemGroup>
+</Project>
