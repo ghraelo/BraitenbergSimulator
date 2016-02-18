@@ -28,6 +28,12 @@
     <Filter Include="Source Files\Controller">
       <UniqueIdentifier>{bc8a9108-3cb5-46f3-9960-5043e652c7fc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\UIElements">
+      <UniqueIdentifier>{170264c7-1d7e-4950-bb8c-2104fab9131a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\SimObjects">
+      <UniqueIdentifier>{490b0540-d7ac-4ad5-893f-edd1cb0de3fb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -63,9 +69,6 @@
     <ClInclude Include="src\MyRayCastCallback.h">
       <Filter>Source Files\Braitenberg</Filter>
     </ClInclude>
-    <ClInclude Include="src\Vehicle.h">
-      <Filter>Source Files\Braitenberg</Filter>
-    </ClInclude>
     <ClInclude Include="src\VehicleRenderer.h">
       <Filter>Source Files\Braitenberg</Filter>
     </ClInclude>
@@ -81,17 +84,29 @@
     <ClInclude Include="src\LightSensor.h">
       <Filter>Source Files\Braitenberg</Filter>
     </ClInclude>
-    <ClInclude Include="src\LightSource.h">
-      <Filter>Source Files\Braitenberg</Filter>
-    </ClInclude>
     <ClInclude Include="src\YAMLConverters.h">
       <Filter>Source Files\Braitenberg</Filter>
     </ClInclude>
     <ClInclude Include="src\Controller.h">
       <Filter>Source Files\Controller</Filter>
     </ClInclude>
-    <ClInclude Include="CSLController.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\CSLController.h">
+      <Filter>Source Files\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UIElement.h">
+      <Filter>Source Files\UIElements</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BarViewElement.h">
+      <Filter>Source Files\UIElements</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Vehicle.h">
+      <Filter>Source Files\SimObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LightSource.h">
+      <Filter>Source Files\SimObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="SimObject.h">
+      <Filter>Source Files\SimObjects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -116,9 +131,6 @@
     <ClCompile Include="src\TestEntries.cpp">
       <Filter>Source Files\Tests</Filter>
     </ClCompile>
-    <ClCompile Include="src\Vehicle.cpp">
-      <Filter>Source Files\Braitenberg</Filter>
-    </ClCompile>
     <ClCompile Include="src\ConfigLoader.cpp">
       <Filter>Source Files\Braitenberg</Filter>
     </ClCompile>
@@ -131,14 +143,26 @@
     <ClCompile Include="src\LightSensor.cpp">
       <Filter>Source Files\Braitenberg</Filter>
     </ClCompile>
-    <ClCompile Include="src\LightSource.cpp">
-      <Filter>Source Files\Braitenberg</Filter>
-    </ClCompile>
     <ClCompile Include="src\Controller.cpp">
       <Filter>Source Files\Controller</Filter>
     </ClCompile>
-    <ClCompile Include="CSLController.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\CSLController.cpp">
+      <Filter>Source Files\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UIElement.cpp">
+      <Filter>Source Files\UIElements</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BarViewElement.cpp">
+      <Filter>Source Files\UIElements</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Vehicle.cpp">
+      <Filter>Source Files\SimObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LightSource.cpp">
+      <Filter>Source Files\SimObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="SimObject.cpp">
+      <Filter>Source Files\SimObjects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

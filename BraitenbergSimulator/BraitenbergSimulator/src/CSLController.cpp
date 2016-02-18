@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "CSLController.h"
 
 
@@ -6,7 +5,7 @@ CSLController::CSLController()
 {
 }
 
-CSLController::Update()
+float CSLController::Update(float input)
 {
-
+	return 0.0f;
 }

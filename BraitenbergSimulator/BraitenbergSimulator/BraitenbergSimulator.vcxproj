@@ -150,11 +150,13 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CSLController.h" />
+    <ClInclude Include="SimObject.h" />
+    <ClInclude Include="src\BarViewElement.h" />
     <ClInclude Include="src\Braitenberg.h" />
     <ClInclude Include="src\ConfigLoader.h" />
     <ClInclude Include="src\Controller.h" />
     <ClInclude Include="src\CSL.h" />
+    <ClInclude Include="src\CSLController.h" />
     <ClInclude Include="src\DebugDraw.h" />
     <ClInclude Include="src\imgui.h" />
     <ClInclude Include="src\LightRenderer.h" />
@@ -165,6 +167,7 @@
     <ClInclude Include="src\RenderGL3.h" />
     <ClInclude Include="src\stb_truetype.h" />
     <ClInclude Include="src\Test.h" />
+    <ClInclude Include="src\UIElement.h" />
     <ClInclude Include="src\Vehicle.h" />
     <ClInclude Include="src\VehicleRenderer.h" />
     <ClInclude Include="src\YAMLConverters.h" />
@@ -173,10 +176,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BraitenbergSimulator.cpp" />
-    <ClCompile Include="CSLController.cpp" />
+    <ClCompile Include="SimObject.cpp" />
+    <ClCompile Include="src\BarViewElement.cpp" />
     <ClCompile Include="src\ConfigLoader.cpp" />
     <ClCompile Include="src\Controller.cpp" />
     <ClCompile Include="src\CSL.cpp" />
+    <ClCompile Include="src\CSLController.cpp" />
     <ClCompile Include="src\DebugDraw.cpp" />
     <ClCompile Include="src\imgui.cpp" />
     <ClCompile Include="src\LightRenderer.cpp" />
@@ -186,6 +191,7 @@
     <ClCompile Include="src\RenderGL3.cpp" />
     <ClCompile Include="src\Test.cpp" />
     <ClCompile Include="src\TestEntries.cpp" />
+    <ClCompile Include="src\UIElement.cpp" />
     <ClCompile Include="src\Vehicle.cpp" />
   </ItemGroup>
   <ItemGroup>

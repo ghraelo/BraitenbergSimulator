@@ -614,3 +614,23 @@ void imguiSeparatorLine()
 
 	AddGfxCmdRect((float)x, (float)y, (float)w, (float)h, SetRGBA(255, 255, 255, 32));
 }
+
+void imguiDrawText(int x, int y, TextAlign align, const char* text, unsigned int color)
+{
+	AddGfxCmdText(x, y, align, text, color);
+}
+
+void imguiDrawLine(float x0, float y0, float x1, float y1, float r, unsigned int color)
+{
+	AddGfxCmdLine(x0, y0, x1, y1, r, color);
+}
+
+void imguiDrawRect(float x, float y, float w, float h, unsigned int color)
+{
+	AddGfxCmdRect(x, y, w, h, color);
+}
+
+void imguiDrawRoundedRect(float x, float y, float w, float h, float r, unsigned int color)
+{
+	AddGfxCmdRoundedRect(x, y, w, h, r, color);
+}

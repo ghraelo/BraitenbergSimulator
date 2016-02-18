@@ -387,6 +387,8 @@ static void sInterface()
 			settings.drawStats = !settings.drawStats;
 		if (imguiCheck("Profile", settings.drawProfile, true))
 			settings.drawProfile = !settings.drawProfile;
+		if (imguiCheck("Enable mouse drag", settings.enableMouseDrag, true))
+			settings.enableMouseDrag = !settings.enableMouseDrag;
 
 		if (imguiButton("Pause", true))
 			settings.pause = !settings.pause;
@@ -425,7 +427,6 @@ static void sInterface()
 	}
 
 	imguiEndFrame();
-
 }
 
 //

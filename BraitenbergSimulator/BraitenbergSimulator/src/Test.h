@@ -81,6 +81,7 @@ struct Settings
 		enableSleep = true;
 		pause = false;
 		singleStep = false;
+		enableMouseDrag = true;
 	}
 
 	float32 hz;
@@ -102,6 +103,7 @@ struct Settings
 	bool enableSleep;
 	bool pause;
 	bool singleStep;
+	bool enableMouseDrag;
 };
 
 struct TestEntry
@@ -193,7 +195,7 @@ protected:
 	bool m_bombSpawning;
 	b2Vec2 m_mouseWorld;
 	int32 m_stepCount;
-
+	bool m_mouseEnabled;
 	b2Profile m_maxProfile;
 	b2Profile m_totalProfile;
 };
