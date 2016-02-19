@@ -19,7 +19,7 @@ public:
 	void Initialise();
 	void LeftForce(float magnitude);
 	void RightForce(float magnitude);
-	void Update();
+	void Update() override;
 	b2Body* m_body;
 	LightSensor leftSensor;
 	LightSensor rightSensor;

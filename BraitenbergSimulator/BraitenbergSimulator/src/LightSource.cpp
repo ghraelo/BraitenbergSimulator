@@ -22,3 +22,8 @@ void LightSource::Render(Renderer& r)
 	r.RenderLightSource(*this);
 }
 
+void LightSource::Update()
+{
+
+}
+

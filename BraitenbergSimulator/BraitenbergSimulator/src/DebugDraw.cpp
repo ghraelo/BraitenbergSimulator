@@ -358,7 +358,7 @@ struct GLRenderLines
         "out vec4 color;\n"
         "void main(void)\n"
         "{\n"
-        "	color = f_color;\n"
+			"	color = f_color;\n"
         "}\n";
         
 		m_programId = sCreateShaderProgram(vs, fs);
@@ -438,8 +438,11 @@ struct GLRenderLines
 		glBindBuffer(GL_ARRAY_BUFFER, m_vboIds[1]);
 		glBufferSubData(GL_ARRAY_BUFFER, 0, m_count * sizeof(b2Color), m_colors);
         
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glDrawArrays(GL_LINES, 0, m_count);
-        
+		glDisable(GL_BLEND);
+
 		sCheckGLError();
         
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -745,6 +748,13 @@ void DebugDraw::DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Color& c
 {
 	m_lines->Vertex(p1, color);
 	m_lines->Vertex(p2, color);
+}
+
+//
+void DebugDraw::DrawSegmentFade(const b2Vec2& p1, const b2Vec2& p2, const b2Color& color)
+{
+	m_lines->Vertex(p1, color);
+	m_lines->Vertex(p2, b2Color(color.r,color.g,color.b,0));
 }
 
 //

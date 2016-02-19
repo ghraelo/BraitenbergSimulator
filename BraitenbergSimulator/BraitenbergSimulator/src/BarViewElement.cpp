@@ -1,6 +1,6 @@
 #include "BarViewElement.h"
 #include "imgui.h"
-
+#include "Renderer.h"
 #include <algorithm>
 
 BarViewElement::BarViewElement()
@@ -13,7 +13,7 @@ BarViewElement::BarViewElement(int backgroundColor, int foregroundColor, int len
 
 }
 
-void BarViewElement::Draw(int xPos, int yPos)
+void BarViewElement::Render(Renderer& r)
 {
-
+	r.RenderBarViewElement(*this);
 }

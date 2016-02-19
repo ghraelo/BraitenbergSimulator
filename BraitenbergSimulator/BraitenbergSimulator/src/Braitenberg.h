@@ -44,6 +44,7 @@
 #include "LightSensor.h"
 #include "CSL.h"
 #include "ConfigLoader.h"
+#include "Renderer.h"
 
 class Braitenberg : public Test
 {
@@ -51,14 +52,14 @@ class Braitenberg : public Test
 	bool leftkeydown,rightkeydown;
 	ConfigLoader cl;
 	LightSource test;
-
+	Renderer r;
 	CSL leftCSL;
 	CSL rightCSL;
 
 
 public:
 	Braitenberg()
-		:cl(m_world), test(b2Vec2(-10.0f,10.0f),10), leftkeydown(false), rightkeydown(false), leftCSL(), rightCSL()
+		:r(), cl(m_world), test(b2Vec2(-10.0f,10.0f),5), leftkeydown(false), rightkeydown(false), leftCSL(), rightCSL()
 	{
 		leftCSL.UpdateCoefficients(0.5f, 1.2f);
 		rightCSL.UpdateCoefficients(0.5f, 1.2f);
@@ -105,6 +106,8 @@ public:
 
 	void Render()
 	{
+		test.Render(r);
+		veh->Render(r);
 		//lr.Render();
 	}
 
@@ -177,7 +180,7 @@ public:
 		glLoadIdentity();
 
 		b2Vec2 p1 = sensor.GetArcEnd(dist,true);
-		b2Vec2 p2 = sensor.GetWorldPosition();
+		b2Vec2 p2 = sensor.GetPosition();
 		b2Vec2 p3 = sensor.GetArcEnd(dist, false);
 
 		glBegin(GL_LINE_STRIP);

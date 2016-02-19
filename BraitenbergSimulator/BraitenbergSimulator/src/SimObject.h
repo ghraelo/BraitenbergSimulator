@@ -7,7 +7,8 @@ class SimObject
 public:
 	SimObject();
 	SimObject(b2Vec2 position);
-	b2Vec2 GetPosition();
+	virtual b2Vec2 GetPosition();
+	virtual void Update() = 0;
 protected:
 	b2Vec2 m_position;
 };

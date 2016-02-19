@@ -81,5 +81,7 @@ void Vehicle::Update()
 
 void Vehicle::Render(Renderer & r)
 {
+	leftSensor.Render(r);
+	rightSensor.Render(r);
 	r.RenderVehicle(*this);
 }

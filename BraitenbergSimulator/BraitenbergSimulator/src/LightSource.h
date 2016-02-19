@@ -8,7 +8,7 @@
 //forward declarations
 class Renderer;
 
-class LightSource : SimObject, IRenderable
+class LightSource : public SimObject, IRenderable
 {
 public:
 	b2Body* m_body;
@@ -16,6 +16,7 @@ public:
 	LightSource(b2Vec2 position, float radius);
 	float GetRadius();
 	void Render(Renderer& r) override;
+	void Update() override;
 protected:
 	float m_radius;
 };

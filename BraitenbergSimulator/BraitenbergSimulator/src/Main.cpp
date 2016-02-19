@@ -534,6 +534,7 @@ int main2(int argc, char** argv)
 			mousebutton |= IMGUI_MBUT_LEFT;
 
 		imguiBeginFrame(mousex, mousey, mousebutton, mscroll);
+		
 		test->Render();
 		sSimulate();
 		sInterface();

@@ -7,6 +7,6 @@
 
 int main(int argc, char** argv)
 {
-	//main2(argc, argv);
+	main2(argc, argv);
     return 0;
 }
