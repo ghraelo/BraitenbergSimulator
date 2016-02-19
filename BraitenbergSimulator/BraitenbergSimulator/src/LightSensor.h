@@ -3,7 +3,6 @@
 #include "Box2D\Box2D.h"
 #include "DebugDraw.h"
 #include "LightSensor.h"
-#include "LightRenderer.h"
 
 struct relLightPos
 {

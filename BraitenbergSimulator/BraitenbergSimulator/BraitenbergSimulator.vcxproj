@@ -159,11 +159,11 @@
     <ClInclude Include="src\CSLController.h" />
     <ClInclude Include="src\DebugDraw.h" />
     <ClInclude Include="src\imgui.h" />
-    <ClInclude Include="src\LightRenderer.h" />
     <ClInclude Include="src\LightSensor.h" />
     <ClInclude Include="src\LightSource.h" />
     <ClInclude Include="src\main.h" />
-    <ClInclude Include="src\MyRayCastCallback.h" />
+    <ClInclude Include="src\IRenderable.h" />
+    <ClInclude Include="src\Renderer.h" />
     <ClInclude Include="src\RenderGL3.h" />
     <ClInclude Include="src\stb_truetype.h" />
     <ClInclude Include="src\Test.h" />
@@ -176,7 +176,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BraitenbergSimulator.cpp" />
-    <ClCompile Include="SimObject.cpp" />
     <ClCompile Include="src\BarViewElement.cpp" />
     <ClCompile Include="src\ConfigLoader.cpp" />
     <ClCompile Include="src\Controller.cpp" />
@@ -184,11 +183,12 @@
     <ClCompile Include="src\CSLController.cpp" />
     <ClCompile Include="src\DebugDraw.cpp" />
     <ClCompile Include="src\imgui.cpp" />
-    <ClCompile Include="src\LightRenderer.cpp" />
     <ClCompile Include="src\LightSensor.cpp" />
     <ClCompile Include="src\LightSource.cpp" />
     <ClCompile Include="src\Main.cpp" />
+    <ClCompile Include="src\Renderer.cpp" />
     <ClCompile Include="src\RenderGL3.cpp" />
+    <ClCompile Include="src\SimObject.cpp" />
     <ClCompile Include="src\Test.cpp" />
     <ClCompile Include="src\TestEntries.cpp" />
     <ClCompile Include="src\UIElement.cpp" />

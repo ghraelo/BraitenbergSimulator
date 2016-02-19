@@ -40,7 +40,6 @@
 
 #include "Test.h"
 #include "RenderGL3.h"
-#include "LightRenderer.h"
 #include "LightSource.h"
 #include "LightSensor.h"
 #include "CSL.h"
@@ -51,7 +50,6 @@ class Braitenberg : public Test
 	Vehicle* veh;
 	bool leftkeydown,rightkeydown;
 	ConfigLoader cl;
-	LightRenderer lr;
 	LightSource test;
 
 	CSL leftCSL;
@@ -60,11 +58,10 @@ class Braitenberg : public Test
 
 public:
 	Braitenberg()
-		:cl(m_world), lr(&g_camera), test(m_world,b2Vec2(-10.0f,10.0f)), leftkeydown(false), rightkeydown(false), leftCSL(), rightCSL()
+		:cl(m_world), test(b2Vec2(-10.0f,10.0f),10), leftkeydown(false), rightkeydown(false), leftCSL(), rightCSL()
 	{
 		leftCSL.UpdateCoefficients(0.5f, 1.2f);
 		rightCSL.UpdateCoefficients(0.5f, 1.2f);
-		lr.AddSource(test);
 	}
 
 	~Braitenberg()

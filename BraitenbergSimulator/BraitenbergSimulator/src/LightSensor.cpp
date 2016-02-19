@@ -2,8 +2,6 @@
 
 #define M_PI 3.14159265
 
-#include "MyRayCastCallback.h"
-
 #include <Windows.h>
 
 LightSensor::LightSensor()
@@ -152,22 +150,6 @@ b2Vec2 LightSensor::GetArcEnd(float radius, bool positive)
 	b2Vec2 endDir = b2Mul(rotation, dir);
 
 	return this->GetWorldPosition() + radius*endDir;
-}
-
-void DrawCircle(float cx, float cy, float r, int num_segments)
-{
-	glBegin(GL_LINE_LOOP);
-	for (int ii = 0; ii < num_segments; ii++)
-	{
-		float theta = 2.0f * 3.1415926f * float(ii) / float(num_segments);//get the current angle
-
-		float x = r * cosf(theta);//calculate the x component
-		float y = r * sinf(theta);//calculate the y component
-
-		glVertex2f(x + cx, y + cy);//output vertex
-
-	}
-	glEnd();
 }
 
 void LightSensor::GetIntersection(b2Vec2& lightPos, float lightRadius, b2Vec2& intersection1, b2Vec2& intersection2)

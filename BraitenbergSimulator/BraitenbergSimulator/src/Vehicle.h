@@ -3,10 +3,13 @@
 #include "Box2D\Box2D.h"
 #include "Box2D\Common\b2Math.h"
 #include "LightSensor.h"
+#include "IRenderable.h"
+#include "SimObject.h"
 
-//#include "VehicleDef.h"
+//forward declarations
+class Renderer;
 
-class Vehicle
+class Vehicle : SimObject, IRenderable
 {
 public:
 	Vehicle(b2World* world);
@@ -20,6 +23,7 @@ public:
 	b2Body* m_body;
 	LightSensor leftSensor;
 	LightSensor rightSensor;
+	void Render(Renderer& r) override;
 private:
 	b2BodyDef bodyDef;
 	b2PolygonShape vehicleShape;

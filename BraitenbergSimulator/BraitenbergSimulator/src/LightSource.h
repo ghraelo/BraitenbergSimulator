@@ -2,16 +2,20 @@
 
 #include "Box2D\Box2D.h"
 #include "SimObject.h"
+#include "IRenderable.h"
 #include <functional>
 
+//forward declarations
+class Renderer;
 
-class LightSource : SimObject
+class LightSource : SimObject, IRenderable
 {
 public:
 	b2Body* m_body;
 	LightSource();
 	LightSource(b2Vec2 position, float radius);
 	float GetRadius();
+	void Render(Renderer& r) override;
 protected:
 	float m_radius;
 };

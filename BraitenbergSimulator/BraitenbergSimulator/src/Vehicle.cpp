@@ -1,11 +1,6 @@
 #include "Vehicle.h"
-#include "MyRayCastCallback.h"
+#include "Renderer.h"
 
-/*VehicleDef::VehicleDef()
-{
-
-}
-*/
 Vehicle::Vehicle(b2World* world)
 	: theWorld(world)
 {
@@ -82,4 +77,9 @@ void Vehicle::RightForce(float magnitude)
 void Vehicle::Update()
 {
 
+}
+
+void Vehicle::Render(Renderer & r)
+{
+	r.RenderVehicle(*this);
 }

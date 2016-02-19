@@ -34,6 +34,9 @@
     <Filter Include="Source Files\SimObjects">
       <UniqueIdentifier>{490b0540-d7ac-4ad5-893f-edd1cb0de3fb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Renderer">
+      <UniqueIdentifier>{8af792b4-b501-4f36-9f9e-f9e49dfabe8e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -66,9 +69,6 @@
     <ClInclude Include="src\Braitenberg.h">
       <Filter>Source Files\Tests</Filter>
     </ClInclude>
-    <ClInclude Include="src\MyRayCastCallback.h">
-      <Filter>Source Files\Braitenberg</Filter>
-    </ClInclude>
     <ClInclude Include="src\VehicleRenderer.h">
       <Filter>Source Files\Braitenberg</Filter>
     </ClInclude>
@@ -76,9 +76,6 @@
       <Filter>Source Files\Braitenberg</Filter>
     </ClInclude>
     <ClInclude Include="src\CSL.h">
-      <Filter>Source Files\Braitenberg</Filter>
-    </ClInclude>
-    <ClInclude Include="src\LightRenderer.h">
       <Filter>Source Files\Braitenberg</Filter>
     </ClInclude>
     <ClInclude Include="src\LightSensor.h">
@@ -107,6 +104,12 @@
     </ClInclude>
     <ClInclude Include="SimObject.h">
       <Filter>Source Files\SimObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Renderer.h">
+      <Filter>Source Files\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\IRenderable.h">
+      <Filter>Source Files\Renderer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -137,9 +140,6 @@
     <ClCompile Include="src\CSL.cpp">
       <Filter>Source Files\Braitenberg</Filter>
     </ClCompile>
-    <ClCompile Include="src\LightRenderer.cpp">
-      <Filter>Source Files\Braitenberg</Filter>
-    </ClCompile>
     <ClCompile Include="src\LightSensor.cpp">
       <Filter>Source Files\Braitenberg</Filter>
     </ClCompile>
@@ -161,8 +161,11 @@
     <ClCompile Include="src\LightSource.cpp">
       <Filter>Source Files\SimObjects</Filter>
     </ClCompile>
-    <ClCompile Include="SimObject.cpp">
+    <ClCompile Include="src\SimObject.cpp">
       <Filter>Source Files\SimObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Renderer.cpp">
+      <Filter>Source Files\Renderer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
