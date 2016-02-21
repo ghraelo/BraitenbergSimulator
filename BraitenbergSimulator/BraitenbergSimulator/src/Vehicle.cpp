@@ -1,27 +1,60 @@
 #include "Vehicle.h"
 #include "Renderer.h"
+#include "SimObjectInfo.h"
 
-Vehicle::Vehicle(b2World* world)
-	: theWorld(world)
+Vehicle::Vehicle()
+	:leftSensor(this), rightSensor(this)
 {
-	Initialise();
 }
 
-Vehicle::Vehicle(b2World * world, sensorInfo leftInfo, sensorInfo rightInfo)
-	:theWorld(world)
+Vehicle::Vehicle(sensorInfo leftInfo, sensorInfo rightInfo)
+	:leftSensor(this, leftInfo), rightSensor(this, rightInfo)
 {
-	Initialise();
-	leftSensor = LightSensor(m_body, leftInfo);
-	rightSensor = LightSensor(m_body, rightInfo);
+}
+
+Vehicle::Vehicle(Vehicle const & other)
+	:m_body(other.m_body), bodyDef(other.bodyDef),vehicleShape(other.vehicleShape),fixtureDef(other.fixtureDef),theWorld(other.theWorld), m_physicsBound(other.m_physicsBound),leftSensor(this,leftSensor.GetSensorInfo()), rightSensor(this, rightSensor.GetSensorInfo())
+{
+	leftSensor = LightSensor(this,other.leftSensor.GetSensorInfo());
+	rightSensor = LightSensor(this, other.rightSensor.GetSensorInfo());
+	
+	//reset body data to point to correct object
+	if(m_body != nullptr)
+		SetUserData();
 }
 
 Vehicle::~Vehicle()
 {
-	theWorld->DestroyBody(m_body);
+	if (m_physicsBound)
+	{
+		delete (SimObjectInfo*)m_body->GetUserData();
+		//theWorld->DestroyBody(m_body);
+	}
 }
 
-void Vehicle::Initialise()
+b2Vec2 Vehicle::GetPosition()
 {
+	m_position = m_body->GetPosition();
+	return m_body->GetPosition();
+}
+
+b2Vec2 Vehicle::GetCOM()
+{
+	return m_body->GetWorldCenter();
+}
+
+void Vehicle::SetUserData()
+{
+	//user data
+	SimObjectInfo* soi = new SimObjectInfo;
+	soi->m_obj = this;
+	soi->m_type = "Vehicle";
+	m_body->SetUserData(soi);
+}
+
+void Vehicle::BindPhysics(b2World* world)
+{
+	theWorld = world;
 	//init body
 	bodyDef.type = b2_dynamicBody;
 	bodyDef.position.Set(0.0f, 0.0f);
@@ -29,7 +62,9 @@ void Vehicle::Initialise()
 	bodyDef.angularDamping = 0.5f;
 	bodyDef.linearDamping = 0.5f;
 	m_body = (*theWorld).CreateBody(&bodyDef);
-	
+
+	SetUserData();
+
 	//init shape
 
 	b2Vec2 vertices[3];
@@ -77,6 +112,12 @@ void Vehicle::RightForce(float magnitude)
 void Vehicle::Update()
 {
 
+}
+
+void Vehicle::Update(std::vector<LightSource> ls)
+{
+	leftSensor.GetLight(ls);
+	rightSensor.GetLight(ls);
 }
 
 void Vehicle::Render(Renderer & r)

@@ -8,10 +8,10 @@
 //forward declarations
 class Renderer;
 
-class LightSource : public SimObject, IRenderable
+class LightSource : public SimObject
 {
 public:
-	b2Body* m_body;
+	//b2Body* m_body;
 	LightSource();
 	LightSource(b2Vec2 position, float radius);
 	float GetRadius();

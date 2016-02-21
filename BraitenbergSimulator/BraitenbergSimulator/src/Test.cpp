@@ -107,6 +107,11 @@ void Test::Load()
 
 }
 
+void Test::DrawUI()
+{
+
+}
+
 void Test::DrawTitle(const char *string)
 {
     g_debugDraw.DrawString(5, DRAW_STRING_NEW_LINE, string);
@@ -168,6 +173,7 @@ void Test::MouseDown(const b2Vec2& p)
 	if (callback.m_fixture)
 	{
 		b2Body* body = callback.m_fixture->GetBody();
+		this->BodyClick(body);
 		if (m_mouseEnabled)
 		{
 			b2MouseJointDef md;
@@ -178,6 +184,10 @@ void Test::MouseDown(const b2Vec2& p)
 			m_mouseJoint = (b2MouseJoint*)m_world->CreateJoint(&md);
 			body->SetAwake(true);
 		}
+	}
+	else
+	{
+		this->NonBodyClick();
 	}
 }
 
@@ -225,6 +235,15 @@ void Test::MouseUp(const b2Vec2& p)
 	{
 		CompleteBombSpawn(p);
 	}
+}
+
+void Test::
+BodyClick(const b2Body * body_ptr)
+{
+}
+
+void Test::NonBodyClick()
+{
 }
 
 void Test::MouseMove(const b2Vec2& p)

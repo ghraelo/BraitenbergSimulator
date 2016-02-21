@@ -9,17 +9,21 @@
 //forward declarations
 class Renderer;
 
-class Vehicle : SimObject, IRenderable
+class Vehicle : public SimObject
 {
 public:
-	Vehicle(b2World* world);
-	Vehicle(b2World* world, sensorInfo leftInfo, sensorInfo rightInfo);
+	Vehicle();
+	Vehicle(sensorInfo leftInfo, sensorInfo rightInfo);
+	Vehicle(Vehicle const& other);
 	//Vehicle(b2World* world, VehicleDef vehicleDef);
 	~Vehicle();
-	void Initialise();
+	void BindPhysics(b2World* world);
 	void LeftForce(float magnitude);
 	void RightForce(float magnitude);
 	void Update() override;
+	void Update(std::vector<LightSource> ls);
+	b2Vec2 GetPosition() override;
+	b2Vec2 GetCOM();
 	b2Body* m_body;
 	LightSensor leftSensor;
 	LightSensor rightSensor;
@@ -29,6 +33,8 @@ private:
 	b2PolygonShape vehicleShape;
 	b2FixtureDef fixtureDef;
 	b2World* theWorld;
+	bool m_physicsBound = false;
+	void SetUserData();
 };
 
 typedef std::shared_ptr<Vehicle> VehiclePtr;

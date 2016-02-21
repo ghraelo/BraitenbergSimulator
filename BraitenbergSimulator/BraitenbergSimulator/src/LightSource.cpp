@@ -10,6 +10,7 @@ LightSource::LightSource()
 LightSource::LightSource(b2Vec2 position, float radius)
 	:SimObject(position), m_radius(radius)
 {
+
 }
 
 float LightSource::GetRadius()

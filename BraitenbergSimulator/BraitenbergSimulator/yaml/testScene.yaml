@@ -1,0 +1,19 @@
+Name: Test Scene
+Vehicles: [testVehicle]
+testVehicle:
+    Position: [0.0, 0.0]
+    LeftSensor:
+        Offset: [-1.0, 0.0]
+        ApertureAngle: 1.0
+        Direction: [0.0, 1.0]
+    RightSensor:
+        Offset: [1.0, 0.0]
+        ApertureAngle: 1.0
+        Direction: [0.0, 1.0]
+Lights: [testLight, testLight2]
+testLight:
+    Position: [0.0,25.0]
+    Radius: 2.0
+testLight2:
+    Position: [-5.0,25.0]
+    Radius: 2.0

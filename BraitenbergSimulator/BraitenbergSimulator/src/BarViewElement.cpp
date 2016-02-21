@@ -2,7 +2,7 @@
 #include "imgui.h"
 #include "Renderer.h"
 #include <algorithm>
-
+#include "LightSensor.h"
 BarViewElement::BarViewElement()
 {
 }
@@ -13,7 +13,3 @@ BarViewElement::BarViewElement(int backgroundColor, int foregroundColor, int len
 
 }
 
-void BarViewElement::Render(Renderer& r)
-{
-	r.RenderBarViewElement(*this);
-}

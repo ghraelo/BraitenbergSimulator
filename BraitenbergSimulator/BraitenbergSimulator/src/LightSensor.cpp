@@ -2,27 +2,27 @@
 
 #define M_PI 3.14159265
 
-#include <Windows.h>
 #include "Renderer.h"
 #include "MathUtils.h"
+#include "Vehicle.h"
 
-LightSensor::LightSensor()
-{
+#include <stack>
+#include <algorithm>
+#include <iostream>
 
-}
-
-LightSensor::LightSensor(b2Body * parent, sensorInfo info)
+LightSensor::LightSensor(Vehicle * parent, sensorInfo info)
 	:m_parent(parent), m_offset(info.m_offset), m_aperture_angle(info.m_aperture), m_direction_vector(info.m_direction)
 {
 }
 
-LightSensor::LightSensor(b2Body* parent)
+LightSensor::LightSensor(Vehicle * parent)
 	:m_parent(parent), m_offset(b2Vec2_zero), m_aperture_angle(1.0f),m_direction_vector(-0.5,1)
 {
 
 }
 
-LightSensor::LightSensor(b2Body* parent, b2Vec2 offset, float aperture, b2Vec2 direction)
+
+LightSensor::LightSensor(Vehicle * parent, b2Vec2 offset, float aperture, b2Vec2 direction)
 	:m_parent(parent), m_offset(offset), m_aperture_angle(aperture), m_direction_vector(direction)
 {
 }
@@ -37,13 +37,93 @@ b2Vec2 LightSensor::GetPosition()
 	//x1 = x* cos(r) - y*sin(r)
 	//y1 = x* sin(r) + y*cos(r)
 
-	float x1 = m_offset.x * cos(m_parent->GetAngle()) - m_offset.y * sin(m_parent->GetAngle());
-	float y1 = m_offset.x * sin(m_parent->GetAngle()) + m_offset.y * cos(m_parent->GetAngle());
+	float x1 = m_offset.x * cos(GetParentBody()->GetAngle()) - m_offset.y * sin(GetParentBody()->GetAngle());
+	float y1 = m_offset.x * sin(GetParentBody()->GetAngle()) + m_offset.y * cos(GetParentBody()->GetAngle());
 
 	b2Vec2 new_offset(x1, y1);
 
-	return m_parent->GetPosition() + new_offset;
+	return GetParentBody()->GetPosition() + new_offset;
 
+}
+
+/**
+1. Sort the intervals based on increasing order of
+starting time.
+2. Push the first interval on to a stack.
+3. For each interval do the following
+a. If the current interval does not overlap with the stack
+top, push it.
+b. If the current interval overlaps with stack top and ending
+time of current interval is more than that of stack top,
+update stack top with the ending  time of current interval.
+4. At the end stack contains the merged intervals.
+http://www.geeksforgeeks.org/merging-intervals/
+**/
+
+
+
+bool compareIntervals(Interval a, Interval b)
+{
+	return a.first < b.first;
+}
+
+
+float LightSensor::GetLight(std::vector<LightSource>& lightSources)
+{
+	m_intervals.clear();
+
+	std::vector<Interval> intervals;
+
+	//build vector of intervals
+	for (auto& ls : lightSources)
+	{
+		relLightPos rlp;
+		GetLightBoundary(ls.GetPosition(), ls.GetRadius(), rlp);
+		Interval temp(rlp.m_point1, rlp.m_point2);
+		intervals.push_back(temp);
+	}
+
+	if (intervals.size() <= 0)
+		return 0;
+
+	//sort ascending
+	std::sort(intervals.begin(), intervals.end(), compareIntervals);
+
+	std::stack<Interval> theStack;
+
+	theStack.push(intervals[0]);
+
+	for (unsigned int i = 1; i < intervals.size(); i++)
+	{
+		Interval* curr = &intervals[i];
+		//get stack top
+		Interval top = theStack.top();
+		
+		//push current interval if it doesn't overlap
+		if (top.second < curr->first)
+		{
+			theStack.push(*curr);
+		}
+		else if (top.second < curr->second)
+		{
+			//update top if overlap
+			top.second = curr->second;
+			theStack.pop();
+			theStack.push(top);
+		}
+	}
+	float acc = 0.0f;
+	while (!theStack.empty())
+	{
+		Interval t = theStack.top();
+		acc += t.second - t.first;
+		m_intervals.push_back(t);
+		//std::cout << "[" << t.first << "," << t.second << "] ";
+		theStack.pop();
+	}
+	//std::cout << "\r";
+
+	return acc;
 }
 
 
@@ -55,7 +135,7 @@ void LightSensor::GetLightBoundary(b2Vec2& lightPos, float lightRadius, relLight
 	//bounds tests
 	b2Vec2 right_bound = GetArcEnd(light_sensor_dist, false);
 	b2Vec2 left_bound = GetArcEnd(light_sensor_dist, true);
-	b2Vec2 sensor_dir = m_parent->GetWorldVector(m_direction_vector);
+	b2Vec2 sensor_dir = GetParentBody()->GetWorldVector(m_direction_vector);
 	b2Vec2 pos = this->GetPosition();
 	b2Vec2 i1, i2;
 	MathUtils::GetIntersections(this->GetPosition(), lightPos, lightRadius, i1, i2);
@@ -114,7 +194,7 @@ b2Vec2 LightSensor::GetArcEnd(float radius, bool positive)
 	//x' = xcos(a) - ysin(a)
 	//y' = xsin(a) + ycos(a)
 
-	b2Vec2 dir = m_parent->GetWorldVector(m_direction_vector);
+	b2Vec2 dir = GetParentBody()->GetWorldVector(m_direction_vector);
 	dir.Normalize(); //normalised direction vector of sensor
 
 	b2Rot rotation;
@@ -127,4 +207,19 @@ b2Vec2 LightSensor::GetArcEnd(float radius, bool positive)
 	b2Vec2 endDir = b2Mul(rotation, dir);
 
 	return this->GetPosition() + radius*endDir;
+}
+
+sensorInfo LightSensor::GetSensorInfo() const
+{
+	sensorInfo s;
+	s.m_aperture = m_aperture_angle;
+	s.m_direction = m_direction_vector;
+	s.m_offset = m_offset;
+
+	return s;
+}
+
+b2Body* LightSensor::GetParentBody()
+{
+	return m_parent->m_body;
 }

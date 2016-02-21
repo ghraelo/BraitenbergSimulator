@@ -28,14 +28,20 @@
     <Filter Include="Source Files\Controller">
       <UniqueIdentifier>{bc8a9108-3cb5-46f3-9960-5043e652c7fc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\UIElements">
-      <UniqueIdentifier>{170264c7-1d7e-4950-bb8c-2104fab9131a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\SimObjects">
-      <UniqueIdentifier>{490b0540-d7ac-4ad5-893f-edd1cb0de3fb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Renderer">
       <UniqueIdentifier>{8af792b4-b501-4f36-9f9e-f9e49dfabe8e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Simulator">
+      <UniqueIdentifier>{e8a47093-c0db-4901-af36-7571478d264b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ResourceManager">
+      <UniqueIdentifier>{b410eef6-8785-4483-b419-1f7f7037c7c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Simulator\SimObjects">
+      <UniqueIdentifier>{490b0540-d7ac-4ad5-893f-edd1cb0de3fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UI">
+      <UniqueIdentifier>{170264c7-1d7e-4950-bb8c-2104fab9131a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -69,19 +75,10 @@
     <ClInclude Include="src\Braitenberg.h">
       <Filter>Source Files\Tests</Filter>
     </ClInclude>
-    <ClInclude Include="src\VehicleRenderer.h">
-      <Filter>Source Files\Braitenberg</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ConfigLoader.h">
-      <Filter>Source Files\Braitenberg</Filter>
-    </ClInclude>
     <ClInclude Include="src\CSL.h">
       <Filter>Source Files\Braitenberg</Filter>
     </ClInclude>
     <ClInclude Include="src\LightSensor.h">
-      <Filter>Source Files\Braitenberg</Filter>
-    </ClInclude>
-    <ClInclude Include="src\YAMLConverters.h">
       <Filter>Source Files\Braitenberg</Filter>
     </ClInclude>
     <ClInclude Include="src\Controller.h">
@@ -91,16 +88,16 @@
       <Filter>Source Files\Controller</Filter>
     </ClInclude>
     <ClInclude Include="src\UIElement.h">
-      <Filter>Source Files\UIElements</Filter>
+      <Filter>Source Files\UI</Filter>
     </ClInclude>
     <ClInclude Include="src\BarViewElement.h">
-      <Filter>Source Files\UIElements</Filter>
+      <Filter>Source Files\UI</Filter>
     </ClInclude>
     <ClInclude Include="src\Vehicle.h">
-      <Filter>Source Files\SimObjects</Filter>
+      <Filter>Source Files\Simulator\SimObjects</Filter>
     </ClInclude>
     <ClInclude Include="src\LightSource.h">
-      <Filter>Source Files\SimObjects</Filter>
+      <Filter>Source Files\Simulator\SimObjects</Filter>
     </ClInclude>
     <ClInclude Include="src\Renderer.h">
       <Filter>Source Files\Renderer</Filter>
@@ -109,10 +106,28 @@
       <Filter>Source Files\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\SimObject.h">
-      <Filter>Source Files\SimObjects</Filter>
+      <Filter>Source Files\Simulator\SimObjects</Filter>
     </ClInclude>
     <ClInclude Include="src\MathUtils.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SimObjectInfo.h">
+      <Filter>Source Files\Simulator\SimObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Simulator.h">
+      <Filter>Source Files\Simulator</Filter>
+    </ClInclude>
+    <ClInclude Include="src\YAMLConverters.h">
+      <Filter>Source Files\ResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ResourceManager.h">
+      <Filter>Source Files\ResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scene.h">
+      <Filter>Source Files\Simulator</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UIManager.h">
+      <Filter>Source Files\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -137,9 +152,6 @@
     <ClCompile Include="src\TestEntries.cpp">
       <Filter>Source Files\Tests</Filter>
     </ClCompile>
-    <ClCompile Include="src\ConfigLoader.cpp">
-      <Filter>Source Files\Braitenberg</Filter>
-    </ClCompile>
     <ClCompile Include="src\CSL.cpp">
       <Filter>Source Files\Braitenberg</Filter>
     </ClCompile>
@@ -153,19 +165,19 @@
       <Filter>Source Files\Controller</Filter>
     </ClCompile>
     <ClCompile Include="src\UIElement.cpp">
-      <Filter>Source Files\UIElements</Filter>
+      <Filter>Source Files\UI</Filter>
     </ClCompile>
     <ClCompile Include="src\BarViewElement.cpp">
-      <Filter>Source Files\UIElements</Filter>
+      <Filter>Source Files\UI</Filter>
     </ClCompile>
     <ClCompile Include="src\Vehicle.cpp">
-      <Filter>Source Files\SimObjects</Filter>
+      <Filter>Source Files\Simulator\SimObjects</Filter>
     </ClCompile>
     <ClCompile Include="src\LightSource.cpp">
-      <Filter>Source Files\SimObjects</Filter>
+      <Filter>Source Files\Simulator\SimObjects</Filter>
     </ClCompile>
     <ClCompile Include="src\SimObject.cpp">
-      <Filter>Source Files\SimObjects</Filter>
+      <Filter>Source Files\Simulator\SimObjects</Filter>
     </ClCompile>
     <ClCompile Include="src\Renderer.cpp">
       <Filter>Source Files\Renderer</Filter>
@@ -173,9 +185,24 @@
     <ClCompile Include="src\MathUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Simulator.cpp">
+      <Filter>Source Files\Simulator</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ResourceManager.cpp">
+      <Filter>Source Files\ResourceManager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UIManager.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="yaml\testVehicle.yaml">
+      <Filter>YAML</Filter>
+    </None>
+    <None Include="yaml\testScene.yaml">
+      <Filter>YAML</Filter>
+    </None>
+    <None Include="yaml\testConfig.yaml">
       <Filter>YAML</Filter>
     </None>
   </ItemGroup>

@@ -152,9 +152,12 @@ public:
 	virtual void KeyboardUp(int key) { B2_NOT_USED(key); }
 	virtual void Render();
 	virtual void Load();
+	virtual void DrawUI();
 	void ShiftMouseDown(const b2Vec2& p);
 	virtual void MouseDown(const b2Vec2& p);
 	virtual void MouseUp(const b2Vec2& p);
+	virtual void BodyClick(const b2Body* body_ptr);
+	virtual void NonBodyClick();
 	void MouseMove(const b2Vec2& p);
 	void LaunchBomb();
 	void LaunchBomb(const b2Vec2& position, const b2Vec2& velocity);

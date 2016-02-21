@@ -29,7 +29,6 @@
 
 #include <glfw/glfw3.h>
 #include <stdio.h>
-#include <Windows.h>
 
 #ifdef _MSC_VER
 #define snprintf _snprintf
@@ -426,17 +425,12 @@ static void sInterface()
 		imguiEndScrollArea();
 	}
 
-	imguiEndFrame();
+
 }
 
 //
 int main2(int argc, char** argv)
 {
-#if defined(_WIN32)
-	// Enable memory-leak reports
-	_CrtSetDbgFlag(_CRTDBG_LEAK_CHECK_DF | _CrtSetDbgFlag(_CRTDBG_REPORT_FLAG));
-#endif
-
     g_camera.m_width = 1024;
     g_camera.m_height = 640;
     
@@ -538,7 +532,11 @@ int main2(int argc, char** argv)
 		test->Render();
 		sSimulate();
 		sInterface();
-        
+
+		imguiEndFrame();
+		test->DrawUI();
+
+
         // Measure speed
         double time2 = glfwGetTime();
         double alpha = 0.9f;

@@ -152,7 +152,6 @@
   <ItemGroup>
     <ClInclude Include="src\BarViewElement.h" />
     <ClInclude Include="src\Braitenberg.h" />
-    <ClInclude Include="src\ConfigLoader.h" />
     <ClInclude Include="src\Controller.h" />
     <ClInclude Include="src\CSL.h" />
     <ClInclude Include="src\CSLController.h" />
@@ -165,12 +164,16 @@
     <ClInclude Include="src\MathUtils.h" />
     <ClInclude Include="src\Renderer.h" />
     <ClInclude Include="src\RenderGL3.h" />
+    <ClInclude Include="src\ResourceManager.h" />
+    <ClInclude Include="src\Scene.h" />
     <ClInclude Include="src\SimObject.h" />
+    <ClInclude Include="src\SimObjectInfo.h" />
+    <ClInclude Include="src\Simulator.h" />
     <ClInclude Include="src\stb_truetype.h" />
     <ClInclude Include="src\Test.h" />
     <ClInclude Include="src\UIElement.h" />
+    <ClInclude Include="src\UIManager.h" />
     <ClInclude Include="src\Vehicle.h" />
-    <ClInclude Include="src\VehicleRenderer.h" />
     <ClInclude Include="src\YAMLConverters.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
@@ -178,7 +181,6 @@
   <ItemGroup>
     <ClCompile Include="BraitenbergSimulator.cpp" />
     <ClCompile Include="src\BarViewElement.cpp" />
-    <ClCompile Include="src\ConfigLoader.cpp" />
     <ClCompile Include="src\Controller.cpp" />
     <ClCompile Include="src\CSL.cpp" />
     <ClCompile Include="src\CSLController.cpp" />
@@ -190,13 +192,18 @@
     <ClCompile Include="src\MathUtils.cpp" />
     <ClCompile Include="src\Renderer.cpp" />
     <ClCompile Include="src\RenderGL3.cpp" />
+    <ClCompile Include="src\ResourceManager.cpp" />
     <ClCompile Include="src\SimObject.cpp" />
+    <ClCompile Include="src\Simulator.cpp" />
     <ClCompile Include="src\Test.cpp" />
     <ClCompile Include="src\TestEntries.cpp" />
     <ClCompile Include="src\UIElement.cpp" />
+    <ClCompile Include="src\UIManager.cpp" />
     <ClCompile Include="src\Vehicle.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="yaml\testConfig.yaml" />
+    <None Include="yaml\testScene.yaml" />
     <None Include="yaml\testVehicle.yaml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
