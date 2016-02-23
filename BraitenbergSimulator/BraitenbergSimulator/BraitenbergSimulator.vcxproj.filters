@@ -129,6 +129,9 @@
     <ClInclude Include="src\UIManager.h">
       <Filter>Source Files\UI</Filter>
     </ClInclude>
+    <ClInclude Include="src\LightRayCastCallback.h">
+      <Filter>Source Files\Simulator</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BraitenbergSimulator.cpp">

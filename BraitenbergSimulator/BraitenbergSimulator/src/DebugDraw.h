@@ -27,6 +27,10 @@ struct GLRenderLines;
 struct GLRenderTriangles;
 
 //
+
+//
+enum CameraCorner {CC_TOP_LEFT,CC_TOP_RIGHT,CC_BOTTOM_LEFT,CC_BOTTOM_RIGHT};
+
 struct Camera
 {
 	Camera()
@@ -41,6 +45,8 @@ struct Camera
 	b2Vec2 ConvertScreenToWorld(const b2Vec2& screenPoint);
 	b2Vec2 ConvertWorldToScreen(const b2Vec2& worldPoint);
 	void BuildProjectionMatrix(float32* m, float32 zBias);
+
+	b2Vec2 GetCorner(CameraCorner cc);
 
 	b2Vec2 m_center;
 	float32 m_extent;

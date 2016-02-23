@@ -22,9 +22,11 @@ public:
 	void Render();
 	void BindPhysics();
 	void Step();
+	void RayCast(b2Vec2 point);
 private:
 	bool m_sceneLoaded = false;
 	Renderer m_sceneRenderer;
 	WorldPtr m_world;
 	ScenePtr m_currentScene;
+	std::vector<b2Vec2> rayCastPoly;
 };

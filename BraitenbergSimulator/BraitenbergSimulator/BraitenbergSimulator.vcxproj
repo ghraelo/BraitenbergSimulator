@@ -157,6 +157,7 @@
     <ClInclude Include="src\CSLController.h" />
     <ClInclude Include="src\DebugDraw.h" />
     <ClInclude Include="src\imgui.h" />
+    <ClInclude Include="src\LightRayCastCallback.h" />
     <ClInclude Include="src\LightSensor.h" />
     <ClInclude Include="src\LightSource.h" />
     <ClInclude Include="src\main.h" />

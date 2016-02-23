@@ -51,6 +51,7 @@ Test::Test()
 	m_stepCount = 0;
 
 	b2BodyDef bodyDef;
+	bodyDef.userData = (void*)"NOCOLLIDE";
 	m_groundBody = m_world->CreateBody(&bodyDef);
 
 	memset(&m_maxProfile, 0, sizeof(b2Profile));

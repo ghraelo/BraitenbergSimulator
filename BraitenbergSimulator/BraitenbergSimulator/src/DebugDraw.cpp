@@ -111,6 +111,37 @@ void Camera::BuildProjectionMatrix(float32* m, float32 zBias)
 	m[15] = 1.0f;
 }
 
+b2Vec2 Camera::GetCorner(CameraCorner cc)
+{
+	b2Vec2 ret;
+	float32 w = float32(m_width);
+	float32 h = float32(m_height);
+	float32 ratio = w / h;
+	b2Vec2 extents(ratio * 25.0f, 25.0f);
+	extents *= m_zoom;
+	switch (cc)
+	{
+	case CC_TOP_LEFT:
+		ret.x = m_center.x - extents.x;
+		ret.y = m_center.y + extents.y;
+		break;
+	case CC_TOP_RIGHT:
+		ret.x = m_center.x + extents.x;
+		ret.y = m_center.y + extents.y;
+		break;
+	case CC_BOTTOM_LEFT:
+		ret.x = m_center.x - extents.x;
+		ret.y = m_center.y - extents.y;
+		break;
+	case CC_BOTTOM_RIGHT:
+		ret.x = m_center.x + extents.x;
+		ret.y = m_center.y - extents.y;
+		break;
+	}
+
+	return ret;
+}
+
 //
 static void sCheckGLError()
 {

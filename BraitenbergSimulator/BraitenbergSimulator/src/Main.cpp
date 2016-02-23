@@ -68,7 +68,9 @@ namespace
 	bool rightMouseDown;
 	b2Vec2 lastp;
 }
-
+/*
+http://stackoverflow.com/questions/306533/how-do-i-get-a-list-of-files-in-a-directory-in-c
+*/
 static void GetFilesInDirectory(std::vector<std::string> &out, const std::string &directory)
 {
 	HANDLE dir;
