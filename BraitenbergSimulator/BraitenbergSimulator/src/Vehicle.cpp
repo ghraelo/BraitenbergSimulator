@@ -7,13 +7,13 @@ Vehicle::Vehicle()
 {
 }
 
-Vehicle::Vehicle(sensorInfo leftInfo, sensorInfo rightInfo)
-	:leftSensor(this, leftInfo), rightSensor(this, rightInfo)
+Vehicle::Vehicle(sensorInfo leftInfo, sensorInfo rightInfo, float gi, float gf, std::string name)
+	:leftSensor(this, leftInfo), rightSensor(this, rightInfo), leftController(gi,gf),rightController(gi,gf), m_name(name)
 {
 }
 
 Vehicle::Vehicle(Vehicle const & other)
-	:m_body(other.m_body), bodyDef(other.bodyDef),vehicleShape(other.vehicleShape),fixtureDef(other.fixtureDef),theWorld(other.theWorld), m_physicsBound(other.m_physicsBound),leftSensor(this,leftSensor.GetSensorInfo()), rightSensor(this, rightSensor.GetSensorInfo())
+	:m_body(other.m_body), bodyDef(other.bodyDef),vehicleShape(other.vehicleShape),fixtureDef(other.fixtureDef),theWorld(other.theWorld), m_physicsBound(other.m_physicsBound),leftSensor(this,leftSensor.GetSensorInfo()), rightSensor(this, rightSensor.GetSensorInfo()), leftController(other.leftController), rightController(other.rightController), m_name(other.m_name)
 {
 	leftSensor = LightSensor(this,other.leftSensor.GetSensorInfo());
 	rightSensor = LightSensor(this, other.rightSensor.GetSensorInfo());
@@ -41,6 +41,11 @@ b2Vec2 Vehicle::GetPosition()
 b2Vec2 Vehicle::GetCOM()
 {
 	return m_body->GetWorldCenter();
+}
+
+std::string Vehicle::GetName()
+{
+	return m_name;
 }
 
 void Vehicle::SetUserData()
@@ -116,8 +121,11 @@ void Vehicle::Update()
 
 void Vehicle::Update(std::vector<LightSource> ls)
 {
-	leftSensor.GetLight(ls);
-	rightSensor.GetLight(ls);
+	float leftLight = leftSensor.GetLight(ls)* 2 - 1;
+	float rightLight = rightSensor.GetLight(ls) * 2 - 1;
+
+	LeftForce(leftController.Update(leftLight));
+	RightForce(leftController.Update(rightLight));
 }
 
 void Vehicle::Render(Renderer & r)

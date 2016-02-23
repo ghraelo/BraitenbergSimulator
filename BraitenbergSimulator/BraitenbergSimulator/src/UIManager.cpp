@@ -27,8 +27,10 @@ void UIManager::DrawVehicleUI(Vehicle* veh)
 
 	int position = y + 85;
 
+	std::string text = veh->GetName() + ":";
+
 	imguiDrawRoundedRect(x, y, 100, 100, 6, imguiRGBA(0, 0, 0, 192));
-	imguiDrawText(x + 5, position, TEXT_ALIGN_LEFT, "Vehicle:", SetRGBA(255, 255, 255, 128));
+	imguiDrawText(x + 5, position, TEXT_ALIGN_LEFT,text.c_str(), SetRGBA(255, 255, 255, 128));
 	position -= 20;
 	imguiDrawText(x + 5, position, TEXT_ALIGN_LEFT, "Left Sensor:", SetRGBA(255, 255, 255, 128));
 	position -= 10;

@@ -28,7 +28,7 @@ ScenePtr ResourceManager::LoadScene(std::string fileName)
 	{
 		std::string vehicleName = baseNode["Vehicles"][i].as<std::string>();
 		YAML::Node vehicleNode = baseNode[vehicleName];
-		Vehicle v = LoadVehicle(vehicleNode);
+		Vehicle v = LoadVehicle(vehicleNode, vehicleName);
 		theScene.m_vehicles.push_back(v);
 	}
 	printf("Done!\n");
@@ -45,7 +45,7 @@ ScenePtr ResourceManager::LoadScene(std::string fileName)
 	return ScenePtr(std::make_unique<Scene>(theScene));
 }
 
-Vehicle ResourceManager::LoadVehicle(YAML::Node vehicleNode)
+Vehicle ResourceManager::LoadVehicle(YAML::Node vehicleNode, std::string vehicleName)
 {
 	b2Vec2 vehicle_pos;
 
@@ -66,8 +66,11 @@ Vehicle ResourceManager::LoadVehicle(YAML::Node vehicleNode)
 	sensorInfo rightInfo;
 	LoadSensor(rightSensorNode, rightInfo);
 
+	float gi = vehicleNode["GI"].as<float>();
+	float gf = vehicleNode["GF"].as<float>();
+
 	//got all information, create vehicle
-	return Vehicle(leftInfo, rightInfo);
+	return Vehicle(leftInfo, rightInfo,gf,gi,vehicleName);
 }
 
 LightSource ResourceManager::LoadLight(YAML::Node lightNode)

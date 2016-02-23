@@ -30,6 +30,7 @@
 #include <glfw/glfw3.h>
 
 #include <stdlib.h>
+#include <string>
 
 class Test;
 struct Settings;
@@ -104,6 +105,7 @@ struct Settings
 	bool pause;
 	bool singleStep;
 	bool enableMouseDrag;
+	std::string currentScene;
 };
 
 struct TestEntry

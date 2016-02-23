@@ -21,6 +21,15 @@
 #include "DebugDraw.h"
 #include "Test.h"
 
+#include <Windows.h>
+#include <tchar.h> 
+#include <stdio.h>
+#include <strsafe.h>
+#pragma comment(lib, "User32.lib")
+
+#include <string>
+#include <vector>
+
 #if defined(__APPLE__)
 #include <OpenGL/gl3.h>
 #else
@@ -60,7 +69,31 @@ namespace
 	b2Vec2 lastp;
 }
 
-//
+static void GetFilesInDirectory(std::vector<std::string> &out, const std::string &directory)
+{
+	HANDLE dir;
+	WIN32_FIND_DATA file_data;
+
+	if ((dir = FindFirstFile((directory + "/*").c_str(), &file_data)) == INVALID_HANDLE_VALUE)
+		return; /* No files found */
+
+	do {
+		const std::string file_name = file_data.cFileName;
+		const std::string full_file_name = directory + "/" + file_name;
+		const bool is_directory = (file_data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) != 0;
+
+		if (file_name[0] == '.')
+			continue;
+
+		if (is_directory)
+			continue;
+
+		out.push_back(full_file_name);
+	} while (FindNextFile(dir, &file_data));
+
+	FindClose(dir);
+} // GetFilesInDirectory
+
 static void sCreateUI()
 {
 	ui.showMenu = true;
@@ -410,7 +443,19 @@ static void sInterface()
 		static int testScroll = 0;
 		bool over = imguiBeginScrollArea("Choose Sample", g_camera.m_width - menuWidth - testMenuWidth - 20, 10, testMenuWidth, g_camera.m_height - 20, &testScroll);
 		if (over) ui.mouseOverMenu = true;
+		std::vector<std::string> testNames;
+		GetFilesInDirectory(testNames, "yaml");
 
+		for (auto& test : testNames)
+		{
+			if (imguiItem(test.c_str(), true))
+			{
+
+				ui.chooseTest = false;
+			}
+		}
+
+		/*
 		for (int i = 0; i < testCount; ++i)
 		{
 			if (imguiItem(g_testEntries[i].name, true))
@@ -420,7 +465,7 @@ static void sInterface()
 				test = entry->createFcn();
 				ui.chooseTest = false;
 			}
-		}
+		}*/
 
 		imguiEndScrollArea();
 	}
