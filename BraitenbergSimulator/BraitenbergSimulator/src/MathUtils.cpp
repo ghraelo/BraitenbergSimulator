@@ -120,3 +120,20 @@ int MathUtils::GetIntersectionLines(const b2Vec2& p1, const b2Vec2& d1, const b2
 		return 0;
 	}
 }
+
+bool MathUtils::SameSide(const b2Vec2 & p1, const b2Vec2 & p2, const b2Vec2 & l1, const b2Vec2 & l2)
+{
+	bool ss = ((p1.x - l1.x) * (l2.y - l1.y) - (l2.x - l1.x) * (p1.y - l1.y))
+		* ((p2.x - l1.x) * (l2.y - l1.y) - (l2.x - l1.x) * (p2.y - l1.y)) > 0;
+
+	return ss;
+}
+
+bool MathUtils::InsideTriangle(const b2Vec2& p, const b2Vec2& t1, const b2Vec2& t2, const b2Vec2& t3)
+{
+	bool ss1 = SameSide(p, t1, t2, t3);
+	bool ss2 = SameSide(p, t2, t1, t3);
+	bool ss3 = SameSide(p, t3, t1, t2);
+
+	return ss1 && ss2 && ss3;
+}

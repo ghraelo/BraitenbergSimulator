@@ -30,6 +30,10 @@
 
 #include "RenderGL3.h"
 
+#include <vector>
+#include <algorithm>
+#include "Triangulate.h"
+
 #define BUFFER_OFFSET(x)  ((const void*) (x))
 
 DebugDraw g_debugDraw;
@@ -703,6 +707,20 @@ void DebugDraw::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, cons
 		m_lines->Vertex(p1, color);
 		m_lines->Vertex(p2, color);
         p1 = p2;
+	}
+}
+
+void DebugDraw::DrawConcavePolygon(std::vector<b2Vec2>& vertices, const b2Color& color)
+{
+	std::vector<b2Vec2> result;
+
+	Triangulate::Process(vertices, result);
+
+	for (int i = 0; i < result.size()-2; i += 3)
+	{
+		m_triangles->Vertex(result[i], color);
+		m_triangles->Vertex(result[i+1], color);
+		m_triangles->Vertex(result[i + 2], color);
 	}
 }
 

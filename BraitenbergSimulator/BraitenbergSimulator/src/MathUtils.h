@@ -14,6 +14,8 @@ public:
 	static b2Vec2 GetCentroid(std::vector<b2Vec2>& points);
 	static b2Vec2 RotateAroundPoint(b2Vec2 rotated, b2Vec2 centre, float angle);
 	static int GetIntersectionLines(const b2Vec2& p1,const b2Vec2& d1, const b2Vec2& p2, const b2Vec2& d2, b2Vec2& result);
+	static bool SameSide(const b2Vec2& p1, const b2Vec2& p2, const b2Vec2& l1, const b2Vec2& l2);
+	static bool InsideTriangle(const b2Vec2& p, const b2Vec2& t1, const b2Vec2& t2, const b2Vec2& t3);
 private:
 	MathUtils();
 };

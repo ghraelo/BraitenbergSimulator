@@ -132,6 +132,9 @@
     <ClInclude Include="src\LightRayCastCallback.h">
       <Filter>Source Files\Simulator</Filter>
     </ClInclude>
+    <ClInclude Include="src\Triangulate.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BraitenbergSimulator.cpp">
@@ -196,6 +199,9 @@
     </ClCompile>
     <ClCompile Include="src\UIManager.cpp">
       <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Triangulate.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

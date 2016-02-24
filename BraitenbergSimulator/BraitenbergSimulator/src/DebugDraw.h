@@ -20,6 +20,7 @@
 #define DEBUGDRAW_H
 
 #include <Box2D/Box2D.h>
+#include <vector>
 
 struct b2AABB;
 struct GLRenderPoints;
@@ -69,6 +70,8 @@ public:
 	void DrawPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color);
 
 	void DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color);
+
+	void DrawConcavePolygon(std::vector<b2Vec2>& vertices, const b2Color& color);
 
 	void DrawCircle(const b2Vec2& center, float32 radius, const b2Color& color);
 

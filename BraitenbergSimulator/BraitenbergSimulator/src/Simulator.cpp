@@ -3,6 +3,7 @@
 #include <iostream>
 #include <iomanip>
 #include <algorithm>
+#include <fstream>
 
 #include "MathUtils.h"
 #include "LightRayCastCallback.h"
@@ -90,6 +91,11 @@ void Simulator::RayCast(b2Vec2 point)
 	}
 	//std::cout << "vertices: ";
 
+	vertices.push_back(g_camera.GetCorner(CC_TOP_RIGHT));
+	vertices.push_back(g_camera.GetCorner(CC_TOP_LEFT));
+	vertices.push_back(g_camera.GetCorner(CC_BOTTOM_RIGHT));
+	vertices.push_back(g_camera.GetCorner(CC_BOTTOM_LEFT));
+
 	for (auto& vec : vertices)
 	{
 		float rot[3] = { 0, 0.001, -0.001 };
@@ -103,63 +109,55 @@ void Simulator::RayCast(b2Vec2 point)
 			b2Vec2 dirVec = newVec - point;
 			dirVec.Normalize();
 
-			float32 w = float32(g_camera.m_width);
-			float32 h = float32(g_camera.m_height);
-			float32 ratio = w / h;
-			b2Vec2 extents(ratio * 25.0f, 25.0f);
-			extents *= g_camera.m_zoom;
+			float dx = 0, dy = 0;
 
-			b2Vec2 lower = g_camera.m_center - extents;
-			b2Vec2 upper = g_camera.m_center + extents;
-			g_debugDraw.DrawPoint(lower, 5, b2Color(1, 0, 1));
-			g_debugDraw.DrawPoint(upper, 5, b2Color(1, 0, 1));
-
-			float angle = atan2(dirVec.x, dirVec.y);
-			std::cout << "angle: " << angle/M_PI << "pi \n";
-			if (angle < -M_PI / 2)
+			if (dirVec.x > 0 && dirVec.y > 0) //top right
 			{
-				//use lower y, lower x
-				float dx = lower.x - point.x;
-				float dy = lower.y - point.y;
-
-				b2Vec2 npt = newVec + std::min(dx, dy) * dirVec;
-				g_debugDraw.DrawSegment(point, npt, b2Color(1, 1, 1));
+				dx = g_camera.GetCorner(CC_TOP_RIGHT).x - point.x;
+				dy = g_camera.GetCorner(CC_TOP_RIGHT).y - point.y;
 			}
-			else if (angle < 0)
+			else if (dirVec.x > 0 && dirVec.y < 0) //bottom right
 			{
-				//use upper x, lower y
-				float dx = upper.x - point.x;
-				float dy = lower.y - point.y;
-
-				b2Vec2 npt = newVec + std::min(dx, dy) * dirVec;
-				g_debugDraw.DrawSegment(point, npt, b2Color(1, 1, 1));
+				dx = g_camera.GetCorner(CC_BOTTOM_RIGHT).x - point.x;
+				dy = g_camera.GetCorner(CC_BOTTOM_RIGHT).y - point.y;
 			}
-			else if (angle < M_PI / 2)
+			else if (dirVec.x < 0 && dirVec.y > 0) //top left
 			{
-				//use upper x,y
-				float dx = upper.x - point.x;
-				float dy = upper.x - point.y;
-				
-				b2Vec2 npt = newVec + std::min(dx, dy) * dirVec;
-				g_debugDraw.DrawSegment(point, npt, b2Color(1,1,1));
-
+				dx = g_camera.GetCorner(CC_TOP_LEFT).x - point.x;
+				dy = g_camera.GetCorner(CC_TOP_LEFT).y - point.y;
 			}
-			else if(angle >= M_PI / 2)
+			else if (dirVec.x < 0 && dirVec.y < 0) //bottom left
 			{
-				//use upper y, lower x
-				float dx = lower.x - point.x;
-				float dy = upper.y - point.y;
-
-				b2Vec2 npt = newVec + std::min(dx, dy) * dirVec;
-				g_debugDraw.DrawSegment(point, npt, b2Color(1, 1, 1));
+				dx = g_camera.GetCorner(CC_BOTTOM_LEFT).x - point.x;
+				dy = g_camera.GetCorner(CC_BOTTOM_LEFT).y - point.y;
 			}
+
+			dx = fabs(dx);
+			dy = fabs(dy);
+			float sf = 0; //scale factor
+
+			if (dx < dy)
+			{
+				sf = dx / dirVec.x;
+			}
+			else
+			{
+				sf = dy / dirVec.y;
+			}
+
+			b2Vec2 npt = point +  fabs(sf) * dirVec;
 			m_world->RayCast(&lrcc, point, newVec + dirVec);
 
 			if (lrcc.m_collided == true)
 			{
 				rayCastPoly.push_back(lrcc.m_point);
-				//g_debugDraw.DrawSegment(point, lrcc.m_point, col[i]);
+				g_debugDraw.DrawSegment(point, lrcc.m_point, b2Color(1,0,0));
 
+			}
+			else
+			{
+				rayCastPoly.push_back(npt);
+				g_debugDraw.DrawSegment(point, npt, b2Color(0,1,0));
 			}
 		}
 		//std::cout << std::setprecision(2);
@@ -175,27 +173,48 @@ void Simulator::RayCast(b2Vec2 point)
 
 	avg.x = avg.x / rayCastPoly.size();
 	avg.y = avg.y / rayCastPoly.size();
-
-	g_debugDraw.DrawPoint(avg, 5, b2Color(1, 0, 1));
+	avg = point;
+	//g_debugDraw.DrawPoint(avg, 5, b2Color(1, 0, 1));
 	//sort
 	std::sort(rayCastPoly.begin(), rayCastPoly.end(), 
 		[&](b2Vec2 a, b2Vec2 b) {
+
 			float a_angle = atan2(a.y - avg.y, a.x - avg.x);
 			float b_angle = atan2(b.y - avg.y, b.x - avg.x);
-
-			return a_angle < b_angle;
+			if (a_angle == b_angle)
+				return b2Distance(a, avg) > b2Distance(b, avg);
+			else
+				return a_angle > b_angle;
 			}
 		);
 
-	//std::cout << "\r";
 }
 
 void Simulator::Render()
 {
 
 	g_debugDraw.DrawPoint(b2Vec2(0, 20), 5, b2Color(1, 0, 0));
+	/*
+	std::vector<b2Vec2> scaled = rayCastPoly;
+	std::vector<b2Vec2> rect;
+	rect.push_back((0.1 *g_camera.GetCorner(CC_TOP_LEFT)));
+	rect.push_back((0.1 *g_camera.GetCorner(CC_TOP_RIGHT)));
+	rect.push_back((0.1 *g_camera.GetCorner(CC_BOTTOM_RIGHT)));
+	rect.push_back((0.1 *g_camera.GetCorner(CC_BOTTOM_LEFT)));
+	g_debugDraw.DrawPolygon(&rect[0], rect.size(), b2Color(0, 1, 0, 0.5));
+	for (auto& sc : scaled)
+	{
+		sc = 0.1 * sc;
+	}
+
+	if (scaled.size() > 0)
+	{
+
+		g_debugDraw.DrawPolygon(&scaled[0], scaled.size(), b2Color(0, 1, 1, 1));
+	}*/
+
 	if (rayCastPoly.size() > 0)
-		g_debugDraw.DrawPolygon(&rayCastPoly[0], rayCastPoly.size(), b2Color(1, 1, 0, 0.5));
+		g_debugDraw.DrawConcavePolygon(rayCastPoly, b2Color(1, 1, 0.5, 1));
 
 	//render vehicles
 	for (auto &obj : m_currentScene->m_vehicles)

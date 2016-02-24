@@ -25,6 +25,7 @@ public:
 	void RayCast(b2Vec2 point);
 private:
 	bool m_sceneLoaded = false;
+	bool runonce = false;
 	Renderer m_sceneRenderer;
 	WorldPtr m_world;
 	ScenePtr m_currentScene;

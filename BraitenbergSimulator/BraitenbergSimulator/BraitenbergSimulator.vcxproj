@@ -172,6 +172,7 @@
     <ClInclude Include="src\Simulator.h" />
     <ClInclude Include="src\stb_truetype.h" />
     <ClInclude Include="src\Test.h" />
+    <ClInclude Include="src\Triangulate.h" />
     <ClInclude Include="src\UIElement.h" />
     <ClInclude Include="src\UIManager.h" />
     <ClInclude Include="src\Vehicle.h" />
@@ -198,6 +199,7 @@
     <ClCompile Include="src\Simulator.cpp" />
     <ClCompile Include="src\Test.cpp" />
     <ClCompile Include="src\TestEntries.cpp" />
+    <ClCompile Include="src\Triangulate.cpp" />
     <ClCompile Include="src\UIElement.cpp" />
     <ClCompile Include="src\UIManager.cpp" />
     <ClCompile Include="src\Vehicle.cpp" />
