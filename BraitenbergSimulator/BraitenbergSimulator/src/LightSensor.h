@@ -5,6 +5,7 @@
 
 #include "LightSource.h"
 #include "IRenderable.h"
+#include "Raycaster.h"
 
 #include <vector>
 

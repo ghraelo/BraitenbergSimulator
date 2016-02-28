@@ -137,3 +137,43 @@ bool MathUtils::InsideTriangle(const b2Vec2& p, const b2Vec2& t1, const b2Vec2& 
 
 	return ss1 && ss2 && ss3;
 }
+/*
+From https://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
+*/
+bool MathUtils::PointInPoly(const std::vector<b2Vec2>& polygon, const b2Vec2 & point)
+{
+	int i, j, c = 0;
+	for (i = 0, j = polygon.size() - 1; i < polygon.size(); j = i++) {
+		if (((polygon[i].y>point.y) != (polygon[j].y>point.y)) &&
+			(point.x < (polygon[j].x - polygon[i].x) * (point.y - polygon[i].y) / (polygon[j].y - polygon[i].y) + polygon[i].x))
+			c = !c;
+	}
+	return c;
+}
+
+float constrainAngle(float x)
+{
+	x = fmod(x + 180, 360);
+	if (x < 0)
+		x += 360;
+	return x - 180;
+}
+
+bool MathUtils::AngleWithinRange(float angle, float limit1, float limit2)
+{
+	if (limit1 < 0 && limit2 > 0)
+	{
+		if (angle < 0)
+		{
+			return angle < limit1;
+		}
+		else
+		{
+			return angle > limit2;
+		}
+	}
+	else
+	{
+		return (angle < limit1) && (angle > limit2);
+	}
+}

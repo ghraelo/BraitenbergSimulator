@@ -75,9 +75,6 @@
     <ClInclude Include="src\Braitenberg.h">
       <Filter>Source Files\Tests</Filter>
     </ClInclude>
-    <ClInclude Include="src\CSL.h">
-      <Filter>Source Files\Braitenberg</Filter>
-    </ClInclude>
     <ClInclude Include="src\LightSensor.h">
       <Filter>Source Files\Braitenberg</Filter>
     </ClInclude>
@@ -135,6 +132,9 @@
     <ClInclude Include="src\Triangulate.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Raycaster.h">
+      <Filter>Source Files\Simulator</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BraitenbergSimulator.cpp">
@@ -157,9 +157,6 @@
     </ClCompile>
     <ClCompile Include="src\TestEntries.cpp">
       <Filter>Source Files\Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CSL.cpp">
-      <Filter>Source Files\Braitenberg</Filter>
     </ClCompile>
     <ClCompile Include="src\LightSensor.cpp">
       <Filter>Source Files\Braitenberg</Filter>
@@ -202,6 +199,9 @@
     </ClCompile>
     <ClCompile Include="src\Triangulate.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Raycaster.cpp">
+      <Filter>Source Files\Simulator</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

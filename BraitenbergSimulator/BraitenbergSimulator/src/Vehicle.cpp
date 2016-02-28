@@ -123,9 +123,11 @@ void Vehicle::Update(std::vector<LightSource> ls)
 {
 	float leftLight = leftSensor.GetLight(ls)* 2 - 1;
 	float rightLight = rightSensor.GetLight(ls) * 2 - 1;
-
-	LeftForce(leftController.Update(leftLight));
-	RightForce(leftController.Update(rightLight));
+	if (m_controllerEnabled)
+	{
+		LeftForce(leftController.Update(leftLight));
+		RightForce(leftController.Update(rightLight));
+	}
 }
 
 void Vehicle::Render(Renderer & r)
@@ -133,4 +135,19 @@ void Vehicle::Render(Renderer & r)
 	leftSensor.Render(r);
 	rightSensor.Render(r);
 	r.RenderVehicle(*this);
+}
+
+void Vehicle::EnableControl()
+{
+	m_controllerEnabled = true;
+}
+
+void Vehicle::DisableControl()
+{
+	m_controllerEnabled = false;
+}
+
+bool Vehicle::ControlStatus()
+{
+	return m_controllerEnabled;
 }

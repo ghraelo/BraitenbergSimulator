@@ -70,6 +70,22 @@ bool compareIntervals(Interval a, Interval b)
 
 float LightSensor::GetLight(std::vector<LightSource>& lightSources)
 {
+	b2World* world = m_parent->m_body->GetWorld();
+	Raycaster r(world, GetPosition(), Rectangle(g_camera.GetCorner(CC_TOP_RIGHT), g_camera.GetCorner(CC_BOTTOM_LEFT)));
+	r.AddIgnoreBody(m_parent->m_body);
+	b2Vec2 right_bound = GetArcEnd(10.0f, false);
+	b2Vec2 left_bound = GetArcEnd(10.0f, true);
+
+	float angle1 = atan2((left_bound - GetPosition()).y, (left_bound - GetPosition()).x);
+	float angle2 = atan2((right_bound - GetPosition()).y, (right_bound - GetPosition()).x);
+
+	r.Cast(angle1,angle2);
+
+	std::vector<b2Vec2> rcp = r.GetRayCastPoly();
+
+	g_debugDraw.DrawConcavePolygon(rcp, b2Color(1, 1, 1, 0.5));
+
+
 	m_intervals.clear();
 
 	std::vector<Interval> intervals;

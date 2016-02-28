@@ -32,6 +32,10 @@ public:
 	LightSensor leftSensor;
 	LightSensor rightSensor;
 	void Render(Renderer& r) override;
+	void EnableControl();
+	void DisableControl();
+	bool ControlStatus();
+	
 private:
 	std::string m_name;
 	CSLController leftController;
@@ -41,6 +45,7 @@ private:
 	b2FixtureDef fixtureDef;
 	b2World* theWorld;
 	bool m_physicsBound = false;
+	bool m_controllerEnabled = true;
 	void SetUserData();
 };
 

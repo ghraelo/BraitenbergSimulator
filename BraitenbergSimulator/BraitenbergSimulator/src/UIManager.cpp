@@ -28,18 +28,26 @@ void UIManager::DrawVehicleUI(Vehicle* veh)
 	int position = y + 85;
 
 	std::string text = veh->GetName() + ":";
+	int scroll = 0;
+	imguiBeginScrollArea(veh->GetName().c_str(), x, y, 150, 150, &scroll);
+	if (imguiButton("Control",true))
+	{
 
-	imguiDrawRoundedRect(x, y, 100, 100, 6, imguiRGBA(0, 0, 0, 192));
-	imguiDrawText(x + 5, position, TEXT_ALIGN_LEFT,text.c_str(), SetRGBA(255, 255, 255, 128));
-	position -= 20;
-	imguiDrawText(x + 5, position, TEXT_ALIGN_LEFT, "Left Sensor:", SetRGBA(255, 255, 255, 128));
-	position -= 10;
-	DrawBarElement(x + 10, position, veh->leftSensor);
-	position -= 20;
-	imguiDrawText(x + 5, position, TEXT_ALIGN_LEFT, "Right Sensor:", SetRGBA(255, 255, 255, 128));
-	position -= 10;
-	DrawBarElement(x + 10, position, veh->rightSensor);
-	
+	}
+	//imguiDrawText(x + 5, position, TEXT_ALIGN_LEFT,text.c_str(), SetRGBA(255, 255, 255, 128));
+	//position -= 20;
+	imguiLabel("Left sensor:");
+	imguiBarDisplay(veh->leftSensor.m_intervals);
+	imguiLabel("Right sensor:");
+	imguiBarDisplay(veh->rightSensor.m_intervals);
+	//imguiDrawText(x + 5, position, TEXT_ALIGN_LEFT, "Left Sensor:", SetRGBA(255, 255, 255, 128));
+	//position -= 10;
+	//DrawBarElement(x + 10, position, veh->leftSensor);
+	//position -= 20;
+	//imguiDrawText(x + 5, position, TEXT_ALIGN_LEFT, "Right Sensor:", SetRGBA(255, 255, 255, 128));
+	//position -= 10;
+	//DrawBarElement(x + 10, position, veh->rightSensor);	
+	imguiEndScrollArea();
 }
 
 void UIManager::DrawBarElement(float x, float y, LightSensor& sensor)

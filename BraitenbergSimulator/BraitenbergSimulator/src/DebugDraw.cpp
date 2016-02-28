@@ -28,6 +28,8 @@
 #include <stdio.h>
 #include <stdarg.h>
 
+#include <glm\glm.hpp>
+
 #include "RenderGL3.h"
 
 #include <vector>
@@ -246,16 +248,18 @@ struct GLRenderPoints
         "}\n";
         
 		const char* fs = \
-        "#version 400\n"
-        "in vec4 f_color;\n"
-        "out vec4 color;\n"
-        "void main(void)\n"
-        "{\n"
-        "	color = f_color;\n"
-        "}\n";
+		"#version 400\n"
+		"in vec4 f_color;\n"
+		"out vec4 color;\n"
+		"void main(void)\n"
+		"{\n"
+		"	color = f_color;\n"
+		"}\n";
         
 		m_programId = sCreateShaderProgram(vs, fs);
 		m_projectionUniform = glGetUniformLocation(m_programId, "projectionMatrix");
+
+
 		m_vertexAttribute = 0;
 		m_colorAttribute = 1;
 		m_sizeAttribute = 2;
@@ -329,7 +333,7 @@ struct GLRenderPoints
 		g_camera.BuildProjectionMatrix(proj, 0.0f);
         
 		glUniformMatrix4fv(m_projectionUniform, 1, GL_FALSE, proj);
-        
+
 		glBindVertexArray(m_vaoId);
         
 		glBindBuffer(GL_ARRAY_BUFFER, m_vboIds[0]);
@@ -365,6 +369,7 @@ struct GLRenderPoints
 	GLuint m_vboIds[3];
 	GLuint m_programId;
 	GLint m_projectionUniform;
+
 	GLint m_vertexAttribute;
 	GLint m_colorAttribute;
 	GLint m_sizeAttribute;
@@ -521,10 +526,11 @@ struct GLRenderTriangles
 		const char* fs = \
 			"#version 400\n"
 			"in vec4 f_color;\n"
-            "out vec4 color;\n"
+			"uniform mat4 projectionMatrix;\n"
+			"out vec4 color;\n"
 			"void main(void)\n"
 			"{\n"
-			"	color = f_color;\n"
+			"color = f_color;\n"
 			"}\n";
 
 		m_programId = sCreateShaderProgram(vs, fs);
@@ -579,7 +585,7 @@ struct GLRenderTriangles
 		if (m_count == e_maxVertices)
 			Flush();
 
-		m_vertices[m_count] = v;
+		m_vertices[m_count] = v; 
 		m_colors[m_count] = c;
 		++m_count;
 	}
@@ -595,7 +601,7 @@ struct GLRenderTriangles
 		g_camera.BuildProjectionMatrix(proj, 0.2f);
         
 		glUniformMatrix4fv(m_projectionUniform, 1, GL_FALSE, proj);
-        
+
 		glBindVertexArray(m_vaoId);
         
 		glBindBuffer(GL_ARRAY_BUFFER, m_vboIds[0]);
@@ -628,8 +634,10 @@ struct GLRenderTriangles
 	GLuint m_vboIds[2];
 	GLuint m_programId;
 	GLint m_projectionUniform;
+	GLint m_radUniform;
 	GLint m_vertexAttribute;
 	GLint m_colorAttribute;
+	GLint m_resolution;
 };
 
 //
@@ -715,12 +723,14 @@ void DebugDraw::DrawConcavePolygon(std::vector<b2Vec2>& vertices, const b2Color&
 	std::vector<b2Vec2> result;
 
 	Triangulate::Process(vertices, result);
-
-	for (int i = 0; i < result.size()-2; i += 3)
+	if (result.size() > 3)
 	{
-		m_triangles->Vertex(result[i], color);
-		m_triangles->Vertex(result[i+1], color);
-		m_triangles->Vertex(result[i + 2], color);
+		for (int i = 0; i < result.size() - 2; i += 3)
+		{
+			m_triangles->Vertex(result[i], color);
+			m_triangles->Vertex(result[i + 1], color);
+			m_triangles->Vertex(result[i + 2], color);
+		}
 	}
 }
 

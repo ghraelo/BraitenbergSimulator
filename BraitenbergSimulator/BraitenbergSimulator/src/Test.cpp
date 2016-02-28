@@ -61,7 +61,7 @@ Test::Test()
 Test::~Test()
 {
 	// By deleting the world, we delete the bomb, mouse joint, etc.
-	//delete m_world;
+	//delete m_world; //now done by smart pointer
 	m_world = NULL;
 }
 

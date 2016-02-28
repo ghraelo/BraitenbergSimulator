@@ -23,11 +23,8 @@
 /// can be used to animate a dynamic body. With finite motor forces
 /// the body can be blocked by collision with other bodies.
 
-#include <cstring>
 #include <math.h>
 #include <iostream>
-#include <typeinfo>
-#include <vector>
 
 #include "Vehicle.h"
 #include "SimObjectInfo.h"
@@ -44,9 +41,6 @@
 
 #include "Test.h"
 #include "RenderGL3.h"
-#include "LightSource.h"
-#include "LightSensor.h"
-#include "CSL.h"
 
 #include "Simulator.h"
 #include "ResourceManager.h"

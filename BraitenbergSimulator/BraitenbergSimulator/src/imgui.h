@@ -22,6 +22,9 @@
 #ifndef IMGUI_H
 #define IMGUI_H
 
+#include "LightSensor.h"
+#include <vector>
+
 enum TextAlign;
 
 enum imguiMouseButton
@@ -54,6 +57,7 @@ void imguiLabel(const char* text);
 void imguiValue(const char* text);
 bool imguiSlider(const char* text, float* val, float vmin, float vmax, float vinc, bool enabled);
 bool imguiSlider(const char* text, int* val, int vmin, int vmax, int vinc, bool enabled);
+void imguiBarDisplay(std::vector<Interval> intervals);
 
 void imguiDrawText(int x, int y, TextAlign align, const char* text, unsigned int color);
 void imguiDrawLine(float x0, float y0, float x1, float y1, float r, unsigned int color);

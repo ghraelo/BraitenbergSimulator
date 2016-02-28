@@ -478,8 +478,8 @@ static void sInterface()
 //
 int main2(int argc, char** argv)
 {
-    g_camera.m_width = 1024;
-    g_camera.m_height = 640;
+    g_camera.m_width = 1536;
+    g_camera.m_height = 960;
     
 	if (glfwInit() == 0)
 	{
@@ -548,7 +548,7 @@ int main2(int argc, char** argv)
     double time1 = glfwGetTime();
     double frameTime = 0.0;
    
-    glClearColor(0.0f, 0.0f, 0.0f, 1.f);
+    glClearColor(0.3f, 0.3f, 0.3f, 1.f);
 
 	//test load
 	test->Load();

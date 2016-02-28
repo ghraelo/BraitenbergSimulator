@@ -198,6 +198,7 @@ void imguiEndFrame()
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 static const int BUTTON_HEIGHT = 20;
 static const int SLIDER_HEIGHT = 20;
+static const int BAR_HEIGHT = 10;
 static const int SLIDER_MARKER_WIDTH = 10;
 static const int CHECK_SIZE = 8;
 static const int DEFAULT_SPACING = 4;
@@ -342,6 +343,30 @@ bool imguiButton(const char* text, bool enabled)
 	return res;
 }
 
+void imguiBarDisplay(std::vector<Interval> intervals)
+{
+	s_state.widgetId++;
+	unsigned int id = (s_state.areaId << 16) | s_state.widgetId;
+
+	int x = s_state.widgetX;
+	int y = s_state.widgetY - BAR_HEIGHT;
+	int w = s_state.widgetW;
+	int h = BUTTON_HEIGHT;
+	s_state.widgetY -= BAR_HEIGHT + DEFAULT_SPACING;
+
+	AddGfxCmdRoundedRect((float)x, (float)y, (float)w, (float)h, (float)BUTTON_HEIGHT / 4 - 1, SetRGBA(128, 128, 128, 96));
+
+	if (intervals.size() > 0)
+	{
+		for (auto& interval : intervals)
+		{
+			
+			if(interval.first != interval.second)
+				AddGfxCmdRoundedRect((float)x + w*interval.first, (float)y, (float)w*(interval.second - interval.first), (float)h, (float)BUTTON_HEIGHT / 4 - 1, SetRGBA(128, 128, 128, 196));
+		}
+	}
+}
+
 bool imguiItem(const char* text, bool enabled)
 {
 	s_state.widgetId++;
@@ -437,7 +462,7 @@ void imguiLabel(const char* text)
 {
 	int x = s_state.widgetX;
 	int y = s_state.widgetY - BUTTON_HEIGHT;
-	s_state.widgetY -= BUTTON_HEIGHT;
+	s_state.widgetY -= BUTTON_HEIGHT + DEFAULT_SPACING;
 	AddGfxCmdText(x, y + BUTTON_HEIGHT / 2 - TEXT_HEIGHT / 2, TEXT_ALIGN_LEFT, text, SetRGBA(255, 255, 255, 255));
 }
 
