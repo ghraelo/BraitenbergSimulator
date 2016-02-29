@@ -158,8 +158,8 @@ public:
 	void ShiftMouseDown(const b2Vec2& p);
 	virtual void MouseDown(const b2Vec2& p);
 	virtual void MouseUp(const b2Vec2& p);
-	virtual void BodyClick(const b2Body* body_ptr);
-	virtual void NonBodyClick();
+	virtual void BodyClick(const b2Body* body_ptr, b2Vec2 mousePos);
+	virtual void NonBodyClick(b2Vec2 mousePos);
 	void MouseMove(const b2Vec2& p);
 	void LaunchBomb();
 	void LaunchBomb(const b2Vec2& position, const b2Vec2& velocity);

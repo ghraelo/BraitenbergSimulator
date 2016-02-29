@@ -174,7 +174,7 @@ void Test::MouseDown(const b2Vec2& p)
 	if (callback.m_fixture)
 	{
 		b2Body* body = callback.m_fixture->GetBody();
-		this->BodyClick(body);
+		this->BodyClick(body, p);
 		if (m_mouseEnabled)
 		{
 			b2MouseJointDef md;
@@ -188,7 +188,7 @@ void Test::MouseDown(const b2Vec2& p)
 	}
 	else
 	{
-		this->NonBodyClick();
+		this->NonBodyClick(p);
 	}
 }
 
@@ -239,11 +239,11 @@ void Test::MouseUp(const b2Vec2& p)
 }
 
 void Test::
-BodyClick(const b2Body * body_ptr)
+BodyClick(const b2Body * body_ptr, b2Vec2 mousePos)
 {
 }
 
-void Test::NonBodyClick()
+void Test::NonBodyClick(b2Vec2 mousePos)
 {
 }
 

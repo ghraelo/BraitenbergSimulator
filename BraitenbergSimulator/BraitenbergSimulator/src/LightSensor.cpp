@@ -214,7 +214,8 @@ void LightSensor::GetLightBoundary(b2Vec2& lightPos, float lightRadius, std::vec
 	}
 	);
 
-	printf("size: %d\n", intersections.size());
+	//printf("size: %d\n", intersections.size());
+	float startAngle = 0;
 	if (intersections.size() > 1)
 	{
 		b2Vec2 i1 = intersections[0];
@@ -222,14 +223,24 @@ void LightSensor::GetLightBoundary(b2Vec2& lightPos, float lightRadius, std::vec
 		for (int i = 1; i < intersections.size(); ++i)
 		{
 			b2Vec2 i2 = intersections[i];
+			float ang2 = MathUtils::AngleToFraction(angle1, atan2(i2.y - GetPosition().y, i2.x - GetPosition().x), angle2);
+			float ang = MathUtils::AngleToFraction(angle1, atan2(i1.y - GetPosition().y, i1.x - GetPosition().x), angle2);
 			if (open)
 			{
+				Interval temp;
+				temp.first = ang2;
+				temp.second = ang;
+				intervals.push_back(temp);
+
 				g_debugDraw.DrawSegment(i1, i2, b2Color(0, 1, 1));
 			}
 			open = !open;
+			startAngle = ang;
 			i1 = i2;
 		}
 	}
+
+
 }
 
 

@@ -20,6 +20,9 @@ void UIManager::DrawUI()
 
 void UIManager::DrawVehicleUI(Vehicle* veh)
 {
+	m_regions.clear();
+
+
 	b2Vec2 vehScreenCoords = g_camera.ConvertWorldToScreen(m_selectedVehicle->GetPosition());
 	//std::cout << "vehicle screen coords: (" << vehScreenCoords.x << ", " << vehScreenCoords.y << ")" << std::endl;
 	int x = (int)vehScreenCoords.x + 20;
@@ -29,10 +32,18 @@ void UIManager::DrawVehicleUI(Vehicle* veh)
 
 	std::string text = veh->GetName() + ":";
 	int scroll = 0;
+	
+	b2Vec2 topRight(x + 150, g_camera.m_height - (y + 150));
+	b2Vec2 bottomLeft(x, g_camera.m_height - y);
+	topRight = g_camera.ConvertScreenToWorld(topRight);
+	bottomLeft = g_camera.ConvertScreenToWorld(bottomLeft);
+	//printf("rectangle: topRight:(%f,%f), bottomLeft:(%f,%f)\n", topRight.x, topRight.y, bottomLeft.x, bottomLeft.y);
+	m_regions.push_back(Rectangle(topRight,bottomLeft));
+
 	imguiBeginScrollArea(veh->GetName().c_str(), x, y, 150, 150, &scroll);
 	if (imguiButton("Control",true))
 	{
-
+		printf("CLICKED!!!!\n");
 	}
 	//imguiDrawText(x + 5, position, TEXT_ALIGN_LEFT,text.c_str(), SetRGBA(255, 255, 255, 128));
 	//position -= 20;
@@ -66,6 +77,22 @@ void UIManager::DrawBarElement(float x, float y, LightSensor& sensor)
 			imguiDrawLine(xStart, y, xEnd, y, 2, SetRGBA(15, 255, 199, 192));
 		}
 	}
+}
+
+bool UIManager::InRegion(const b2Vec2 & point)
+{
+	printf("point: (%f,%f)\n", point.x, point.y);
+	for (auto& r : m_regions)
+	{
+		printf("rectangle: topRight:(%f,%f), bottomLeft:(%f,%f)\n", r.m_topRight.x, r.m_topRight.y, r.m_bottomLeft.x, r.m_bottomLeft.y);
+		if (r.Inside(point))
+		{
+			//printf("inside\n");
+			return true;
+		}
+	}
+
+	return false;
 }
 
 void UIManager::SelectVehicle(Vehicle* obj)

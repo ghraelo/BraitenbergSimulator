@@ -74,7 +74,7 @@ void Simulator::BindPhysics()
 
 void Simulator::Step()
 {
-	RayCast(b2Vec2(0, 20));
+	//RayCast(b2Vec2(0, 20));
 
 	for (auto &obj : m_currentScene->m_vehicles)
 	{

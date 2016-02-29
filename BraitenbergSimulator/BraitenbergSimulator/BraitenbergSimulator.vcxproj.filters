@@ -135,6 +135,9 @@
     <ClInclude Include="src\Raycaster.h">
       <Filter>Source Files\Simulator</Filter>
     </ClInclude>
+    <ClInclude Include="src\Rectangle.h">
+      <Filter>Source Files\Simulator</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BraitenbergSimulator.cpp">
@@ -203,6 +206,9 @@
     <ClCompile Include="src\Raycaster.cpp">
       <Filter>Source Files\Simulator</Filter>
     </ClCompile>
+    <ClCompile Include="src\Rectangle.cpp">
+      <Filter>Source Files\Simulator</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="yaml\testVehicle.yaml">
@@ -214,5 +220,6 @@
     <None Include="yaml\testConfig.yaml">
       <Filter>YAML</Filter>
     </None>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>

@@ -191,3 +191,31 @@ bool MathUtils::AngleWithinRange(float angle, float limit1, float limit2)
 		return (angle < limit1) && (angle > limit2);
 	}
 }
+
+float MathUtils::AngleToFraction(float min, float angle, float max)
+{
+	float range = 0, dist = 0;
+	if (min < 0 && max > 0)
+	{
+		range = M_PI + max + M_PI - min;
+		if (angle < 0)
+		{
+			dist = min - angle;
+		}
+		else
+		{
+			dist = range - (max - angle);
+		}
+	}
+	else
+	{
+		range = max - min;
+		dist = min - angle;
+	}
+
+	range = abs(range);
+	dist = abs(dist);
+
+	return (dist) / range;
+
+}

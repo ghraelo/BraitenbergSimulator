@@ -2,7 +2,7 @@
 
 #include "SimObject.h"
 #include "Vehicle.h"
-
+#include  "Rectangle.h"
 class UIManager
 {
 public:
@@ -12,6 +12,8 @@ public:
 	void DeselectVehicle();
 	void DrawVehicleUI(Vehicle* veh);
 	void DrawBarElement(float x, float y, LightSensor& sensor);
+	bool InRegion(const b2Vec2& point);
 private:
 	 Vehicle* m_selectedVehicle;
+	 std::vector<Rectangle> m_regions;
 };

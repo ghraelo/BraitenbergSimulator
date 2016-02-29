@@ -68,7 +68,7 @@ public:
 	{
 	}
 
-	void BodyClick(const b2Body* body_ptr)
+	void BodyClick(const b2Body* body_ptr, b2Vec2 mousePos)
 	{
 		SimObjectInfo* soi = (SimObjectInfo*)(body_ptr->GetUserData());
 		if (soi->m_type == "Vehicle")
@@ -77,9 +77,10 @@ public:
 		}
 	}
 	
-	void NonBodyClick()
+	void NonBodyClick(b2Vec2 mousePos)
 	{
-		uim.DeselectVehicle();
+		if(!uim.InRegion(mousePos))
+			uim.DeselectVehicle();
 	}
 
 	void DrawUI()

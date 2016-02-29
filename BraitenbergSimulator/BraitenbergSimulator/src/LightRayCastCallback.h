@@ -19,7 +19,6 @@ public:
 	float32 ReportFixture(b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float32 fraction)
 	{
 		m_fixture = fixture;
-		m_point = point;
 		m_normal = normal;
 		m_fraction = fraction;
 		if (m_ignoreList.size() > 0)
@@ -30,12 +29,14 @@ public:
 			}
 			else
 			{
+				m_point = point;
 				m_collided = true;
 				return fraction;
 			}
 		}
 		else
 		{
+			m_point = point;
 			m_collided = true;
 			return fraction;
 		}

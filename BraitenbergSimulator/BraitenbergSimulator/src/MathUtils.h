@@ -18,6 +18,7 @@ public:
 	static bool InsideTriangle(const b2Vec2& p, const b2Vec2& t1, const b2Vec2& t2, const b2Vec2& t3);
 	static bool PointInPoly(const std::vector<b2Vec2>& polygon, const b2Vec2& point);
 	static bool AngleWithinRange(float angle, float limit1, float limit2);
+	static float AngleToFraction(float min, float angle, float max);
 private:
 	MathUtils();
 };
