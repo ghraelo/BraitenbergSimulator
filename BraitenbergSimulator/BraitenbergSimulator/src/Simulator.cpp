@@ -8,16 +8,52 @@
 #include "MathUtils.h"
 #include "LightRayCastCallback.h"
 #include "Raycaster.h"
+#include "SimObjectInfo.h"
 
 Simulator::Simulator()
 	:m_world(new b2World(b2Vec2(0, 0)))
 {
 	m_world->SetDebugDraw(&g_debugDraw);
+
 }
 
 Simulator::Simulator(WorldPtr world)
 {
 	m_world = std::move(world);
+
+	//init body
+	b2BodyDef bodyDef;
+	bodyDef.type = b2_dynamicBody;
+	bodyDef.position.Set(0.0f, 0.0f);
+	bodyDef.gravityScale = 0.0f;
+	bodyDef.angularDamping = 0.5f;
+	bodyDef.linearDamping = 0.5f;
+	b2Body* body = (*m_world).CreateBody(&bodyDef);
+	
+	SimObjectInfo* soi = new SimObjectInfo;
+	soi->m_obj = new SimObject();
+	soi->m_type = "test";
+	body->SetUserData(soi);
+
+	//init shape
+
+	b2Vec2 vertices[3];
+	vertices[0].Set(-1.0f, 0.0f);
+	vertices[1].Set(1.0f, 0.0f);
+	vertices[2].Set(0.0f, 3.0f);
+	int32 count = 3;
+
+	b2PolygonShape vehicleShape;
+	vehicleShape.Set(vertices, count);
+
+	//init fixture
+	b2FixtureDef fixtureDef;
+	fixtureDef.shape = &vehicleShape;
+	fixtureDef.density = 1.0f;
+	fixtureDef.friction = 0.3f;
+
+	//create fixture
+	b2Fixture* theFixture = body->CreateFixture(&fixtureDef);
 }
 
 void Simulator::LoadScene(ScenePtr& ptr_scene)

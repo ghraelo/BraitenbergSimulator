@@ -42,7 +42,7 @@ public:
 	b2Vec2 GetPosition();
 	void Render(Renderer& r) override;
 	float GetLight(std::vector<LightSource>& lightSources);
-	void GetLightBoundary(b2Vec2& lightPos, float lightRadius, relLightPos& relativeLightBoundary);
+	void GetLightBoundary(b2Vec2& lightPos, float lightRadius, std::vector<Interval>& intervals, std::vector<b2Vec2>& rayCastPoly);
 	b2Vec2 GetArcEnd(float radius, bool positive);
 	sensorInfo GetSensorInfo() const;
 	std::vector<Interval> m_intervals;

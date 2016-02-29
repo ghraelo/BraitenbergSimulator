@@ -94,9 +94,10 @@ float LightSensor::GetLight(std::vector<LightSource>& lightSources)
 	for (auto& ls : lightSources)
 	{
 		relLightPos rlp;
-		GetLightBoundary(ls.GetPosition(), ls.GetRadius(), rlp);
-		Interval temp(rlp.m_point1, rlp.m_point2);
-		intervals.push_back(temp);
+		std::vector<Interval> temp;
+
+		GetLightBoundary(ls.GetPosition(), ls.GetRadius(), temp, rcp);
+		intervals.insert(intervals.end(),temp.begin(),temp.end());
 	}
 
 	if (intervals.size() <= 0)
@@ -144,62 +145,89 @@ float LightSensor::GetLight(std::vector<LightSource>& lightSources)
 
 
 
-void LightSensor::GetLightBoundary(b2Vec2& lightPos, float lightRadius, relLightPos& relativeLightBoundary)
+void LightSensor::GetLightBoundary(b2Vec2& lightPos, float lightRadius, std::vector<Interval>& intervals, std::vector<b2Vec2>& rayCastPoly)
 {
 	float light_sensor_dist = b2Distance(this->GetPosition(), lightPos);
-	
 	//bounds tests
 	b2Vec2 right_bound = GetArcEnd(light_sensor_dist, false);
 	b2Vec2 left_bound = GetArcEnd(light_sensor_dist, true);
 	b2Vec2 sensor_dir = GetParentBody()->GetWorldVector(m_direction_vector);
-	b2Vec2 pos = this->GetPosition();
-	b2Vec2 i1, i2;
-	MathUtils::GetIntersections(this->GetPosition(), lightPos, lightRadius, i1, i2);
 
+	float angle1 = atan2((left_bound - GetPosition()).y, (left_bound - GetPosition()).x);
+	float angle2 = atan2((right_bound - GetPosition()).y, (right_bound - GetPosition()).x);
 
-	//char text_buffer[50] = { 0 };
-	//sprintf(text_buffer,"left angle: %5.2f, right angle: %5.2f\n", GetAngle(i2 - pos, sensor_dir) * (180/M_PI), GetAngle(i1-pos, sensor_dir) * (180 / M_PI));
-	//OutputDebugString(text_buffer);
+	b2Vec2 normal(-sensor_dir.y, sensor_dir.x);
+	normal.Normalize();
 
-	bool withinLeft = MathUtils::IsWithinCircle(lightPos, lightRadius, left_bound);
-	bool withinRight = MathUtils::IsWithinCircle(lightPos, lightRadius, right_bound);
+	b2Vec2 pos1 = lightPos + lightRadius * normal;
+	b2Vec2 pos2 = lightPos - lightRadius * normal;
 
-	float scaleFactor = 1/b2Distance(left_bound, right_bound);
-
-	relativeLightBoundary.m_point1 = 0;
-	relativeLightBoundary.m_point2 = 0;
-
-	if (withinLeft && withinRight)
-	{
-		//OutputDebugString("both bounds inside circle\n");
-		relativeLightBoundary.m_point1 = 0;
-		relativeLightBoundary.m_point2 = 1.0f;
-		return;
-	}
+	if (MathUtils::PointInPoly(rayCastPoly, pos1))
+		g_debugDraw.DrawPoint(pos1, 5, b2Color(1, 0, 0));
 	else
+		g_debugDraw.DrawPoint(pos1, 5, b2Color(0, 1, 0)); 
+	if (MathUtils::PointInPoly(rayCastPoly, pos2))
+		g_debugDraw.DrawPoint(pos2, 5, b2Color(1, 0, 0));
+	else
+		g_debugDraw.DrawPoint(pos2, 5, b2Color(0, 1, 0));
+
+	std::vector<b2Vec2> intersections;
+
+	g_debugDraw.DrawPolygon(&rayCastPoly[0], rayCastPoly.size(), b2Color(1, 0, 1));
+
+	b2Vec2 p1 = rayCastPoly[rayCastPoly.size() - 1];
+	//find intersections of circle diameter with polygon
+	for (int32 i = 0; i < rayCastPoly.size(); ++i)
 	{
+		b2Vec2 p2 = rayCastPoly[i];
 
-		if (MathUtils::GetAngle(i2 - pos, sensor_dir) < m_aperture_angle / 2)
+		b2Vec2 result;
+
+		if (MathUtils::GetIntersectionLines(pos1, pos2, p1, p2, result) == 0)
 		{
-			relativeLightBoundary.m_point1 = b2Distance(left_bound,MathUtils::GetPointProjection(left_bound, right_bound, i2)) * scaleFactor;
-			//OutputDebugString("left intersection pt within sensor cone\n");
+			g_debugDraw.DrawPoint(result, 5, b2Color(0, 0, 1));
+			intersections.push_back(result);
 		}
 
-		if (MathUtils::GetAngle(i1 - pos, sensor_dir) < m_aperture_angle / 2)
-		{
-			relativeLightBoundary.m_point2 = b2Distance(left_bound,MathUtils::GetPointProjection(left_bound, right_bound, i1)) * scaleFactor;
-			//OutputDebugString("right intersection pt within sensor cone\n");
-		}
+		p1 = p2;
+	}
 
-		if (withinLeft)
+	if (MathUtils::PointInPoly(rayCastPoly, pos1))
+	{
+		intersections.push_back(pos1);
+	}
+
+	if (MathUtils::PointInPoly(rayCastPoly, pos2))
+	{
+		intersections.push_back(pos2);
+	}
+
+	//sort by angle
+	std::sort(intersections.begin(), intersections.end(),
+		[&](b2Vec2 a, b2Vec2 b) {
+		float a_angle = atan2(a.y - GetPosition().y, a.x - GetPosition().x);
+		float b_angle = atan2(b.y - GetPosition().y, b.x - GetPosition().x);
+		if (a_angle == b_angle)
+			return b2Distance(a, GetPosition()) > b2Distance(b, GetPosition());
+		else
+			return a_angle < b_angle;
+	}
+	);
+
+	printf("size: %d\n", intersections.size());
+	if (intersections.size() > 1)
+	{
+		b2Vec2 i1 = intersections[0];
+		bool open = true;
+		for (int i = 1; i < intersections.size(); ++i)
 		{
-			//OutputDebugString("left bound inside circle\n");
-			relativeLightBoundary.m_point1 = 0;
-		}
-		else if (withinRight)
-		{
-			//OutputDebugString("right bound inside circle\n");
-			relativeLightBoundary.m_point2 = 1.0f;
+			b2Vec2 i2 = intersections[i];
+			if (open)
+			{
+				g_debugDraw.DrawSegment(i1, i2, b2Color(0, 1, 1));
+			}
+			open = !open;
+			i1 = i2;
 		}
 	}
 }

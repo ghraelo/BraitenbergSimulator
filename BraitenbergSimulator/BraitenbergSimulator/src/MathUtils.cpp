@@ -95,29 +95,43 @@ b2Vec2 MathUtils::RotateAroundPoint(b2Vec2 rotated, b2Vec2 centre, float angle)
 	return ret;
 }
 
-int MathUtils::GetIntersectionLines(const b2Vec2& p1, const b2Vec2& d1, const b2Vec2& p2, const b2Vec2& d2, b2Vec2& result)
+int MathUtils::GetIntersectionLines(const b2Vec2& a1, const b2Vec2& a2, const b2Vec2& b1, const b2Vec2& b2, b2Vec2& result)
 {
-	float t = b2Cross(p2 - p1, 1 / (b2Cross(d1, d2)) * d2 );
-	float u = b2Cross(p2 - p1, 1 / (b2Cross(d1, d2)) * d1);
+	b2Vec2 r = a2 - a1;
+	b2Vec2 s = b2 - b1;
 
-	if (b2Cross(d1, d2) == 0)
+	float rxs = b2Cross(r, s);
+	float qpxr = b2Cross(b1 - a1, r);
+
+	float t = b2Cross(b1 - a1, s) / rxs;
+	float u = qpxr / rxs;
+
+	if (rxs == 0)
 	{
-		if (b2Cross(p2 - p1, d1) == 0)
+		if (qpxr == 0)
 		{
-			//lines are collinear
-			return 1;
+			//collinear
+			return -1;
 		}
 		else
 		{
-			//lines are parallel
-			return -1;
+			//parallel
+			return 1;
 		}
 	}
 	else
 	{
-		//lines intersect
-		result = p1 + t * d1;
-		return 0;
+		if (t >= 0 && t <= 1 && u >= 0 && u <= 1)
+		{
+			//intersection
+			result = a1 + t*r;
+			return 0;
+		}
+		else
+		{
+			//no intersection
+			return 2;
+		}
 	}
 }
 

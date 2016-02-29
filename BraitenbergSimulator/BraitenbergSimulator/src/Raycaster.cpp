@@ -89,40 +89,23 @@ void Raycaster::Cast(float angle1, float angle2)
 	}
 
 	m_rayCastPolygon = DoRays(vertices);
-	/*
-	std::vector<b2Vec2> positivePts, negativePts;
 
-	//create two vectors for points > and < zero
-	for (auto& pt : m_rayCastPolygon)
-	{
-		float angle = atan2(pt.y - m_castPoint.y, pt.x - m_castPoint.x);
-
-		if (angle > 0)
-			positivePts.push_back(pt);
-		else
-			negativePts.push_back(pt);
-	}*/
-	m_rayCastPolygon.push_back(m_castPoint);
-	b2Vec2 avg(0, 0);
-	for (auto& pt : m_rayCastPolygon)
-	{
-		avg.x = avg.x + pt.x;
-		avg.y = avg.y + pt.y;
-	}
-
-	avg.x = avg.x / m_rayCastPolygon.size();
-	avg.y = avg.y / m_rayCastPolygon.size();
+	if(angle1 < 0 && angle2 > 0)
+		m_rayCastPolygon.push_back(m_castPoint);
 
 	std::sort(m_rayCastPolygon.begin(), m_rayCastPolygon.end(),
 		[&](b2Vec2 a, b2Vec2 b) {
-		float a_angle = atan2(a.y - avg.y, a.x - avg.x);
-		float b_angle = atan2(b.y - avg.y, b.x - avg.x);
+		float a_angle = atan2(a.y - m_castPoint.y, a.x - m_castPoint.x);
+		float b_angle = atan2(b.y - m_castPoint.y, b.x - m_castPoint.x);
 		if (a_angle == b_angle)
 			return b2Distance(a, m_castPoint) > b2Distance(b, m_castPoint);
 		else
 			return a_angle < b_angle;
 	}
 	);
+
+	if (!(angle1 < 0 && angle2 > 0))
+		m_rayCastPolygon.push_back(m_castPoint);
 
 	//combine array
 	//m_rayCastPolygon.insert(m_rayCastPolygon.end(), negativePts.begin(), negativePts.end());
@@ -249,14 +232,12 @@ std::vector<b2Vec2> Raycaster::DoRays(std::vector<b2Vec2> vertices)
 
 			if (lrcc.m_collided == true)
 			{
-				printf("collided");
 				rayCastPoly.push_back(lrcc.m_point);
 				//g_debugDraw.DrawSegment(point, lrcc.m_point, col[i]);
 
 			}
 			else
 			{
-				printf("npt");
 				rayCastPoly.push_back(npt);
 				//g_debugDraw.DrawSegment(point, npt, b2Color(col[i].r*0.5f,col[i].g*0.5f,col[i].g*0.5f,1.0f));
 			}
