@@ -14,13 +14,14 @@
 #include <Windows.h>
 
 Simulator::Simulator()
-	:m_world(new b2World(b2Vec2(0, 0)))
+	:m_world(new b2World(b2Vec2(0, 0))),m_dataRecorder()
 {
 	m_world->SetDebugDraw(&g_debugDraw);
 
 }
 
 Simulator::Simulator(WorldPtr world)
+	:m_dataRecorder()
 {
 	m_world = std::move(world);
 
@@ -87,7 +88,7 @@ void Simulator::BindPhysics()
 
 void Simulator::Step()
 {
-	if(m_tsCount < 30)
+	if(m_tsCount < 5)
 		m_tsCount++;
 	else
 	{

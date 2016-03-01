@@ -81,10 +81,10 @@ void UIManager::DrawBarElement(float x, float y, LightSensor& sensor)
 
 bool UIManager::InRegion(const b2Vec2 & point)
 {
-	printf("point: (%f,%f)\n", point.x, point.y);
+	//printf("point: (%f,%f)\n", point.x, point.y);
 	for (auto& r : m_regions)
 	{
-		printf("rectangle: topRight:(%f,%f), bottomLeft:(%f,%f)\n", r.m_topRight.x, r.m_topRight.y, r.m_bottomLeft.x, r.m_bottomLeft.y);
+		//printf("rectangle: topRight:(%f,%f), bottomLeft:(%f,%f)\n", r.m_topRight.x, r.m_topRight.y, r.m_bottomLeft.x, r.m_bottomLeft.y);
 		if (r.Inside(point))
 		{
 			//printf("inside\n");

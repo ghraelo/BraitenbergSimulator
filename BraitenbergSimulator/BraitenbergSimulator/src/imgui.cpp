@@ -128,19 +128,35 @@ static bool buttonLogic(unsigned int id, bool over)
 {
 	bool res = false;
 	// process down
+
 	if (!anyActive())
 	{
 		if (over)
 		{
 			setHot(id);
 		}
+		if (isHot(id))
+		{
+			printf("HOT HOT HOT\n");
+
+		}
+		if (s_state.leftPressed)
+		{
+			printf("left pressed");
+		}
+
 		if (isHot(id) && s_state.leftPressed)
 		{
+			printf("both\n");
 			setActive(id);
 		}
 	}
 
 	// if button is active, then react on left up
+	if (isActive(id))
+	{
+		printf("ACTIVE\n");
+	}
 	if (isActive(id))
 	{
 		s_state.isActive = true;
