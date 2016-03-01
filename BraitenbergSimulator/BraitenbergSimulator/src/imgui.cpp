@@ -131,9 +131,13 @@ static bool buttonLogic(unsigned int id, bool over)
 	if (!anyActive())
 	{
 		if (over)
+		{
 			setHot(id);
+		}
 		if (isHot(id) && s_state.leftPressed)
+		{
 			setActive(id);
+		}
 	}
 
 	// if button is active, then react on left up
@@ -324,7 +328,6 @@ bool imguiButton(const char* text, bool enabled)
 {
 	s_state.widgetId++;
 	unsigned int id = (s_state.areaId << 16) | s_state.widgetId;
-
 	int x = s_state.widgetX;
 	int y = s_state.widgetY - BUTTON_HEIGHT;
 	int w = s_state.widgetW;
@@ -332,6 +335,7 @@ bool imguiButton(const char* text, bool enabled)
 	s_state.widgetY -= BUTTON_HEIGHT + DEFAULT_SPACING;
 
 	bool over = enabled && inRect(x, y, w, h);
+
 	bool res = buttonLogic(id, over);
 
 	AddGfxCmdRoundedRect((float)x, (float)y, (float)w, (float)h, (float)BUTTON_HEIGHT / 2 - 1, SetRGBA(128, 128, 128, isActive(id) ? 196 : 96));
@@ -362,7 +366,7 @@ void imguiBarDisplay(std::vector<Interval> intervals)
 		{
 			
 			if(interval.first != interval.second)
-				AddGfxCmdRoundedRect((float)x + w*interval.first, (float)y, (float)w*(interval.second - interval.first), (float)h, (float)BUTTON_HEIGHT / 4 - 1, SetRGBA(128, 128, 128, 196));
+				AddGfxCmdRect((float)x + w*interval.first, (float)y, (float)w*(interval.second - interval.first), (float)h, SetRGBA(128, 128, 128, 196));
 		}
 	}
 }

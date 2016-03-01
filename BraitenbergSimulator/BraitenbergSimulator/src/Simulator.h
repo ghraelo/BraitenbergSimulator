@@ -9,6 +9,7 @@
 #include "Renderer.h"
 #include "UIManager.h"
 #include "Scene.h"
+#include "DataRecorder.h"
 
 typedef std::unique_ptr<b2World> WorldPtr;
 
@@ -22,10 +23,12 @@ public:
 	void Render();
 	void BindPhysics();
 	void Step();
-	void RayCast(b2Vec2 point);
+	void Sample();
 private:
 	bool m_sceneLoaded = false;
-	bool runonce = false;
+	int m_tsCount = 0;
+	long int sampleCount = 0;
+	DataRecorder m_dataRecorder;
 	Renderer m_sceneRenderer;
 	WorldPtr m_world;
 	ScenePtr m_currentScene;

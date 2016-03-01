@@ -572,8 +572,9 @@ int main2(int argc, char** argv)
 		mousey = g_camera.m_height - mousey;
 		int leftButton = glfwGetMouseButton(mainWindow, GLFW_MOUSE_BUTTON_LEFT);
 		if (leftButton == GLFW_PRESS)
+		{
 			mousebutton |= IMGUI_MBUT_LEFT;
-
+		}
 		imguiBeginFrame(mousex, mousey, mousebutton, mscroll);
 		
 		test->Render();

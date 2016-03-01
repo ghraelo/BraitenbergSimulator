@@ -161,7 +161,7 @@ void LightSensor::GetLightBoundary(b2Vec2& lightPos, float lightRadius, std::vec
 
 	b2Vec2 pos1 = lightPos + lightRadius * normal;
 	b2Vec2 pos2 = lightPos - lightRadius * normal;
-
+	/*
 	if (MathUtils::PointInPoly(rayCastPoly, pos1))
 		g_debugDraw.DrawPoint(pos1, 5, b2Color(1, 0, 0));
 	else
@@ -170,10 +170,10 @@ void LightSensor::GetLightBoundary(b2Vec2& lightPos, float lightRadius, std::vec
 		g_debugDraw.DrawPoint(pos2, 5, b2Color(1, 0, 0));
 	else
 		g_debugDraw.DrawPoint(pos2, 5, b2Color(0, 1, 0));
-
+		*/
 	std::vector<b2Vec2> intersections;
 
-	g_debugDraw.DrawPolygon(&rayCastPoly[0], rayCastPoly.size(), b2Color(1, 0, 1));
+	//g_debugDraw.DrawPolygon(&rayCastPoly[0], rayCastPoly.size(), b2Color(1, 0, 1));
 
 	b2Vec2 p1 = rayCastPoly[rayCastPoly.size() - 1];
 	//find intersections of circle diameter with polygon
@@ -185,7 +185,7 @@ void LightSensor::GetLightBoundary(b2Vec2& lightPos, float lightRadius, std::vec
 
 		if (MathUtils::GetIntersectionLines(pos1, pos2, p1, p2, result) == 0)
 		{
-			g_debugDraw.DrawPoint(result, 5, b2Color(0, 0, 1));
+			//g_debugDraw.DrawPoint(result, 5, b2Color(0, 0, 1));
 			intersections.push_back(result);
 		}
 
@@ -232,7 +232,7 @@ void LightSensor::GetLightBoundary(b2Vec2& lightPos, float lightRadius, std::vec
 				temp.second = ang;
 				intervals.push_back(temp);
 
-				g_debugDraw.DrawSegment(i1, i2, b2Color(0, 1, 1));
+				//g_debugDraw.DrawSegment(i1, i2, b2Color(0, 1, 1));
 			}
 			open = !open;
 			startAngle = ang;

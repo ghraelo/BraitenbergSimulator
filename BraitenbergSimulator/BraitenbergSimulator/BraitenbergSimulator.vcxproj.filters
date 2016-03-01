@@ -138,6 +138,9 @@
     <ClInclude Include="src\Rectangle.h">
       <Filter>Source Files\Simulator</Filter>
     </ClInclude>
+    <ClInclude Include="src\DataRecorder.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BraitenbergSimulator.cpp">
@@ -208,6 +211,9 @@
     </ClCompile>
     <ClCompile Include="src\Rectangle.cpp">
       <Filter>Source Files\Simulator</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DataRecorder.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

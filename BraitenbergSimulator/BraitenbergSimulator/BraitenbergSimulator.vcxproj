@@ -154,6 +154,7 @@
     <ClInclude Include="src\Braitenberg.h" />
     <ClInclude Include="src\Controller.h" />
     <ClInclude Include="src\CSLController.h" />
+    <ClInclude Include="src\DataRecorder.h" />
     <ClInclude Include="src\DebugDraw.h" />
     <ClInclude Include="src\imgui.h" />
     <ClInclude Include="src\LightRayCastCallback.h" />
@@ -186,6 +187,7 @@
     <ClCompile Include="src\BarViewElement.cpp" />
     <ClCompile Include="src\Controller.cpp" />
     <ClCompile Include="src\CSLController.cpp" />
+    <ClCompile Include="src\DataRecorder.cpp" />
     <ClCompile Include="src\DebugDraw.cpp" />
     <ClCompile Include="src\imgui.cpp" />
     <ClCompile Include="src\LightSensor.cpp" />
