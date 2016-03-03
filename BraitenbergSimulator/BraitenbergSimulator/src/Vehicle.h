@@ -16,7 +16,7 @@ class Vehicle : public SimObject
 {
 public:
 	Vehicle();
-	Vehicle(sensorInfo leftInfo, sensorInfo rightInfo, float gi, float gf,std::string name);
+	Vehicle(sensorInfo leftInfo, sensorInfo rightInfo, float gi, float gf,std::string name, b2Vec2 position);
 	Vehicle(Vehicle const& other);
 	//Vehicle(b2World* world, VehicleDef vehicleDef);
 	~Vehicle();

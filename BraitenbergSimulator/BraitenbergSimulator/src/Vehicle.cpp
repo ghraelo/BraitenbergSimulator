@@ -7,13 +7,13 @@ Vehicle::Vehicle()
 {
 }
 
-Vehicle::Vehicle(sensorInfo leftInfo, sensorInfo rightInfo, float gi, float gf, std::string name)
-	:leftSensor(this, leftInfo), rightSensor(this, rightInfo), leftController(gi,gf),rightController(gi,gf), m_name(name)
+Vehicle::Vehicle(sensorInfo leftInfo, sensorInfo rightInfo, float gi, float gf, std::string name, b2Vec2 position)
+	:leftSensor(this, leftInfo), rightSensor(this, rightInfo), leftController(gi,gf),rightController(gi,gf), m_name(name), SimObject(position)
 {
 }
 
 Vehicle::Vehicle(Vehicle const & other)
-	:m_body(other.m_body), bodyDef(other.bodyDef),vehicleShape(other.vehicleShape),fixtureDef(other.fixtureDef),theWorld(other.theWorld), m_physicsBound(other.m_physicsBound),leftSensor(this,leftSensor.GetSensorInfo()), rightSensor(this, rightSensor.GetSensorInfo()), leftController(other.leftController), rightController(other.rightController), m_name(other.m_name)
+	:m_body(other.m_body), bodyDef(other.bodyDef),vehicleShape(other.vehicleShape),fixtureDef(other.fixtureDef),theWorld(other.theWorld), m_physicsBound(other.m_physicsBound),leftSensor(this,leftSensor.GetSensorInfo()), rightSensor(this, rightSensor.GetSensorInfo()), leftController(other.leftController), rightController(other.rightController), m_name(other.m_name), SimObject(other.m_position)
 {
 	leftSensor = LightSensor(this,other.leftSensor.GetSensorInfo());
 	rightSensor = LightSensor(this, other.rightSensor.GetSensorInfo());
@@ -62,7 +62,7 @@ void Vehicle::BindPhysics(b2World* world)
 	theWorld = world;
 	//init body
 	bodyDef.type = b2_dynamicBody;
-	bodyDef.position.Set(0.0f, 0.0f);
+	bodyDef.position = m_position;
 	bodyDef.gravityScale = 0.0f;
 	bodyDef.angularDamping = 0.5f;
 	bodyDef.linearDamping = 0.5f;

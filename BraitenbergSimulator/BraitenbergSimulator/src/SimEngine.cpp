@@ -12,10 +12,10 @@ void SimEngine::Init()
 {
 	//initialise main window
 	glfwInit();
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
+	//glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	//glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	//glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	//glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
 
 	try
 	{
@@ -30,14 +30,13 @@ void SimEngine::Init()
 
 	glfwMakeContextCurrent(mainWindow);
 
-	glewExperimental = GL_TRUE;
+	//glewExperimental = GL_TRUE;
 
 	if (glewInit() != GLEW_OK)
 	{
 		throw std::exception("Failed to initialize GLEW");
 	}
 	//load resources
-	renderer.LoadShaders(ResourceManager::LoadShaders());
 	//add menu state
 	states.push_back(std::make_unique <MenuState>());
 

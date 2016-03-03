@@ -73,7 +73,7 @@ Vehicle ResourceManager::LoadVehicle(YAML::Node vehicleNode, std::string vehicle
 	float gf = vehicleNode["GF"].as<float>();
 
 	//got all information, create vehicle
-	return Vehicle(leftInfo, rightInfo,gf,gi,vehicleName);
+	return Vehicle(leftInfo, rightInfo,gf,gi,vehicleName,vehicle_pos);
 }
 
 LightSource ResourceManager::LoadLight(YAML::Node lightNode)
