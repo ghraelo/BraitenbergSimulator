@@ -552,7 +552,7 @@ int main2(int argc, char** argv)
 
 	//test load
 	test->Load();
-	
+
  	while (!glfwWindowShouldClose(mainWindow))
 	{
  		glfwGetWindowSize(mainWindow, &g_camera.m_width, &g_camera.m_height);
@@ -570,6 +570,7 @@ int main2(int argc, char** argv)
 		int mousey = int(yd);
 
 		mousey = g_camera.m_height - mousey;
+
 		int leftButton = glfwGetMouseButton(mainWindow, GLFW_MOUSE_BUTTON_LEFT);
 		if (leftButton == GLFW_PRESS)
 		{
@@ -580,9 +581,9 @@ int main2(int argc, char** argv)
 		test->Render();
 		sSimulate();
 		sInterface();
-
-		imguiEndFrame();
 		test->DrawUI();
+		
+		imguiEndFrame();
 
 
         // Measure speed

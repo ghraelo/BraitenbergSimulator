@@ -42,13 +42,13 @@
 #include "Test.h"
 #include "RenderGL3.h"
 
-#include "Simulator.h"
+#include "SceneManager.h"
 #include "ResourceManager.h"
 #include "UIManager.h"
 
 class Braitenberg : public Test
 {
-	Simulator sim;
+	SceneManager sim;
 	UIManager uim;
 
 public:

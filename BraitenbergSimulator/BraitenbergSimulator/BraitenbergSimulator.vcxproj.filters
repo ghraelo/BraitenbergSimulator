@@ -43,6 +43,15 @@
     <Filter Include="Source Files\UI">
       <UniqueIdentifier>{170264c7-1d7e-4950-bb8c-2104fab9131a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Framework 2">
+      <UniqueIdentifier>{7ac223cf-6439-47d8-9523-c536d162c1d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Framework 2\Cmds">
+      <UniqueIdentifier>{56731990-56ea-496e-82eb-4ef5045eeb7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Framework 2\States">
+      <UniqueIdentifier>{8250cb53-b4d2-433f-9f4d-123917f9afc1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -111,9 +120,6 @@
     <ClInclude Include="src\SimObjectInfo.h">
       <Filter>Source Files\Simulator\SimObjects</Filter>
     </ClInclude>
-    <ClInclude Include="src\Simulator.h">
-      <Filter>Source Files\Simulator</Filter>
-    </ClInclude>
     <ClInclude Include="src\YAMLConverters.h">
       <Filter>Source Files\ResourceManager</Filter>
     </ClInclude>
@@ -141,11 +147,38 @@
     <ClInclude Include="src\DataRecorder.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\SimEngine.h">
+      <Filter>Source Files\Framework 2</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OpenGLRenderer.h">
+      <Filter>Source Files\Framework 2</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RenderCmd.h">
+      <Filter>Source Files\Framework 2\Cmds</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DrawCmd.h">
+      <Filter>Source Files\Framework 2\Cmds</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Shader.h">
+      <Filter>Source Files\Framework 2</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ScissorCmd.h">
+      <Filter>Source Files\Framework 2\Cmds</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MainState.h">
+      <Filter>Source Files\Framework 2\States</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MenuState.h">
+      <Filter>Source Files\Framework 2\States</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SimState.h">
+      <Filter>Source Files\Framework 2\States</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SceneManager.h">
+      <Filter>Source Files\Simulator</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BraitenbergSimulator.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\imgui.cpp">
       <Filter>Source Files\Framework</Filter>
     </ClCompile>
@@ -194,9 +227,6 @@
     <ClCompile Include="src\MathUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Simulator.cpp">
-      <Filter>Source Files\Simulator</Filter>
-    </ClCompile>
     <ClCompile Include="src\ResourceManager.cpp">
       <Filter>Source Files\ResourceManager</Filter>
     </ClCompile>
@@ -214,6 +244,33 @@
     </ClCompile>
     <ClCompile Include="src\DataRecorder.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SimEngine.cpp">
+      <Filter>Source Files\Framework 2</Filter>
+    </ClCompile>
+    <ClCompile Include="BraitenbergSimulator.cpp">
+      <Filter>Source Files\Framework 2</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OpenGlRenderer.cpp">
+      <Filter>Source Files\Framework 2</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DrawCmd.cpp">
+      <Filter>Source Files\Framework 2\Cmds</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ScissorCmd.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MainState.cpp">
+      <Filter>Source Files\Framework 2\States</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MenuState.cpp">
+      <Filter>Source Files\Framework 2\States</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SimState.cpp">
+      <Filter>Source Files\Framework 2\States</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SceneManager.cpp">
+      <Filter>Source Files\Simulator</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

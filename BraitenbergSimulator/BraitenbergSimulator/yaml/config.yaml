@@ -1,0 +1,5 @@
+Name: Test Scene
+Shaders: [default]
+default:
+    VertexName: default.vs
+    FragmentName: default.frag

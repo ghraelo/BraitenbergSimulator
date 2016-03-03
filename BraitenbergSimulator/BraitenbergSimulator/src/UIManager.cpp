@@ -41,9 +41,18 @@ void UIManager::DrawVehicleUI(Vehicle* veh)
 	m_regions.push_back(Rectangle(topRight,bottomLeft));
 
 	imguiBeginScrollArea(veh->GetName().c_str(), x, y, 150, 150, &scroll);
-	if (imguiButton("Control",true))
+	char* btext;
+	if (veh->ControlStatus())
+		btext = "Disable controller";
+	else
+		btext = "Enable controller";
+
+	if (imguiButton(btext,true))
 	{
-		printf("CLICKED!!!!\n");
+		if (veh->ControlStatus())
+			veh->DisableControl();
+		else
+			veh->EnableControl();
 	}
 	//imguiDrawText(x + 5, position, TEXT_ALIGN_LEFT,text.c_str(), SetRGBA(255, 255, 255, 128));
 	//position -= 20;

@@ -1,6 +1,9 @@
 #include "ResourceManager.h"
 #include "YAMLConverters.h"
 #include <iostream>
+
+#include "Shader.h"
+
 ResourceManager::ResourceManager()
 {
 }
@@ -100,4 +103,26 @@ bool ResourceManager::LoadSensor(YAML::Node& sensorNode, sensorInfo& info)
 	info.m_direction = sensorNode["Direction"].as<b2Vec2>();
 
 	return true;
+}
+
+std::map<std::string, Shader> ResourceManager::LoadShaders()
+{
+	std::map<std::string, Shader> temp;
+	YAML::Node baseNode = YAML::LoadFile("yaml/config.yaml");
+
+	//get shaders
+	int shaderNum = baseNode["Shaders"].size();
+	printf("Attempting to load %d shaders...\n", shaderNum);
+	for (int i = 0; i < shaderNum; i++)
+	{
+		std::string shaderId = baseNode["Shaders"][i].as<std::string>();
+		YAML::Node shader = baseNode[shaderId];
+		std::string fragPath = "shaders/" + shader["FragmentName"].as<std::string>();
+		std::string vertexPath = "shaders/" + shader["VertexName"].as<std::string>();
+
+		Shader theShader(vertexPath.c_str(), fragPath.c_str());
+		temp.insert(std::pair<std::string, Shader>(shaderId, theShader));
+	}
+	printf("Done!\n");
+	return temp;
 }

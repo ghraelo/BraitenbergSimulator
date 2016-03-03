@@ -13,11 +13,11 @@
 
 typedef std::unique_ptr<b2World> WorldPtr;
 
-class Simulator
+class SceneManager
 {
 public:
-	Simulator();
-	Simulator(WorldPtr world);
+	SceneManager();
+	SceneManager(WorldPtr world);
 
 	void LoadScene(ScenePtr& ptr_scene);
 	void Render();
@@ -32,5 +32,4 @@ private:
 	Renderer m_sceneRenderer;
 	WorldPtr m_world;
 	ScenePtr m_currentScene;
-	std::vector<b2Vec2> rayCastPoly;
 };

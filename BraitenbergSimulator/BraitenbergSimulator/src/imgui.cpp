@@ -135,28 +135,14 @@ static bool buttonLogic(unsigned int id, bool over)
 		{
 			setHot(id);
 		}
-		if (isHot(id))
-		{
-			printf("HOT HOT HOT\n");
-
-		}
-		if (s_state.leftPressed)
-		{
-			printf("left pressed");
-		}
 
 		if (isHot(id) && s_state.leftPressed)
 		{
-			printf("both\n");
 			setActive(id);
 		}
 	}
 
 	// if button is active, then react on left up
-	if (isActive(id))
-	{
-		printf("ACTIVE\n");
-	}
 	if (isActive(id))
 	{
 		s_state.isActive = true;
@@ -261,7 +247,7 @@ bool imguiBeginScrollArea(const char* name, int x, int y, int w, int h, int* scr
 
 	AddGfxCmdRoundedRect((float)x, (float)y, (float)w, (float)h, 6, SetRGBA(0, 0, 0, 192));
 
-	AddGfxCmdText(x + AREA_HEADER / 2, y + h - AREA_HEADER / 2 - TEXT_HEIGHT / 2, TEXT_ALIGN_LEFT, name, SetRGBA(255, 255, 255, 128));
+	AddGfxCmdText(x + AREA_HEADER / 2 + s_state.widgetW / 2, y + h - AREA_HEADER / 2 - TEXT_HEIGHT / 2, TEXT_ALIGN_CENTER, name, SetRGBA(255, 255, 255, 128));
 
 	AddGfxCmdScissor(x + SCROLL_AREA_PADDING, y + SCROLL_AREA_PADDING, w - SCROLL_AREA_PADDING * 4, h - AREA_HEADER - SCROLL_AREA_PADDING);
 
@@ -356,9 +342,9 @@ bool imguiButton(const char* text, bool enabled)
 
 	AddGfxCmdRoundedRect((float)x, (float)y, (float)w, (float)h, (float)BUTTON_HEIGHT / 2 - 1, SetRGBA(128, 128, 128, isActive(id) ? 196 : 96));
 	if (enabled)
-		AddGfxCmdText(x + BUTTON_HEIGHT / 2, y + BUTTON_HEIGHT / 2 - TEXT_HEIGHT / 2, TEXT_ALIGN_LEFT, text, isHot(id) ? SetRGBA(255, 196, 0, 255) : SetRGBA(255, 255, 255, 200));
+		AddGfxCmdText(x + w / 2, y + BUTTON_HEIGHT / 2 - TEXT_HEIGHT / 2, TEXT_ALIGN_CENTER, text, isHot(id) ? SetRGBA(255, 196, 0, 255) : SetRGBA(255, 255, 255, 200));
 	else
-		AddGfxCmdText(x + BUTTON_HEIGHT / 2, y + BUTTON_HEIGHT / 2 - TEXT_HEIGHT / 2, TEXT_ALIGN_LEFT, text, SetRGBA(128, 128, 128, 200));
+		AddGfxCmdText(x + w / 2, y + BUTTON_HEIGHT / 2 - TEXT_HEIGHT / 2, TEXT_ALIGN_LEFT, text, SetRGBA(128, 128, 128, 200));
 
 	return res;
 }

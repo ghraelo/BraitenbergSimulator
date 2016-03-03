@@ -207,15 +207,17 @@ void LightSensor::GetLightBoundary(b2Vec2& lightPos, float lightRadius, std::vec
 		[&](b2Vec2 a, b2Vec2 b) {
 		float a_angle = atan2(a.y - GetPosition().y, a.x - GetPosition().x);
 		float b_angle = atan2(b.y - GetPosition().y, b.x - GetPosition().x);
+
 		if (a_angle == b_angle)
 			return b2Distance(a, GetPosition()) > b2Distance(b, GetPosition());
 		else
-			return a_angle < b_angle;
+		{
+				return a_angle < b_angle;
+		}
 	}
 	);
 
 	//printf("size: %d\n", intersections.size());
-	float startAngle = 0;
 	if (intersections.size() > 1)
 	{
 		b2Vec2 i1 = intersections[0];
@@ -235,7 +237,6 @@ void LightSensor::GetLightBoundary(b2Vec2& lightPos, float lightRadius, std::vec
 				//g_debugDraw.DrawSegment(i1, i2, b2Color(0, 1, 1));
 			}
 			open = !open;
-			startAngle = ang;
 			i1 = i2;
 		}
 	}

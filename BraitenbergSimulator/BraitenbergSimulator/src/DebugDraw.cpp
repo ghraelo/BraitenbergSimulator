@@ -737,7 +737,7 @@ void DebugDraw::DrawConcavePolygon(std::vector<b2Vec2>& vertices, const b2Color&
 //
 void DebugDraw::DrawCircle(const b2Vec2& center, float32 radius, const b2Color& color)
 {
-	const float32 k_segments = 16.0f;
+	const float32 k_segments = 32.0f;
 	const float32 k_increment = 2.0f * b2_pi / k_segments;
     float32 sinInc = sinf(k_increment);
     float32 cosInc = cosf(k_increment);
@@ -760,7 +760,7 @@ void DebugDraw::DrawCircle(const b2Vec2& center, float32 radius, const b2Color& 
 //
 void DebugDraw::DrawSolidCircle(const b2Vec2& center, float32 radius, const b2Vec2& axis, const b2Color& color)
 {
-	const float32 k_segments = 16.0f;
+	const float32 k_segments = 32.0f;
 	const float32 k_increment = 2.0f * b2_pi / k_segments;
     float32 sinInc = sinf(k_increment);
     float32 cosInc = cosf(k_increment);

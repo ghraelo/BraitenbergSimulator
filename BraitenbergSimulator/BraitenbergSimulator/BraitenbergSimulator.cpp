@@ -5,8 +5,37 @@
 
 #include "main.h"
 
+//GLEW
+#define GLEW_STATIC
+#include <glew\glew.h>
+//GLFW
+#include <glfw\glfw3.h>
+
+//STL
+#include <iostream>
+
+//...
+#include <SimEngine.h>
+
 int main(int argc, char** argv)
 {
+	
+	////FreeConsole();
+	//SimEngine se;
+
+	//se.Init();
+
+	//while (!glfwWindowShouldClose(se.GetWindow()))
+	//{
+	//	se.HandleEvents();
+	//	se.Update();
+	//	se.Render();
+	//}
+
+	//se.Cleanup();
+	//
+
+	//
 	main2(argc, argv);
-    return 0;
+	return 0;
 }
