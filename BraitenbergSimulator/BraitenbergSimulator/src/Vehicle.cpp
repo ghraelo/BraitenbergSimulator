@@ -123,10 +123,14 @@ void Vehicle::Update(std::vector<LightSource> ls)
 {
 	float leftLight = leftSensor.GetLight(ls)* 2 - 1;
 	float rightLight = rightSensor.GetLight(ls) * 2 - 1;
+	printf("leftLight: %f, rightLight: %f\n",leftLight,rightLight);
 	if (m_controllerEnabled)
 	{
-		LeftForce(leftController.Update(leftLight));
-		RightForce(leftController.Update(rightLight));
+		float leftForce = leftController.Update(leftLight);
+		float rightForce = rightController.Update(rightLight);
+		printf("leftForce: %f, rightForce: %f\n",leftForce,rightForce);
+		LeftForce(leftForce);
+		RightForce(rightForce);
 	}
 }
 
