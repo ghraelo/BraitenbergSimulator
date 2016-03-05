@@ -8,7 +8,7 @@
 struct Scene
 {
 	std::string m_name;
-	std::vector<Vehicle> m_vehicles;
+	std::vector<VehiclePtr> m_vehicles;
 	std::vector<LightSource> m_lights;
 };
 

@@ -15,6 +15,7 @@ class DataRecorder
 public:
 	DataRecorder();
 	DataRecorder(std::string directoryPath);
+	void GetData(float data);
 	void BeginFile(CSVRow headerRow);
 	void Record(CSVRow row);
 private:
@@ -22,4 +23,5 @@ private:
 	std::string m_directoryPath;
 	std::string m_currentFile;
 	int m_columns = 0;
+	std::vector<double> fft_data;
 };

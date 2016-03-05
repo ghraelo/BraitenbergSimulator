@@ -3,24 +3,13 @@
 #include "SimObjectInfo.h"
 
 Vehicle::Vehicle()
-	:leftSensor(this), rightSensor(this)
+	:SimObject()
 {
 }
 
-Vehicle::Vehicle(sensorInfo leftInfo, sensorInfo rightInfo, float gi, float gf, std::string name, b2Vec2 position)
-	:leftSensor(this, leftInfo), rightSensor(this, rightInfo), leftController(gi,gf),rightController(gi,gf), m_name(name), SimObject(position)
+Vehicle::Vehicle(sensorInfo leftInfo, sensorInfo rightInfo, ControlStrategyPtr& strategy, std::string name)
+	:SimObject(), leftSensor(this, leftInfo), rightSensor(this, rightInfo), m_ctrl_strat(std::move(strategy)), m_name(name)
 {
-}
-
-Vehicle::Vehicle(Vehicle const & other)
-	:m_body(other.m_body), bodyDef(other.bodyDef),vehicleShape(other.vehicleShape),fixtureDef(other.fixtureDef),theWorld(other.theWorld), m_physicsBound(other.m_physicsBound),leftSensor(this,leftSensor.GetSensorInfo()), rightSensor(this, rightSensor.GetSensorInfo()), leftController(other.leftController), rightController(other.rightController), m_name(other.m_name), SimObject(other.m_position)
-{
-	leftSensor = LightSensor(this,other.leftSensor.GetSensorInfo());
-	rightSensor = LightSensor(this, other.rightSensor.GetSensorInfo());
-	
-	//reset body data to point to correct object
-	if(m_body != nullptr)
-		SetUserData();
 }
 
 Vehicle::~Vehicle()
@@ -62,7 +51,7 @@ void Vehicle::BindPhysics(b2World* world)
 	theWorld = world;
 	//init body
 	bodyDef.type = b2_dynamicBody;
-	bodyDef.position = m_position;
+	bodyDef.position.Set(0.0f, 0.0f);
 	bodyDef.gravityScale = 0.0f;
 	bodyDef.angularDamping = 0.5f;
 	bodyDef.linearDamping = 0.5f;
@@ -123,12 +112,16 @@ void Vehicle::Update(std::vector<LightSource> ls)
 {
 	float leftLight = leftSensor.GetLight(ls)* 2 - 1;
 	float rightLight = rightSensor.GetLight(ls) * 2 - 1;
-	printf("leftLight: %f, rightLight: %f\n",leftLight,rightLight);
+	//printf("leftlight: %f, rightlight: %f\n", leftLight, rightLight);
+	float leftForce = 0;
+	float rightForce = 0;
+
 	if (m_controllerEnabled)
 	{
-		float leftForce = leftController.Update(leftLight);
-		float rightForce = rightController.Update(rightLight);
-		printf("leftForce: %f, rightForce: %f\n",leftForce,rightForce);
+		m_ctrl_strat->SetInputs(leftLight, rightLight);
+		m_ctrl_strat->Update();
+		m_ctrl_strat->GetOutput(leftForce, rightForce);
+		//printf("leftforce: %f, rightforce: %f\n", leftForce, rightForce);
 		LeftForce(leftForce);
 		RightForce(rightForce);
 	}

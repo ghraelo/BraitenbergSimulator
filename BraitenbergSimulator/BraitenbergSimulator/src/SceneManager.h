@@ -4,6 +4,7 @@
 #include <memory>
 
 #include <Box2D\Box2D.h>
+#include <boost\circular_buffer.hpp>
 
 #include "SimObject.h"
 #include "Renderer.h"
@@ -32,4 +33,5 @@ private:
 	Renderer m_sceneRenderer;
 	WorldPtr m_world;
 	ScenePtr m_currentScene;
+	boost::circular_buffer<float> circ;
 };

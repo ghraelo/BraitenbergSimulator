@@ -4,6 +4,7 @@
 #include <vector>
 
 #define M_PI 3.141592654
+
 class MathUtils
 {
 public:

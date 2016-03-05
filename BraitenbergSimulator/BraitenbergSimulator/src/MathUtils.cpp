@@ -156,7 +156,8 @@ From https://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
 */
 bool MathUtils::PointInPoly(const std::vector<b2Vec2>& polygon, const b2Vec2 & point)
 {
-	int i, j, c = 0;
+	int i, j;
+	bool c = false;
 	for (i = 0, j = polygon.size() - 1; i < polygon.size(); j = i++) {
 		if (((polygon[i].y>point.y) != (polygon[j].y>point.y)) &&
 			(point.x < (polygon[j].x - polygon[i].x) * (point.y - polygon[i].y) / (polygon[j].y - polygon[i].y) + polygon[i].x))

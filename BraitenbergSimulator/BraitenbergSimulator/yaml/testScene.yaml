@@ -1,24 +1,26 @@
-Name: Test Scene
-Vehicles: [testVehicle]
+name: Test Scene
+vehicles: [testVehicle]
 testVehicle:
-    Position: [0.0, 0.0]
-    GI: 0.9
-    GF: 1.1
-    LeftSensor:
-        Offset: [-1.0, 0.0]
-        ApertureAngle: 1.0
-        Direction: [0, 1.0]
-    RightSensor:
-        Offset: [1.0, 0.0]
-        ApertureAngle: 1.0
-        Direction: [0, 1.0]
-Lights: [testLight, testLight2, testLight3]
+    position: [0.0, 0.0]
+    strategy:
+        type: csl
+        gi: 0.9
+        gf: 1.0
+    leftsensor:
+        offset: [-1.0, 0.0]
+        apertureAngle: 1.0
+        direction: [0, 1.0]
+    rightsensor:
+        offset: [1.0, 0.0]
+        apertureAngle: 1.0
+        direction: [0, 1.0]
+lights: [testLight, testLight2, testLight3]
 testLight:
-    Position: [0.0,25.0]
-    Radius: 2.0
+    position: [0.0,25.0]
+    radius: 2.0
 testLight2:
-    Position: [0.0,35.0]
-    Radius: 2.0
+    position: [0.0,35.0]
+    radius: 2.0
 testLight3:
-    Position: [5.0,25.0]
-    Radius: 2.0
+    position: [5.0,25.0]
+    radius: 2.0

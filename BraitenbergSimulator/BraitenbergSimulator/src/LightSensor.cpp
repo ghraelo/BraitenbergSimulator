@@ -1,7 +1,5 @@
 #include "LightSensor.h"
 
-#define M_PI 3.14159265
-
 #include "Renderer.h"
 #include "MathUtils.h"
 #include "Vehicle.h"
@@ -12,6 +10,10 @@
 
 LightSensor::LightSensor(Vehicle * parent, sensorInfo info)
 	:m_parent(parent), m_offset(info.m_offset), m_aperture_angle(info.m_aperture), m_direction_vector(info.m_direction)
+{
+}
+
+LightSensor::LightSensor()
 {
 }
 
@@ -177,7 +179,7 @@ void LightSensor::GetLightBoundary(b2Vec2& lightPos, float lightRadius, std::vec
 
 	b2Vec2 p1 = rayCastPoly[rayCastPoly.size() - 1];
 	//find intersections of circle diameter with polygon
-	for (int32 i = 0; i < rayCastPoly.size(); ++i)
+	for (unsigned int i = 0; i < rayCastPoly.size(); ++i)
 	{
 		b2Vec2 p2 = rayCastPoly[i];
 
@@ -222,7 +224,7 @@ void LightSensor::GetLightBoundary(b2Vec2& lightPos, float lightRadius, std::vec
 	{
 		b2Vec2 i1 = intersections[0];
 		bool open = true;
-		for (int i = 1; i < intersections.size(); ++i)
+		for (unsigned int i = 1; i < intersections.size(); ++i)
 		{
 			b2Vec2 i2 = intersections[i];
 			float ang2 = MathUtils::AngleToFraction(angle1, atan2(i2.y - GetPosition().y, i2.x - GetPosition().x), angle2);

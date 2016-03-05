@@ -90,9 +90,6 @@
     <ClInclude Include="src\Controller.h">
       <Filter>Source Files\Controller</Filter>
     </ClInclude>
-    <ClInclude Include="src\CSLController.h">
-      <Filter>Source Files\Controller</Filter>
-    </ClInclude>
     <ClInclude Include="src\UIElement.h">
       <Filter>Source Files\UI</Filter>
     </ClInclude>
@@ -177,6 +174,24 @@
     <ClInclude Include="src\SceneManager.h">
       <Filter>Source Files\Simulator</Filter>
     </ClInclude>
+    <ClInclude Include="src\ControlStrategy.h">
+      <Filter>Source Files\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CSLStrategy.h">
+      <Filter>Source Files\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CSL.h">
+      <Filter>Source Files\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TwoAStrategy.h">
+      <Filter>Source Files\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TwoBStrategy.h">
+      <Filter>Source Files\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Strategies.h">
+      <Filter>Source Files\Controller</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\imgui.cpp">
@@ -201,9 +216,6 @@
       <Filter>Source Files\Braitenberg</Filter>
     </ClCompile>
     <ClCompile Include="src\Controller.cpp">
-      <Filter>Source Files\Controller</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CSLController.cpp">
       <Filter>Source Files\Controller</Filter>
     </ClCompile>
     <ClCompile Include="src\UIElement.cpp">
@@ -272,6 +284,21 @@
     <ClCompile Include="src\SceneManager.cpp">
       <Filter>Source Files\Simulator</Filter>
     </ClCompile>
+    <ClCompile Include="src\ControlStrategy.cpp">
+      <Filter>Source Files\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CSLStrategy.cpp">
+      <Filter>Source Files\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CSL.cpp">
+      <Filter>Source Files\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TwoAStrategy.cpp">
+      <Filter>Source Files\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TwoBStrategy.cpp">
+      <Filter>Source Files\Controller</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="yaml\testVehicle.yaml">
@@ -284,5 +311,11 @@
       <Filter>YAML</Filter>
     </None>
     <None Include="ClassDiagram.cd" />
+    <None Include="src\standardCSL.yaml">
+      <Filter>YAML</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="libfftw3-3.ref" />
   </ItemGroup>
 </Project>

@@ -5,7 +5,7 @@
 #include "LightSensor.h"
 #include "IRenderable.h"
 #include "SimObject.h"
-#include "CSLController.h"
+#include "ControlStrategy.h"
 
 #include <string>
 
@@ -16,8 +16,7 @@ class Vehicle : public SimObject
 {
 public:
 	Vehicle();
-	Vehicle(sensorInfo leftInfo, sensorInfo rightInfo, float gi, float gf,std::string name, b2Vec2 position);
-	Vehicle(Vehicle const& other);
+	Vehicle(sensorInfo leftInfo, sensorInfo rightInfo, ControlStrategyPtr& strategy,std::string name);
 	//Vehicle(b2World* world, VehicleDef vehicleDef);
 	~Vehicle();
 	void BindPhysics(b2World* world);
@@ -38,8 +37,7 @@ public:
 	
 private:
 	std::string m_name;
-	CSLController leftController;
-	CSLController rightController;
+	ControlStrategyPtr m_ctrl_strat;
 	b2BodyDef bodyDef;
 	b2PolygonShape vehicleShape;
 	b2FixtureDef fixtureDef;
@@ -49,4 +47,4 @@ private:
 	void SetUserData();
 };
 
-typedef std::shared_ptr<Vehicle> VehiclePtr;
+typedef std::unique_ptr<Vehicle> VehiclePtr;

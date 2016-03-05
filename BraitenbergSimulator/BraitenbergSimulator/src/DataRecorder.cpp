@@ -3,7 +3,6 @@
 #include <ctime>
 #include <cassert>
 #include <sstream>
-
 DataRecorder::DataRecorder()
 	:m_directoryPath("")
 {
@@ -12,6 +11,30 @@ DataRecorder::DataRecorder()
 DataRecorder::DataRecorder(std::string directoryPath)
 	:m_directoryPath(directoryPath)
 {
+}
+
+void DataRecorder::GetData(float data)
+{
+	fft_data.push_back(data);
+	std::fstream o;
+
+	time_t now = time(0);
+	tm* dt = localtime(&now);
+
+	std::ostringstream oss;
+
+	oss << 1900 + dt->tm_year;
+	oss << 1 + dt->tm_mon;
+	oss << dt->tm_mday;
+	oss << "_";
+	oss << dt->tm_hour;
+	oss << dt->tm_min;
+	oss << dt->tm_sec;
+
+	o.open(oss.str() + "acorr.csv", std::ios::app);
+	o << data << "\n";
+
+	o.close();
 }
 
 void DataRecorder::BeginFile(CSVRow headerRow)

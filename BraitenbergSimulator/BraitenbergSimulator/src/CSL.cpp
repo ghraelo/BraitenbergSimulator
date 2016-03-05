@@ -1,17 +1,17 @@
-#include "CSLController.h"
+#include "CSL.h"
 
 
-CSLController::CSLController()
+CSL::CSL()
 	:coeff_gf(0), coeff_gi(0)
 {
 }
 
-CSLController::CSLController(float gf, float gi)
+CSL::CSL(float gf, float gi)
 	:coeff_gf(gf), coeff_gi(gi)
 {
 }
 
-float CSLController::Update(float input)
+float CSL::Update(float input)
 {
 	float output = input* -coeff_gi + m_delay;
 	m_last_delay = m_delay;
@@ -19,16 +19,16 @@ float CSLController::Update(float input)
 	m_last_input = input;
 	m_last_output = output;
 
-	return output;
+	return Clamp(output);
 }
 
-void CSLController::UpdateCoefficients(float gf, float gi)
+void CSL::SetCoefficients(float gf, float gi)
 {
 	coeff_gf = gf;
 	coeff_gi = gi;
 }
 
-float CSLController::Clamp(float input)
+float CSL::Clamp(float input)
 {
 	if (input < -1.0f)
 		return -1.0f;

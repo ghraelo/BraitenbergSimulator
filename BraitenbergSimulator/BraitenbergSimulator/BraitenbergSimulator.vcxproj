@@ -71,7 +71,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(ProjectDir)include;$(ProjectDir)src;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)include;$(ProjectDir)src;H:\Users\Jack\Downloads\boost_1_60_0\boost_1_60_0;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -96,7 +96,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Box2D.lib;glew.lib;glfw.lib;libyaml-cppmdd.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libfftw3-3.lib;Box2D.lib;glew.lib;glfw.lib;libyaml-cppmdd.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -155,7 +155,9 @@
     <ClInclude Include="src\BarViewElement.h" />
     <ClInclude Include="src\Braitenberg.h" />
     <ClInclude Include="src\Controller.h" />
-    <ClInclude Include="src\CSLController.h" />
+    <ClInclude Include="src\ControlStrategy.h" />
+    <ClInclude Include="src\CSL.h" />
+    <ClInclude Include="src\CSLStrategy.h" />
     <ClInclude Include="src\DataRecorder.h" />
     <ClInclude Include="src\DebugDraw.h" />
     <ClInclude Include="src\DrawCmd.h" />
@@ -184,8 +186,11 @@
     <ClInclude Include="src\SimObjectInfo.h" />
     <ClInclude Include="src\SimState.h" />
     <ClInclude Include="src\stb_truetype.h" />
+    <ClInclude Include="src\Strategies.h" />
     <ClInclude Include="src\Test.h" />
     <ClInclude Include="src\Triangulate.h" />
+    <ClInclude Include="src\TwoAStrategy.h" />
+    <ClInclude Include="src\TwoBStrategy.h" />
     <ClInclude Include="src\UIElement.h" />
     <ClInclude Include="src\UIManager.h" />
     <ClInclude Include="src\Vehicle.h" />
@@ -197,7 +202,9 @@
     <ClCompile Include="BraitenbergSimulator.cpp" />
     <ClCompile Include="src\BarViewElement.cpp" />
     <ClCompile Include="src\Controller.cpp" />
-    <ClCompile Include="src\CSLController.cpp" />
+    <ClCompile Include="src\ControlStrategy.cpp" />
+    <ClCompile Include="src\CSL.cpp" />
+    <ClCompile Include="src\CSLStrategy.cpp" />
     <ClCompile Include="src\DataRecorder.cpp" />
     <ClCompile Include="src\DebugDraw.cpp" />
     <ClCompile Include="src\DrawCmd.cpp" />
@@ -222,12 +229,22 @@
     <ClCompile Include="src\Test.cpp" />
     <ClCompile Include="src\TestEntries.cpp" />
     <ClCompile Include="src\Triangulate.cpp" />
+    <ClCompile Include="src\TwoAStrategy.cpp" />
+    <ClCompile Include="src\TwoBStrategy.cpp" />
     <ClCompile Include="src\UIElement.cpp" />
     <ClCompile Include="src\UIManager.cpp" />
     <ClCompile Include="src\Vehicle.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <CustomBuild Include="libfftw3-3.ref">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">COPY "$(ProjectDir)lib\%(Filename).dll" "$(TargetDir)" &gt; NULL</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Copying %(Filename) binaries to output directory...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(TargetDir)%(Filename).dll</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)lib\%(Filename).dll</AdditionalInputs>
+    </CustomBuild>
     <None Include="ClassDiagram.cd" />
+    <None Include="src\standardCSL.yaml" />
     <None Include="yaml\testConfig.yaml" />
     <None Include="yaml\testScene.yaml" />
     <None Include="yaml\testVehicle.yaml" />

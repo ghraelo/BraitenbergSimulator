@@ -33,8 +33,8 @@ typedef std::pair<float, float> Interval;
 class LightSensor : IRenderable
 {
 public:
+	LightSensor();
 	LightSensor(Vehicle* parent);
-	LightSensor(const Vehicle* parent);
 	LightSensor(Vehicle* parent, sensorInfo info);
 	LightSensor(Vehicle* parent,b2Vec2 offset, float aperture, b2Vec2 direction);
 
