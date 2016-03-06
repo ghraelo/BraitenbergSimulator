@@ -20,6 +20,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <algorithm>
 //#define _USE_MATH_DEFINES
 #include <math.h>
 #include "imgui.h"
@@ -204,7 +205,7 @@ void imguiEndFrame()
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 static const int BUTTON_HEIGHT = 20;
 static const int SLIDER_HEIGHT = 20;
-static const int BAR_HEIGHT = 10;
+static const int BAR_HEIGHT = 20;
 static const int SLIDER_MARKER_WIDTH = 10;
 static const int CHECK_SIZE = 8;
 static const int DEFAULT_SPACING = 4;
@@ -357,7 +358,7 @@ void imguiBarDisplay(std::vector<Interval> intervals)
 	int x = s_state.widgetX;
 	int y = s_state.widgetY - BAR_HEIGHT;
 	int w = s_state.widgetW;
-	int h = BUTTON_HEIGHT;
+	int h = BAR_HEIGHT;
 	s_state.widgetY -= BAR_HEIGHT + DEFAULT_SPACING;
 
 	AddGfxCmdRoundedRect((float)x, (float)y, (float)w, (float)h, (float)BUTTON_HEIGHT / 4 - 1, SetRGBA(128, 128, 128, 96));
@@ -370,6 +371,46 @@ void imguiBarDisplay(std::vector<Interval> intervals)
 			if(interval.first != interval.second)
 				AddGfxCmdRect((float)x + w*interval.first, (float)y, (float)w*(interval.second - interval.first), (float)h, SetRGBA(128, 128, 128, 196));
 		}
+	}
+}
+
+void imguiGraphDisplay(std::vector<float> data)
+{
+	float max = *std::max_element(data.begin(), data.end());
+	float min = *std::min_element(data.begin(), data.end());
+	imguiGraphDisplay(data, min, max);
+}
+
+void imguiGraphDisplay(std::vector<float> data, float min, float max)
+{
+	s_state.widgetId++;
+	unsigned int id = (s_state.areaId << 16) | s_state.widgetId;
+
+	int x = s_state.widgetX;
+	int y = s_state.widgetY - 5 * BUTTON_HEIGHT;
+	int y_mid = s_state.widgetY - 2.5 * BUTTON_HEIGHT;
+	int w = s_state.widgetW;
+	int w2 = 1;
+	int h = 5 * BUTTON_HEIGHT;
+	int h2 = 1;
+	s_state.widgetY -= 5 * BUTTON_HEIGHT + DEFAULT_SPACING;
+
+	//background
+	AddGfxCmdRect((float)x, (float)y, (float)w, (float)h, SetRGBA(128, 128, 128, 96));
+
+	//axes
+	AddGfxCmdRect((float)x, (float)y_mid, (float)w, (float)h2, SetRGBA(255, 255, 255, 32));
+	AddGfxCmdRect((float)x, (float)y, (float)w2, (float)h, SetRGBA(255, 255, 255, 32));
+
+	//data
+	float y0 = data[0];
+
+	float scaling = (h / 2) / fmax(fabs(min), fabs(max));
+	float spacing = w / (data.size() - 1);
+	for (int i = 1; i < data.size(); i++)
+	{
+		AddGfxCmdLine(x + spacing*(i - 1), y_mid + y0*scaling, x + spacing*i, y_mid + data[i] * scaling, 1, SetRGBA(255, 196, 0, 255));
+		y0 = data[i];
 	}
 }
 

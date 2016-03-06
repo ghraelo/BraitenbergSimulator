@@ -4,15 +4,18 @@
 #include "Vehicle.h"
 #include  "Rectangle.h"
 
+#include "StatisticsManager.h"
+#include "Watcher.h"
+#include "FixedWatcher.h"
 class UIManager
 {
 public:
 	UIManager();
-	void DrawUI();
+	void DrawUI(const StatisticsManager& sm);
 	void SelectVehicle(Vehicle* obj);
 	void DeselectVehicle();
 	void DrawVehicleUI(Vehicle* veh);
-	void DrawBarElement(float x, float y, LightSensor& sensor);
+	void DrawStatsPane(const StatisticsManager& sm);
 	bool InRegion(const b2Vec2& point);
 private:
 	 Vehicle* m_selectedVehicle;

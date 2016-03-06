@@ -5,17 +5,20 @@
 
 #include <iostream>
 #include <Box2D\Common\b2Math.h>
+#include <exception>
+#include "Processor.h"
 
 UIManager::UIManager()
 {
 }
 
-void UIManager::DrawUI()
+void UIManager::DrawUI(const StatisticsManager& sm)
 {
 	if (m_selectedVehicle != nullptr)
 	{
 		DrawVehicleUI(m_selectedVehicle);
 	}
+	DrawStatsPane(sm);
 }
 
 void UIManager::DrawVehicleUI(Vehicle* veh)
@@ -54,38 +57,56 @@ void UIManager::DrawVehicleUI(Vehicle* veh)
 		else
 			veh->EnableControl();
 	}
-	//imguiDrawText(x + 5, position, TEXT_ALIGN_LEFT,text.c_str(), SetRGBA(255, 255, 255, 128));
-	//position -= 20;
+
 	imguiLabel("Left sensor:");
 	imguiBarDisplay(veh->leftSensor.m_intervals);
 	imguiLabel("Right sensor:");
 	imguiBarDisplay(veh->rightSensor.m_intervals);
-	//imguiDrawText(x + 5, position, TEXT_ALIGN_LEFT, "Left Sensor:", SetRGBA(255, 255, 255, 128));
-	//position -= 10;
-	//DrawBarElement(x + 10, position, veh->leftSensor);
-	//position -= 20;
-	//imguiDrawText(x + 5, position, TEXT_ALIGN_LEFT, "Right Sensor:", SetRGBA(255, 255, 255, 128));
-	//position -= 10;
-	//DrawBarElement(x + 10, position, veh->rightSensor);	
 	imguiEndScrollArea();
 }
 
-void UIManager::DrawBarElement(float x, float y, LightSensor& sensor)
+void UIManager::DrawStatsPane(const StatisticsManager & sm)
 {
-	int length = 80;
-	//draw white line
-	imguiDrawLine(x, y, x + length, y, 2, SetRGBA(255, 255, 255, 128));
+	int testScroll = 0;
+	bool over = imguiBeginScrollArea("Statistics", 0, 10, 200, g_camera.m_height - 20, &testScroll);
 
-	for (auto& interval : sensor.m_intervals)
+	for (int i = 0; i < sm.GetStats().size(); i++)
 	{
-		if (interval.first != interval.second)
-		{
-			int xStart = x + interval.first * length;
-			int xEnd = x + interval.second * length;
+		imguiSeparatorLine();
 
-			imguiDrawLine(xStart, y, xEnd, y, 2, SetRGBA(15, 255, 199, 192));
+		Processor* p = dynamic_cast<Processor*>(sm.GetStats()[i].get());
+		if (p != nullptr)
+		{
+			imguiLabel(p->GetName().c_str());
+			std::vector<float> test(p->GetData().size());
+			std::copy(p->GetData().begin(), p->GetData().end(), test.begin());
+			imguiGraphDisplay(test);
 		}
+
+		FixedWatcher* fw = dynamic_cast<FixedWatcher*>(sm.GetStats()[i].get());
+		if (fw != nullptr) 
+		{
+			imguiLabel(fw->GetName().c_str());
+			std::vector<float> test(fw->GetData().size());
+			std::copy(fw->GetData().begin(), fw->GetData().end(), test.begin());
+			imguiGraphDisplay(test,fw->GetMin(),fw->GetMax());
+			continue;
+		}
+
+		Watcher* w = dynamic_cast<Watcher*>(sm.GetStats()[i].get());
+		if (w != nullptr)
+		{
+			imguiLabel(w->GetName().c_str());
+			std::vector<float> test(w->GetData().size());
+			std::copy(w->GetData().begin(), w->GetData().end(), test.begin());
+			imguiGraphDisplay(test);
+		}
+
+
 	}
+
+	imguiEndScrollArea();
+
 }
 
 bool UIManager::InRegion(const b2Vec2 & point)

@@ -52,14 +52,14 @@
     <Filter Include="Source Files\Framework 2\States">
       <UniqueIdentifier>{8250cb53-b4d2-433f-9f4d-123917f9afc1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Stats">
+      <UniqueIdentifier>{dd4c5f39-afd0-46f3-ac7e-a65222a8a8a1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="stdafx.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -192,6 +192,36 @@
     <ClInclude Include="src\Strategies.h">
       <Filter>Source Files\Controller</Filter>
     </ClInclude>
+    <ClInclude Include="src\CrossedCSLStrategy.h">
+      <Filter>Source Files\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CSL2Strategy.h">
+      <Filter>Source Files\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CSL2.h">
+      <Filter>Source Files\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SingleCSLStrategy.h">
+      <Filter>Source Files\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Statistic.h">
+      <Filter>Source Files\Stats</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Watcher.h">
+      <Filter>Source Files\Stats</Filter>
+    </ClInclude>
+    <ClInclude Include="src\StatisticsManager.h">
+      <Filter>Source Files\Stats</Filter>
+    </ClInclude>
+    <ClInclude Include="src\FixedWatcher.h">
+      <Filter>Source Files\Stats</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Processor.h">
+      <Filter>Source Files\Stats</Filter>
+    </ClInclude>
+    <ClInclude Include="src\AutocorrelationProcessor.h">
+      <Filter>Source Files\Stats</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\imgui.cpp">
@@ -269,9 +299,6 @@
     <ClCompile Include="src\DrawCmd.cpp">
       <Filter>Source Files\Framework 2\Cmds</Filter>
     </ClCompile>
-    <ClCompile Include="src\ScissorCmd.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\MainState.cpp">
       <Filter>Source Files\Framework 2\States</Filter>
     </ClCompile>
@@ -298,6 +325,39 @@
     </ClCompile>
     <ClCompile Include="src\TwoBStrategy.cpp">
       <Filter>Source Files\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CrossedCSLStrategy.cpp">
+      <Filter>Source Files\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CSL2Strategy.cpp">
+      <Filter>Source Files\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CSL2.cpp">
+      <Filter>Source Files\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SingleCSLStrategy.cpp">
+      <Filter>Source Files\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ScissorCmd.cpp">
+      <Filter>Source Files\Framework 2\Cmds</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Statistic.cpp">
+      <Filter>Source Files\Stats</Filter>
+    </ClCompile>
+    <ClCompile Include="src\StatisticsManager.cpp">
+      <Filter>Source Files\Stats</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Watcher.cpp">
+      <Filter>Source Files\Stats</Filter>
+    </ClCompile>
+    <ClCompile Include="src\FixedWatcher.cpp">
+      <Filter>Source Files\Stats</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Processor.cpp">
+      <Filter>Source Files\Stats</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AutocorrelationProcessor.cpp">
+      <Filter>Source Files\Stats</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

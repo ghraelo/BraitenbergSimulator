@@ -44,6 +44,7 @@
 
 #include "SceneManager.h"
 #include "ResourceManager.h"
+#include "StatisticsManager.h"
 #include "UIManager.h"
 
 class Braitenberg : public Test
@@ -85,7 +86,7 @@ public:
 
 	void DrawUI()
 	{
-		uim.DrawUI();
+		uim.DrawUI(sim.GetStatsMan());
 	}
 
 	void Render()

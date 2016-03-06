@@ -6,6 +6,7 @@
 #include <numeric>
 #include <fstream>
 #include <sstream>
+#include <functional>
 
 #include <Windows.h>
 
@@ -13,8 +14,12 @@
 #include "LightRayCastCallback.h"
 #include "Raycaster.h"
 #include "SimObjectInfo.h"
+#include "Watcher.h"
+#include "FixedWatcher.h"
+#include "AutocorrelationProcessor.h"
 
 #include <fftw3.h>
+#include <Box2D\Box2D.h>
 
 SceneManager::SceneManager()
 	:m_world(new b2World(b2Vec2(0, 0))),m_dataRecorder(),circ(500)
@@ -62,6 +67,28 @@ void SceneManager::BindPhysics()
 	for (auto &obj : m_currentScene->m_vehicles)
 	{
 		obj->BindPhysics(m_world.get());
+
+		std::function<float()> angleCallback = [&]() {
+			return atan2(obj->m_body->GetWorldVector(b2Vec2(0, 1)).y, obj->m_body->GetWorldVector(b2Vec2(0, 1)).x);
+		};
+
+		std::function<float()> distCallback = [&]() {
+			return b2Distance(obj->m_body->GetPosition(),m_currentScene->m_lights[0].GetPosition());
+		};
+
+
+		//add statistics watcher
+		StatisticPtr s = std::make_unique<FixedWatcher>(obj->GetName() + " - angle",10, 30,
+		angleCallback,-M_PI,M_PI);
+
+		StatisticPtr s2 = std::make_unique<Watcher>(obj->GetName() + " - distance", 10, 170,
+			distCallback);
+
+		StatisticPtr p1 = std::make_unique<AutocorrelationProcessor>(obj->GetName() + " - acor(distance)", dynamic_cast<Watcher*>(s2.get()));
+
+		m_statsManager.AddStat(std::move(s));
+		m_statsManager.AddStat(std::move(s2));
+		m_statsManager.AddStat(std::move(p1));
 	}
 }
 
@@ -80,6 +107,7 @@ void SceneManager::Step()
 	{
 		obj->Update(m_currentScene->m_lights);
 	}
+	m_statsManager.Update();
 }
 
 void SceneManager::Sample()
@@ -107,6 +135,11 @@ void SceneManager::Sample()
 	sampleCount++;
 	float dist = b2Distance(m_currentScene->m_vehicles[0]->GetPosition(), m_currentScene->m_lights[0].GetPosition());
 	circ.push_back(dist);
+}
+
+const StatisticsManager & SceneManager::GetStatsMan() const
+{
+	return m_statsManager;
 }
 
 std::vector<float> fftAutoCorrelation(const boost::circular_buffer<float> &x)
@@ -169,6 +202,7 @@ std::vector<float> fftAutoCorrelation(const boost::circular_buffer<float> &x)
 
 void SceneManager::Render()
 {	
+	/*
 	float first = circ[0];
 	std::vector<float> acor;
 	//std::vector<float> circ_norm;
@@ -222,6 +256,7 @@ void SceneManager::Render()
 	{
 		g_debugDraw.DrawPoint(b2Vec2((float)i/50, circ[i] / 2), 5, b2Color(1, 0, 0));
 	}
+	*/
 
 	//render vehicles
 	for (auto &obj : m_currentScene->m_vehicles)

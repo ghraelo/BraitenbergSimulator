@@ -77,11 +77,29 @@ VehiclePtr ResourceManager::LoadVehicle(YAML::Node vehicleNode, std::string vehi
 
 	ControlStrategyPtr cs_ptr;
 
-	if (strat_type == "csl")
+	if (strat_type == "singlecsl")
+	{
+		float gi = stratNode["gi"].as<float>();
+		float gf = stratNode["gf"].as<float>();
+		cs_ptr = std::make_unique<SingleCSLStrategy>(gi, gf);
+	}
+	else if (strat_type == "csl")
 	{
 		float gi = stratNode["gi"].as<float>();
 		float gf = stratNode["gf"].as<float>();
 		cs_ptr = std::make_unique<CSLStrategy>(gi, gf);
+	}
+	else if (strat_type == "csl2")
+	{
+		float gi = stratNode["gi"].as<float>();
+		float gf = stratNode["gf"].as<float>();
+		cs_ptr = std::make_unique<CSL2Strategy>(gi, gf);
+	}
+	else if (strat_type == "crossedcsl")
+	{
+		float gi = stratNode["gi"].as<float>();
+		float gf = stratNode["gf"].as<float>();
+		cs_ptr = std::make_unique<CrossedCSLStrategy>(gi, gf);
 	}
 	else if (strat_type == "2a")
 	{
