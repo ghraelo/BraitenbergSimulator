@@ -2,7 +2,7 @@
 #include "YAMLConverters.h"
 #include <iostream>
 
-#include "Shader.h"
+//#include "Shader.h"
 #include "Strategies.h"	
 
 
@@ -142,7 +142,7 @@ bool ResourceManager::LoadSensor(YAML::Node& sensorNode, sensorInfo& info)
 
 	return true;
 }
-
+/*
 std::map<std::string, Shader> ResourceManager::LoadShaders()
 {
 	std::map<std::string, Shader> temp;
@@ -163,4 +163,4 @@ std::map<std::string, Shader> ResourceManager::LoadShaders()
 	}
 	printf("Done!\n");
 	return temp;
-}
+}*/
