@@ -153,7 +153,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\AutocorrelationProcessor.h" />
-    <ClInclude Include="src\BarViewElement.h" />
     <ClInclude Include="src\Braitenberg.h" />
     <ClInclude Include="src\Controller.h" />
     <ClInclude Include="src\ControlStrategy.h" />
@@ -164,6 +163,7 @@
     <ClInclude Include="src\CSLStrategy.h" />
     <ClInclude Include="src\DataRecorder.h" />
     <ClInclude Include="src\DebugDraw.h" />
+    <ClInclude Include="src\DiscreteCosineProcessor.h" />
     <ClInclude Include="src\FixedWatcher.h" />
     <ClInclude Include="src\imgui.h" />
     <ClInclude Include="src\LightRayCastCallback.h" />
@@ -172,6 +172,7 @@
     <ClInclude Include="src\main.h" />
     <ClInclude Include="src\IRenderable.h" />
     <ClInclude Include="src\MathUtils.h" />
+    <ClInclude Include="src\PeriodicityDetectionProcessor.h" />
     <ClInclude Include="src\Processor.h" />
     <ClInclude Include="src\Raycaster.h" />
     <ClInclude Include="src\Rectangle.h" />
@@ -184,6 +185,7 @@
     <ClInclude Include="src\SimObjectInfo.h" />
     <ClInclude Include="src\SingleCSLStrategy.h" />
     <ClInclude Include="src\Statistic.h" />
+    <ClInclude Include="src\Statistics.h" />
     <ClInclude Include="src\StatisticsManager.h" />
     <ClInclude Include="src\stb_truetype.h" />
     <ClInclude Include="src\Strategies.h" />
@@ -191,7 +193,6 @@
     <ClInclude Include="src\Triangulate.h" />
     <ClInclude Include="src\TwoAStrategy.h" />
     <ClInclude Include="src\TwoBStrategy.h" />
-    <ClInclude Include="src\UIElement.h" />
     <ClInclude Include="src\UIManager.h" />
     <ClInclude Include="src\Vehicle.h" />
     <ClInclude Include="src\Watcher.h" />
@@ -201,7 +202,6 @@
   <ItemGroup>
     <ClCompile Include="BraitenbergSimulator.cpp" />
     <ClCompile Include="src\AutocorrelationProcessor.cpp" />
-    <ClCompile Include="src\BarViewElement.cpp" />
     <ClCompile Include="src\Controller.cpp" />
     <ClCompile Include="src\ControlStrategy.cpp" />
     <ClCompile Include="src\CrossedCSLStrategy.cpp" />
@@ -211,12 +211,14 @@
     <ClCompile Include="src\CSLStrategy.cpp" />
     <ClCompile Include="src\DataRecorder.cpp" />
     <ClCompile Include="src\DebugDraw.cpp" />
+    <ClCompile Include="src\DiscreteCosineProcessor.cpp" />
     <ClCompile Include="src\FixedWatcher.cpp" />
     <ClCompile Include="src\imgui.cpp" />
     <ClCompile Include="src\LightSensor.cpp" />
     <ClCompile Include="src\LightSource.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\MathUtils.cpp" />
+    <ClCompile Include="src\PeriodicityDetectionProcessor.cpp" />
     <ClCompile Include="src\Processor.cpp" />
     <ClCompile Include="src\Raycaster.cpp" />
     <ClCompile Include="src\Rectangle.cpp" />
@@ -233,7 +235,6 @@
     <ClCompile Include="src\Triangulate.cpp" />
     <ClCompile Include="src\TwoAStrategy.cpp" />
     <ClCompile Include="src\TwoBStrategy.cpp" />
-    <ClCompile Include="src\UIElement.cpp" />
     <ClCompile Include="src\UIManager.cpp" />
     <ClCompile Include="src\Vehicle.cpp" />
     <ClCompile Include="src\Watcher.cpp" />

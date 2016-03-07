@@ -23,8 +23,3 @@ void Renderer::RenderLightSensor(LightSensor& renderable)
 	g_debugDraw.DrawSegmentFade(renderable.GetPosition(), arc1, white);
 	g_debugDraw.DrawSegmentFade(renderable.GetPosition(), arc2, white);
 }
-
-void Renderer::RenderBarViewElement(BarViewElement& renderable)
-{
-
-}

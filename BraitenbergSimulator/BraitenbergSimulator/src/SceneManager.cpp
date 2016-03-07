@@ -14,9 +14,8 @@
 #include "LightRayCastCallback.h"
 #include "Raycaster.h"
 #include "SimObjectInfo.h"
-#include "Watcher.h"
-#include "FixedWatcher.h"
-#include "AutocorrelationProcessor.h"
+
+#include "Statistics.h"
 
 #include <fftw3.h>
 #include <Box2D\Box2D.h>
@@ -77,8 +76,8 @@ void SceneManager::BindPhysics()
 		};
 
 
-		//add statistics watcher
-		StatisticPtr s = std::make_unique<FixedWatcher>(obj->GetName() + " - angle",10, 30,
+		//add statistics watchers
+		StatisticPtr s = std::make_unique<FixedWatcher>(obj->GetName() + " - angle",10, 170,
 		angleCallback,-M_PI,M_PI);
 
 		StatisticPtr s2 = std::make_unique<Watcher>(obj->GetName() + " - distance", 10, 170,
@@ -86,9 +85,15 @@ void SceneManager::BindPhysics()
 
 		StatisticPtr p1 = std::make_unique<AutocorrelationProcessor>(obj->GetName() + " - acor(distance)", dynamic_cast<Watcher*>(s2.get()));
 
+		StatisticPtr p2 = std::make_unique<AutocorrelationProcessor>(obj->GetName() + " - acor(angle)", dynamic_cast<FixedWatcher*>(s.get()));
+
+		StatisticPtr p3 = std::make_unique<PeriodicityDetectionProcessor>(obj->GetName() + " - dct(angle)", dynamic_cast<Watcher*>(s.get()));
+
 		m_statsManager.AddStat(std::move(s));
 		m_statsManager.AddStat(std::move(s2));
 		m_statsManager.AddStat(std::move(p1));
+		m_statsManager.AddStat(std::move(p2));
+		m_statsManager.AddStat(std::move(p3));
 	}
 }
 
@@ -142,122 +147,8 @@ const StatisticsManager & SceneManager::GetStatsMan() const
 	return m_statsManager;
 }
 
-std::vector<float> fftAutoCorrelation(const boost::circular_buffer<float> &x)
-{
-	std::vector<double> x_cent;
-	x_cent.resize(x.size());
-
-	float mean = std::accumulate(x.begin(), x.end(), 0) / (float)x.size();
-	//centre x
-	std::transform(x.begin(), x.end(), x_cent.begin(),
-		[&](float a) {
-		return a - mean;
-	}
-	);
-
-	int N = x.size();
-	double* in = new double[N];
-
-	for (int i = 0; i < N; i++)
-	{
-		in[i] = x_cent[i];
-	}
-
-	fftw_complex *out;
-	fftw_plan p,p2;
-	int x2 = floor(N /2 + 1);
-	out = (fftw_complex*)fftw_malloc(sizeof(fftw_complex) * floor(N/2 +1));
-
-	p = fftw_plan_dft_r2c_1d(N, in, out, FFTW_ESTIMATE);
-	p2 = fftw_plan_dft_c2r_1d(N, out, in, FFTW_ESTIMATE);
-
-	//std::copy(x_cent.begin(), x_cent.end(), in);
-	fftw_execute(p); /* repeat as needed */
-
-	//replace cplx nos with norms
-	for (int i = 0; i < floor(N / 2 + 1);i++)
-	{
-		out[i][0] = out[i][0] * out[i][0] + out[i][1] * out[i][1];
-		out[i][1] = 0;
-	}
-
-	fftw_execute(p2);
-
-	fftw_destroy_plan(p);
-	fftw_destroy_plan(p2);
-	std::vector<float> acorr(N);
-
-
-	for (int i = 0; i < N; i++)
-	{
-		acorr.push_back(in[i] / in[0]);
-	}
-
-	delete[] in;
-	fftw_free(out);
-
-	return acorr;
-
-}
-
 void SceneManager::Render()
 {	
-	/*
-	float first = circ[0];
-	std::vector<float> acor;
-	//std::vector<float> circ_norm;
-	//circ_norm.resize(circ.size());
-	//float mean = std::accumulate(circ.begin(), circ.end(), 0)/circ.size();
-	//std::transform(circ.begin(),circ.end(),circ_norm.begin(),
-	//	[&](float a) {
-	//	return a - mean;
-	//	}
-	//);
-	acor = fftAutoCorrelation(circ);
-	//compute autocorrelation
-	//acor = autoCorrelation(circ_norm);
-
-	//draw axes;
-	g_debugDraw.DrawSegment(b2Vec2(20, 0), b2Vec2(20, 10), b2Color(1, 0, 1));
-	g_debugDraw.DrawSegment(b2Vec2(20, 5), b2Vec2(30, 5), b2Color(1, 0, 1));
-	g_debugDraw.DrawString(b2Vec2(20, 10.1), "Autocorrelation");
-	std::vector<float>acor2(acor.size() / 2);
-	std::copy(acor.begin() + acor.size() / 2, acor.end(), acor2.begin());
-	std::rotate(acor2.begin(), acor2.begin() + acor2.size() / 2, acor2.end());
-	float max = *std::max_element(acor2.begin(), acor2.end());
-	for (int i = 0; i < acor2.size(); i++)
-	{
-		g_debugDraw.DrawPoint(b2Vec2(20+(float)(i) / 50, (acor2[i]) * 5 + 5) , 5, b2Color(0, 1, 0));
-	}
-
-	//find peaks
-	float acc = 0;
-	std::vector<float> peak_x;
-	for (int i = 1; i < acor2.size() - 1; i++)
-	{
-		float first = acor2[i+1] - acor2[i]; //first 'derivative'
-		float second = acor2[i - 1] - 2*acor2[i] + acor2[i + 1]; //second 'derivative'
-		
-		if (first > -0.001 && first < 0.001 && second < 0)
-		{
-			peak_x.push_back(i);
-			g_debugDraw.DrawPoint(b2Vec2(20 + (float)(i) / 50, (acor2[i]) * 5 + 5), 10, b2Color(1, 0, 0));
-		}
-	}
-
-	acc = acc / (acor.size() - 2);
-	printf("acc: %f\n", acc);
-	//draw axes;
-	g_debugDraw.DrawSegment(b2Vec2(0, 0), b2Vec2(0, 10), b2Color(1, 1, 1));
-	g_debugDraw.DrawSegment(b2Vec2(0, 0), b2Vec2(10, 0), b2Color(1, 1, 1));
-	g_debugDraw.DrawString(b2Vec2(0, 10), "Distance");
-
-	for (int i = 0; i <  circ.size(); i++)
-	{
-		g_debugDraw.DrawPoint(b2Vec2((float)i/50, circ[i] / 2), 5, b2Color(1, 0, 0));
-	}
-	*/
-
 	//render vehicles
 	for (auto &obj : m_currentScene->m_vehicles)
 	{

@@ -3,17 +3,17 @@ vehicles: [testVehicle]
 testVehicle:
     position: [0.0, 0.0]
     strategy:
-        type: singlecsl
+        type: csl
         gi: 0.9
         gf: 1.1
     leftsensor:
         offset: [-1.0, 0.0]
         apertureAngle: 1.0
-        direction: [0, 1.0]
+        direction: [-0.3, 1.0]
     rightsensor:
         offset: [1.0, 0.0]
         apertureAngle: 1.0
-        direction: [0, 1.0]
+        direction: [0.3, 1.0]
 lights: [testLight, testLight2, testLight3]
 testLight:
     position: [0.0,25.0]

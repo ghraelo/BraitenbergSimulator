@@ -81,12 +81,6 @@
     <ClInclude Include="src\Controller.h">
       <Filter>Source Files\Controller</Filter>
     </ClInclude>
-    <ClInclude Include="src\UIElement.h">
-      <Filter>Source Files\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="src\BarViewElement.h">
-      <Filter>Source Files\UI</Filter>
-    </ClInclude>
     <ClInclude Include="src\Vehicle.h">
       <Filter>Source Files\Simulator\SimObjects</Filter>
     </ClInclude>
@@ -186,6 +180,15 @@
     <ClInclude Include="src\AutocorrelationProcessor.h">
       <Filter>Source Files\Stats</Filter>
     </ClInclude>
+    <ClInclude Include="src\DiscreteCosineProcessor.h">
+      <Filter>Source Files\Stats</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PeriodicityDetectionProcessor.h">
+      <Filter>Source Files\Stats</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Statistics.h">
+      <Filter>Source Files\Stats</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\imgui.cpp">
@@ -211,12 +214,6 @@
     </ClCompile>
     <ClCompile Include="src\Controller.cpp">
       <Filter>Source Files\Controller</Filter>
-    </ClCompile>
-    <ClCompile Include="src\UIElement.cpp">
-      <Filter>Source Files\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="src\BarViewElement.cpp">
-      <Filter>Source Files\UI</Filter>
     </ClCompile>
     <ClCompile Include="src\Vehicle.cpp">
       <Filter>Source Files\Simulator\SimObjects</Filter>
@@ -301,6 +298,12 @@
     </ClCompile>
     <ClCompile Include="BraitenbergSimulator.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DiscreteCosineProcessor.cpp">
+      <Filter>Source Files\Stats</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PeriodicityDetectionProcessor.cpp">
+      <Filter>Source Files\Stats</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
