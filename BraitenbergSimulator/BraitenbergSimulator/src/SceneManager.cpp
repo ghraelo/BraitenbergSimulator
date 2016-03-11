@@ -28,8 +28,6 @@ SceneManager::SceneManager()
 	{
 		circ[i] = 0;
 	}
-	m_world->SetDebugDraw(&g_debugDraw);
-
 }
 
 SceneManager::SceneManager(WorldPtr world)

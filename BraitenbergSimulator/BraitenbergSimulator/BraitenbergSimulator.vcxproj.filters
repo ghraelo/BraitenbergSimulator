@@ -22,6 +22,21 @@
     <Filter Include="Source Files\Renderer">
       <UniqueIdentifier>{5b437864-93f5-4ed0-a7b9-41c50a4c217e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Stats">
+      <UniqueIdentifier>{de6a6bc5-b6f0-4f47-8f7a-ecf8065910ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Simulation">
+      <UniqueIdentifier>{5d022b31-21e8-4c6a-b215-5703eb471af2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Simulation\ControlStrategies">
+      <UniqueIdentifier>{1a9035e7-683d-458c-bf09-7f7c1c3c3448}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Resources">
+      <UniqueIdentifier>{18fa2275-d965-4942-ba2c-cf1510ad8d3b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="YAML">
+      <UniqueIdentifier>{ebf287bf-f760-4cdd-8cc9-a19a35cb55c6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -57,6 +72,120 @@
     <ClInclude Include="src\GUIRenderer.h">
       <Filter>Source Files\GUI</Filter>
     </ClInclude>
+    <ClInclude Include="src\DataRecorder.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\IRenderable.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LightRayCastCallback.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MathUtils.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Raycaster.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Renderer.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scene.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SceneManager.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SimObjectInfo.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\stb_truetype.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Strategies.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triangulate.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UIManager.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\AutocorrelationProcessor.h">
+      <Filter>Source Files\Stats</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Statistic.h">
+      <Filter>Source Files\Stats</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Statistics.h">
+      <Filter>Source Files\Stats</Filter>
+    </ClInclude>
+    <ClInclude Include="src\StatisticsManager.h">
+      <Filter>Source Files\Stats</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Watcher.h">
+      <Filter>Source Files\Stats</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ControlStrategy.h">
+      <Filter>Source Files\Simulation\ControlStrategies</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CrossedCSLStrategy.h">
+      <Filter>Source Files\Simulation\ControlStrategies</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CSL.h">
+      <Filter>Source Files\Simulation\ControlStrategies</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CSL2.h">
+      <Filter>Source Files\Simulation\ControlStrategies</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CSL2Strategy.h">
+      <Filter>Source Files\Simulation\ControlStrategies</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CSLStrategy.h">
+      <Filter>Source Files\Simulation\ControlStrategies</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TwoAStrategy.h">
+      <Filter>Source Files\Simulation\ControlStrategies</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TwoBStrategy.h">
+      <Filter>Source Files\Simulation\ControlStrategies</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DiscreteCosineProcessor.h">
+      <Filter>Source Files\Stats</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PeriodicityDetectionProcessor.h">
+      <Filter>Source Files\Stats</Filter>
+    </ClInclude>
+    <ClInclude Include="src\FixedWatcher.h">
+      <Filter>Source Files\Stats</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SingleCSLStrategy.h">
+      <Filter>Source Files\Simulation\ControlStrategies</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Processor.h">
+      <Filter>Source Files\Stats</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Vehicle.h">
+      <Filter>Source Files\Simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SimObject.h">
+      <Filter>Source Files\Simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LightSensor.h">
+      <Filter>Source Files\Simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LightSource.h">
+      <Filter>Source Files\Simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ResourceManager.h">
+      <Filter>Source Files\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="src\YAMLConverters.h">
+      <Filter>Source Files\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BaseUISettings.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BraitenbergSimulator.cpp">
@@ -89,9 +218,102 @@
     <ClCompile Include="src\GUIRenderer.cpp">
       <Filter>Source Files\GUI</Filter>
     </ClCompile>
+    <ClCompile Include="src\DataRecorder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LightRayCastCallback.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MathUtils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Raycaster.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Renderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SceneManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Triangulate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UIManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AutocorrelationProcessor.cpp">
+      <Filter>Source Files\Stats</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Statistic.cpp">
+      <Filter>Source Files\Stats</Filter>
+    </ClCompile>
+    <ClCompile Include="src\StatisticsManager.cpp">
+      <Filter>Source Files\Stats</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Watcher.cpp">
+      <Filter>Source Files\Stats</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ControlStrategy.cpp">
+      <Filter>Source Files\Simulation\ControlStrategies</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CrossedCSLStrategy.cpp">
+      <Filter>Source Files\Simulation\ControlStrategies</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CSL.cpp">
+      <Filter>Source Files\Simulation\ControlStrategies</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CSL2.cpp">
+      <Filter>Source Files\Simulation\ControlStrategies</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CSL2Strategy.cpp">
+      <Filter>Source Files\Simulation\ControlStrategies</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CSLStrategy.cpp">
+      <Filter>Source Files\Simulation\ControlStrategies</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TwoAStrategy.cpp">
+      <Filter>Source Files\Simulation\ControlStrategies</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TwoBStrategy.cpp">
+      <Filter>Source Files\Simulation\ControlStrategies</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DiscreteCosineProcessor.cpp">
+      <Filter>Source Files\Stats</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PeriodicityDetectionProcessor.cpp">
+      <Filter>Source Files\Stats</Filter>
+    </ClCompile>
+    <ClCompile Include="src\FixedWatcher.cpp">
+      <Filter>Source Files\Stats</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SingleCSLStrategy.cpp">
+      <Filter>Source Files\Simulation\ControlStrategies</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Processor.cpp">
+      <Filter>Source Files\Stats</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Vehicle.cpp">
+      <Filter>Source Files\Simulation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SimObject.cpp">
+      <Filter>Source Files\Simulation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LightSensor.cpp">
+      <Filter>Source Files\Simulation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LightSource.cpp">
+      <Filter>Source Files\Simulation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ResourceManager.cpp">
+      <Filter>Source Files\Resources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
+    <None Include="yaml\testScene.yaml">
+      <Filter>YAML</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="libfftw3-3.ref" />

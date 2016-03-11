@@ -152,28 +152,96 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\AutocorrelationProcessor.h" />
+    <ClInclude Include="src\BaseUISettings.h" />
+    <ClInclude Include="src\ControlStrategy.h" />
+    <ClInclude Include="src\CrossedCSLStrategy.h" />
+    <ClInclude Include="src\CSL.h" />
+    <ClInclude Include="src\CSL2.h" />
+    <ClInclude Include="src\CSL2Strategy.h" />
+    <ClInclude Include="src\CSLStrategy.h" />
+    <ClInclude Include="src\DataRecorder.h" />
+    <ClInclude Include="src\DiscreteCosineProcessor.h" />
+    <ClInclude Include="src\FixedWatcher.h" />
     <ClInclude Include="src\GfxCmds.h" />
     <ClInclude Include="src\GUIRenderer.h" />
     <ClInclude Include="src\imgui.h" />
+    <ClInclude Include="src\IRenderable.h" />
+    <ClInclude Include="src\LightRayCastCallback.h" />
+    <ClInclude Include="src\LightSensor.h" />
+    <ClInclude Include="src\LightSource.h" />
     <ClInclude Include="src\MainState.h" />
+    <ClInclude Include="src\MathUtils.h" />
     <ClInclude Include="src\MenuState.h" />
+    <ClInclude Include="src\PeriodicityDetectionProcessor.h" />
+    <ClInclude Include="src\Processor.h" />
+    <ClInclude Include="src\Raycaster.h" />
     <ClInclude Include="src\Rectangle.h" />
+    <ClInclude Include="src\Renderer.h" />
+    <ClInclude Include="src\ResourceManager.h" />
+    <ClInclude Include="src\Scene.h" />
+    <ClInclude Include="src\SceneManager.h" />
     <ClInclude Include="src\SimEngine.h" />
+    <ClInclude Include="src\SimObject.h" />
+    <ClInclude Include="src\SimObjectInfo.h" />
     <ClInclude Include="src\SimState.h" />
+    <ClInclude Include="src\SingleCSLStrategy.h" />
+    <ClInclude Include="src\Statistic.h" />
+    <ClInclude Include="src\Statistics.h" />
+    <ClInclude Include="src\StatisticsManager.h" />
+    <ClInclude Include="src\stb_truetype.h" />
+    <ClInclude Include="src\Strategies.h" />
+    <ClInclude Include="src\Triangulate.h" />
+    <ClInclude Include="src\TwoAStrategy.h" />
+    <ClInclude Include="src\TwoBStrategy.h" />
+    <ClInclude Include="src\UIManager.h" />
+    <ClInclude Include="src\Vehicle.h" />
+    <ClInclude Include="src\Watcher.h" />
     <ClInclude Include="src\WMState.h" />
+    <ClInclude Include="src\YAMLConverters.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BraitenbergSimulator.cpp" />
+    <ClCompile Include="src\AutocorrelationProcessor.cpp" />
+    <ClCompile Include="src\ControlStrategy.cpp" />
+    <ClCompile Include="src\CrossedCSLStrategy.cpp" />
+    <ClCompile Include="src\CSL.cpp" />
+    <ClCompile Include="src\CSL2.cpp" />
+    <ClCompile Include="src\CSL2Strategy.cpp" />
+    <ClCompile Include="src\CSLStrategy.cpp" />
+    <ClCompile Include="src\DataRecorder.cpp" />
+    <ClCompile Include="src\DiscreteCosineProcessor.cpp" />
+    <ClCompile Include="src\FixedWatcher.cpp" />
     <ClCompile Include="src\GfxCmds.cpp" />
     <ClCompile Include="src\GUIRenderer.cpp" />
     <ClCompile Include="src\imgui.cpp" />
+    <ClCompile Include="src\LightRayCastCallback.cpp" />
+    <ClCompile Include="src\LightSensor.cpp" />
+    <ClCompile Include="src\LightSource.cpp" />
     <ClCompile Include="src\MainState.cpp" />
+    <ClCompile Include="src\MathUtils.cpp" />
     <ClCompile Include="src\MenuState.cpp" />
     <ClCompile Include="src\nanovg.cpp" />
+    <ClCompile Include="src\PeriodicityDetectionProcessor.cpp" />
+    <ClCompile Include="src\Processor.cpp" />
+    <ClCompile Include="src\Raycaster.cpp" />
     <ClCompile Include="src\Rectangle.cpp" />
+    <ClCompile Include="src\Renderer.cpp" />
+    <ClCompile Include="src\ResourceManager.cpp" />
+    <ClCompile Include="src\SceneManager.cpp" />
     <ClCompile Include="src\SimEngine.cpp" />
+    <ClCompile Include="src\SimObject.cpp" />
     <ClCompile Include="src\SimState.cpp" />
+    <ClCompile Include="src\SingleCSLStrategy.cpp" />
+    <ClCompile Include="src\Statistic.cpp" />
+    <ClCompile Include="src\StatisticsManager.cpp" />
+    <ClCompile Include="src\Triangulate.cpp" />
+    <ClCompile Include="src\TwoAStrategy.cpp" />
+    <ClCompile Include="src\TwoBStrategy.cpp" />
+    <ClCompile Include="src\UIManager.cpp" />
+    <ClCompile Include="src\Vehicle.cpp" />
+    <ClCompile Include="src\Watcher.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="libfftw3-3.ref">
@@ -184,6 +252,7 @@
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)lib\%(Filename).dll</AdditionalInputs>
     </CustomBuild>
     <None Include="ClassDiagram.cd" />
+    <None Include="yaml\testScene.yaml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

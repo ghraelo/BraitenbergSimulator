@@ -5,6 +5,7 @@
 //#include "Shader.h"
 #include "Strategies.h"	
 
+#include <Windows.h>
 
 ResourceManager::ResourceManager()
 {
@@ -143,24 +144,29 @@ bool ResourceManager::LoadSensor(YAML::Node& sensorNode, sensorInfo& info)
 	return true;
 }
 /*
-std::map<std::string, Shader> ResourceManager::LoadShaders()
+http://stackoverflow.com/questions/306533/how-do-i-get-a-list-of-files-in-a-directory-in-c
+*/
+void ResourceManager::GetFilesInDirectory(std::vector<std::string> &out, const std::string &directory)
 {
-	std::map<std::string, Shader> temp;
-	YAML::Node baseNode = YAML::LoadFile("yaml/config.yaml");
+	HANDLE dir;
+	WIN32_FIND_DATA file_data;
 
-	//get shaders
-	int shaderNum = baseNode["Shaders"].size();
-	printf("Attempting to load %d shaders...\n", shaderNum);
-	for (int i = 0; i < shaderNum; i++)
-	{
-		std::string shaderId = baseNode["Shaders"][i].as<std::string>();
-		YAML::Node shader = baseNode[shaderId];
-		std::string fragPath = "shaders/" + shader["FragmentName"].as<std::string>();
-		std::string vertexPath = "shaders/" + shader["VertexName"].as<std::string>();
+	if ((dir = FindFirstFile((directory + "/*").c_str(), &file_data)) == INVALID_HANDLE_VALUE)
+		return; /* No files found */
 
-		Shader theShader(vertexPath.c_str(), fragPath.c_str());
-		temp.insert(std::pair<std::string, Shader>(shaderId, theShader));
-	}
-	printf("Done!\n");
-	return temp;
-}*/
+	do {
+		const std::string file_name = file_data.cFileName;
+		const std::string full_file_name = directory + "/" + file_name;
+		const bool is_directory = (file_data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) != 0;
+
+		if (file_name[0] == '.')
+			continue;
+
+		if (is_directory)
+			continue;
+
+		out.push_back(full_file_name);
+	} while (FindNextFile(dir, &file_data));
+
+	FindClose(dir);
+} // GetFilesInDirectory

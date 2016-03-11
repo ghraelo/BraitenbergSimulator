@@ -28,6 +28,6 @@ private:
 	UIState ui;
 	const float menuWidth = 0.4f;
 	const float menuHeight = 0.2f;
-	GUIRendererPtr guiRenderer;
+	GUIRenderer guiRenderer;
 	int scroll = 0;
 };

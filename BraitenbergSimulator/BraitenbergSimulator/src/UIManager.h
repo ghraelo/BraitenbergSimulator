@@ -3,6 +3,8 @@
 #include "SimObject.h"
 #include "Vehicle.h"
 #include  "Rectangle.h"
+#include "BaseUISettings.h"
+#include "WMState.h"
 
 #include "StatisticsManager.h"
 #include "Watcher.h"
@@ -15,6 +17,7 @@ public:
 	void SelectVehicle(Vehicle* obj);
 	void DeselectVehicle();
 	void DrawVehicleUI(Vehicle* veh);
+	void DrawBaseUI(BaseUISettings& settings, const WindowState& ws);
 	void DrawStatsPane(const StatisticsManager& sm);
 	bool InRegion(const b2Vec2& point);
 private:

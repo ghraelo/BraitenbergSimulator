@@ -36,6 +36,8 @@ void SimEngine::Init()
 	{
 		throw std::exception("Failed to initialize GLEW");
 	}
+
+	nvg = nvgCreateGL3(NVG_ANTIALIAS | NVG_STENCIL_STROKES);
 	//load resources
 	//add menu state
 	states.push_back(std::make_unique <MenuState>());
@@ -74,8 +76,14 @@ void SimEngine::Render()
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
 
-	states.front()->Draw(*this);
+	//set up font
+	int fontHandle = nvgCreateFont(nvg, "droidsans", "Data/DroidSans.ttf");
+	nvgFontFace(nvg, "droidsans");
+	nvgFontSize(nvg, 10);
 
+	nvgBeginFrame(nvg, windowState.width, windowState.height,1.0);
+	states.front()->Draw(*this);
+	nvgEndFrame(nvg);
 	glfwPollEvents();
 	glfwSwapBuffers(mainWindow);
 }
@@ -88,6 +96,7 @@ void SimEngine::Exit()
 void SimEngine::Cleanup()
 {
 	states.front()->Cleanup();
+	nvgDeleteGL3(nvg);
 	glfwTerminate();
 }
 
@@ -133,4 +142,9 @@ WindowState SimEngine::GetWindowState()
 GLFWwindow * SimEngine::GetWindow()
 {
 	return mainWindow;
+}
+
+NVGcontext * SimEngine::GetContext()
+{
+	return nvg;
 }

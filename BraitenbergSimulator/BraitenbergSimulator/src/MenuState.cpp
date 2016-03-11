@@ -11,7 +11,6 @@ MenuState::MenuState()
 
 void MenuState::Init()
 {
-
 }
 
 void MenuState::Cleanup()
@@ -24,10 +23,11 @@ void MenuState::Update(SimEngine & se)
 
 void MenuState::Draw(SimEngine & se)
 {
+	NVGcontext* vg = se.GetContext();
+
 	bool changing = false;
-	guiRenderer = std::make_unique<GUIRenderer>(se.GetWindowState().width, se.GetWindowState().height, 1.0f);
-	guiRenderer->SetFont("Data/DroidSans.ttf");
-	imguiBeginFrame(se.GetMouseState().xPos, se.GetMouseState().yPos, se.GetMouseState().leftMouse, 0,guiRenderer.get());
+
+	imguiBeginFrame(se.GetMouseState().xPos, se.GetMouseState().yPos, se.GetMouseState().leftMouse, 0, &guiRenderer);
 
 
 	float x = se.GetWindowState().width / 2 - (menuWidth * se.GetWindowState().width) / 2;
@@ -50,7 +50,7 @@ void MenuState::Draw(SimEngine & se)
 	imguiEndScrollArea();
 	imguiEndFrame();
 
-	guiRenderer->Flush();
+	guiRenderer.Flush(vg);
 	if (changing)
 	{
 		SimStatePtr p = std::make_unique<MainState>();

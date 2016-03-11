@@ -489,9 +489,9 @@ bool imguiCheck(const char* text, bool checked, bool enabled)
 	}
 
 	if (enabled)
-		g_rend->AddGfxCmdText(x + BUTTON_HEIGHT, y + BUTTON_HEIGHT / 2 - TEXT_HEIGHT / 2,  text, isHot(id) ? nvgRGBA(255, 196, 0, 255) : nvgRGBA(255, 255, 255, 200));
+		g_rend->AddGfxCmdText(x + BUTTON_HEIGHT, y + BUTTON_HEIGHT / 2 - TEXT_HEIGHT / 2,  text, NVG_ALIGN_LEFT, isHot(id) ? nvgRGBA(255, 196, 0, 255) : nvgRGBA(255, 255, 255, 200));
 	else
-		g_rend->AddGfxCmdText(x + BUTTON_HEIGHT, y + BUTTON_HEIGHT / 2 - TEXT_HEIGHT / 2,  text, nvgRGBA(128, 128, 128, 200));
+		g_rend->AddGfxCmdText(x + BUTTON_HEIGHT, y + BUTTON_HEIGHT / 2 - TEXT_HEIGHT / 2, text, NVG_ALIGN_LEFT, nvgRGBA(128, 128, 128, 200));
 
 	return res;
 }
@@ -534,7 +534,7 @@ void imguiLabel(const char* text)
 	int x = s_state.widgetX;
 	int y = s_state.widgetY;
 	s_state.widgetY += BUTTON_HEIGHT + DEFAULT_SPACING;
-	g_rend->AddGfxCmdText(x, y + BUTTON_HEIGHT / 2 - TEXT_HEIGHT / 2,  text, nvgRGBA(255, 255, 255, 255));
+	g_rend->AddGfxCmdText(x, y + BUTTON_HEIGHT / 2 - TEXT_HEIGHT / 2,  text, NVG_ALIGN_LEFT, nvgRGBA(255, 255, 255, 255));
 }
 
 void imguiValue(const char* text)

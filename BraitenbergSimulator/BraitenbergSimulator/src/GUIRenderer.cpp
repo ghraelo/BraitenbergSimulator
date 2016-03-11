@@ -5,32 +5,6 @@ GUIRenderer::GUIRenderer()
 {
 }
 
-
-GUIRenderer::GUIRenderer(float width, float height, float pixelRatio)
-	:m_width(width),m_height(height),m_pixelRatio(pixelRatio)
-{
-	vg = nvgCreateGL3(NVG_ANTIALIAS | NVG_STENCIL_STROKES);
-}
-
-GUIRenderer::~GUIRenderer()
-{
-	nvgDeleteGL3(vg);
-}
-
-void GUIRenderer::SetFont(std::string file)
-{
-	fontHandle = nvgCreateFont(vg, "droidsans", file.c_str());
-	nvgFontSize(vg, 12);
-	nvgFontFace(vg,"droidsans");
-}
-
-void GUIRenderer::SetWindowDimensions(float width, float height, float pixelRatio)
-{
-	m_width = width;
-	m_height = height;
-	m_pixelRatio = pixelRatio;
-}
-
 void GUIRenderer::AddGfxCmdLine(float x0, float y0, float x1, float y1, float size, NVGcolor color)
 {
 	GfxCmdPtr p = std::make_unique<GfxCmdLine>(x0, y0, x1, y1, size, color);
@@ -56,6 +30,12 @@ void GUIRenderer::AddGfxCmdText(float x, float y, const char * text, NVGcolor co
 	m_cmdList.push_back(std::move(p));
 }
 
+void GUIRenderer::AddGfxCmdText(float x, float y, const char * text, NVGalign align, NVGcolor color)
+{
+	GfxCmdPtr p = std::make_unique<GfxCmdText>(x, y, (NVGalign)(align | NVG_ALIGN_TOP), std::string(text), color);
+	m_cmdList.push_back(std::move(p));
+}
+
 void GUIRenderer::AddGfxCmdTriangle(float x, float y, float w, float h, float r, NVGcolor color)
 {
 }
@@ -66,13 +46,10 @@ void GUIRenderer::AddGfxCmdScissor(float x, float y, float w, float h)
 	m_cmdList.push_back(std::move(p));
 }
 
-void GUIRenderer::Flush()
+void GUIRenderer::Flush(NVGcontext* vg)
 {
-	nvgBeginFrame(vg,m_width, m_height, m_pixelRatio);
-
 	for (auto& cmd : m_cmdList)
 	{
 		cmd->Execute(vg);
 	}
-	nvgEndFrame(vg);
 }

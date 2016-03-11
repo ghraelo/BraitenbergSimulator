@@ -72,7 +72,7 @@ bool compareIntervals(Interval a, Interval b)
 
 float LightSensor::GetLight(std::vector<LightSource>& lightSources)
 {
-	b2World* world = m_parent->m_body->GetWorld();
+	/*b2World* world = m_parent->m_body->GetWorld();
 	Raycaster r(world, GetPosition(), Rectangle(g_camera.GetCorner(CC_TOP_RIGHT), g_camera.GetCorner(CC_BOTTOM_LEFT)));
 	r.AddIgnoreBody(m_parent->m_body);
 	b2Vec2 right_bound = GetArcEnd(10.0f, false);
@@ -85,7 +85,7 @@ float LightSensor::GetLight(std::vector<LightSource>& lightSources)
 
 	std::vector<b2Vec2> rcp = r.GetRayCastPoly();
 
-	g_debugDraw.DrawConcavePolygon(rcp, b2Color(1, 1, 1, 0.5));
+	//g_debugDraw.DrawConcavePolygon(rcp, b2Color(1, 1, 1, 0.5));
 
 
 	m_intervals.clear();
@@ -142,14 +142,15 @@ float LightSensor::GetLight(std::vector<LightSource>& lightSources)
 	}
 	//std::cout << "\r";
 
-	return acc;
+	return acc;*/
+	return 0; //TEMP PLS REMOVE
 }
 
 
 
 void LightSensor::GetLightBoundary(b2Vec2& lightPos, float lightRadius, std::vector<Interval>& intervals, std::vector<b2Vec2>& rayCastPoly)
 {
-	float light_sensor_dist = b2Distance(this->GetPosition(), lightPos);
+	/*float light_sensor_dist = b2Distance(this->GetPosition(), lightPos);
 	//bounds tests
 	b2Vec2 right_bound = GetArcEnd(light_sensor_dist, false);
 	b2Vec2 left_bound = GetArcEnd(light_sensor_dist, true);
@@ -163,16 +164,7 @@ void LightSensor::GetLightBoundary(b2Vec2& lightPos, float lightRadius, std::vec
 
 	b2Vec2 pos1 = lightPos + lightRadius * normal;
 	b2Vec2 pos2 = lightPos - lightRadius * normal;
-	/*
-	if (MathUtils::PointInPoly(rayCastPoly, pos1))
-		g_debugDraw.DrawPoint(pos1, 5, b2Color(1, 0, 0));
-	else
-		g_debugDraw.DrawPoint(pos1, 5, b2Color(0, 1, 0)); 
-	if (MathUtils::PointInPoly(rayCastPoly, pos2))
-		g_debugDraw.DrawPoint(pos2, 5, b2Color(1, 0, 0));
-	else
-		g_debugDraw.DrawPoint(pos2, 5, b2Color(0, 1, 0));
-		*/
+
 	std::vector<b2Vec2> intersections;
 
 	//g_debugDraw.DrawPolygon(&rayCastPoly[0], rayCastPoly.size(), b2Color(1, 0, 1));
@@ -242,7 +234,7 @@ void LightSensor::GetLightBoundary(b2Vec2& lightPos, float lightRadius, std::vec
 			i1 = i2;
 		}
 	}
-
+	*/
 
 }
 
