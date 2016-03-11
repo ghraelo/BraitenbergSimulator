@@ -14,28 +14,25 @@
 //STL
 #include <iostream>
 
+
 //...
-//#include <SimEngine.h>
+#include <SimEngine.h>
 
 int main(int argc, char** argv)
 {
 	
-	////FreeConsole();
-	//SimEngine se;
+	//FreeConsole();
+	SimEngine se;
 
-	//se.Init();
+	se.Init();
 
-	//while (!glfwWindowShouldClose(se.GetWindow()))
-	//{
-	//	se.HandleEvents();
-	//	se.Update();
-	//	se.Render();
-	//}
+	while (!glfwWindowShouldClose(se.GetWindow()))
+	{
+		se.HandleEvents();
+		se.Update();
+		se.Render();
+	}
 
-	//se.Cleanup();
-	//
-
-	//
-	main2(argc, argv);
+	se.Cleanup();
 	return 0;
 }

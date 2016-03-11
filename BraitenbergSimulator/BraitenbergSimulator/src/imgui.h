@@ -24,6 +24,7 @@
 
 #include "LightSensor.h"
 #include <vector>
+#include "GUIRenderer.h"
 
 enum TextAlign;
 
@@ -38,7 +39,7 @@ inline unsigned int imguiRGBA(unsigned char r, unsigned char g, unsigned char b,
 	return (r) | (g << 8) | (b << 16) | (a << 24);
 }
 
-void imguiBeginFrame(int mx, int my, unsigned char mbut, int scroll);
+void imguiBeginFrame(int mx, int my, unsigned char mbut, int scroll, GUIRenderer* r);
 void imguiEndFrame();
 
 bool imguiBeginScrollArea(const char* name, int x, int y, int w, int h, int* scroll);
@@ -61,9 +62,5 @@ void imguiBarDisplay(std::vector<Interval> intervals);
 void imguiGraphDisplay(std::vector<float> data);
 void imguiGraphDisplay(std::vector<float> data, float min, float max);
 
-void imguiDrawText(int x, int y, TextAlign align, const char* text, unsigned int color);
-void imguiDrawLine(float x0, float y0, float x1, float y1, float r, unsigned int color);
-void imguiDrawRoundedRect(float x, float y, float w, float h, float r, unsigned int color);
-void imguiDrawRect(float x, float y, float w, float h, unsigned int color);
 
 #endif // IMGUI_H
