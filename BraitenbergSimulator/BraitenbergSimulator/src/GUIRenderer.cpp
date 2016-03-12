@@ -42,8 +42,8 @@ void GUIRenderer::AddGfxCmdTriangle(float x, float y, float w, float h, float r,
 
 void GUIRenderer::AddGfxCmdScissor(float x, float y, float w, float h)
 {
-	GfxCmdPtr p = std::make_unique<GfxCmdScissor>(x, y, w, h);
-	m_cmdList.push_back(std::move(p));
+	//GfxCmdPtr p = std::make_unique<GfxCmdScissor>(x, y, w, h);
+	//m_cmdList.push_back(std::move(p));
 }
 
 void GUIRenderer::Flush(NVGcontext* vg)
@@ -52,4 +52,5 @@ void GUIRenderer::Flush(NVGcontext* vg)
 	{
 		cmd->Execute(vg);
 	}
+	m_cmdList.clear();
 }

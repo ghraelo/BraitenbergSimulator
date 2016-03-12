@@ -18,9 +18,9 @@ float LightSource::GetRadius()
 	return m_radius;
 }
 
-void LightSource::Render(Renderer& r)
+void LightSource::Render(NVGcontext* vg, Renderer& r)
 {
-	r.RenderLightSource(*this);
+	r.RenderLightSource(vg, *this);
 }
 
 void LightSource::Update()

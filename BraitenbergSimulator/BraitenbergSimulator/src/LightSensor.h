@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Box2D\Box2D.h"
-#include "DebugDraw.h"
 
 #include "LightSource.h"
 #include "IRenderable.h"
@@ -40,7 +39,7 @@ public:
 
 	b2Body* GetParentBody();
 	b2Vec2 GetPosition();
-	void Render(Renderer& r) override;
+	void Render(NVGcontext* vg, Renderer& r) override;
 	float GetLight(std::vector<LightSource>& lightSources);
 	void GetLightBoundary(b2Vec2& lightPos, float lightRadius, std::vector<Interval>& intervals, std::vector<b2Vec2>& rayCastPoly);
 	b2Vec2 GetArcEnd(float radius, bool positive);

@@ -13,4 +13,5 @@ struct BaseUISettings
 	int scroll2 = 0; //select panel scroll state
 	bool selectPanelOpen = false; //scene selection panel open
 	bool showStatsPane = true; //show stats pane
+	double frameTime = 0.0; //frame time
 };

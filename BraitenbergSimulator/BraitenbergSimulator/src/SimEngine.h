@@ -21,7 +21,7 @@ public:
 	SimEngine();
 	void Init();
 	void HandleEvents();
-	void Update();
+	void Update(double frameTime);
 	void Render();
 	void Exit();
 	void Cleanup();
@@ -33,10 +33,12 @@ public:
 	WindowState GetWindowState();
 	GLFWwindow* GetWindow();
 	NVGcontext* GetContext();
+	double GetFrameTime();
 private:
 	GLFWwindow* mainWindow;
 	std::vector<SimStatePtr> states;
 	MouseState mouseState;
 	WindowState windowState;
 	NVGcontext* nvg;
+	double m_frameTime = 0.0;
 };

@@ -96,7 +96,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libfftw3-3.lib;Box2D.lib;glew.lib;glfw.lib;libyaml-cppmdd.lib;nanovg.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libfftw3-3.lib;Box2D.lib;glew.lib;glfw3.lib;libyaml-cppmdd.lib;nanovg.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -154,6 +154,7 @@
   <ItemGroup>
     <ClInclude Include="src\AutocorrelationProcessor.h" />
     <ClInclude Include="src\BaseUISettings.h" />
+    <ClInclude Include="src\Camera.h" />
     <ClInclude Include="src\ControlStrategy.h" />
     <ClInclude Include="src\CrossedCSLStrategy.h" />
     <ClInclude Include="src\CSL.h" />
@@ -204,6 +205,7 @@
   <ItemGroup>
     <ClCompile Include="BraitenbergSimulator.cpp" />
     <ClCompile Include="src\AutocorrelationProcessor.cpp" />
+    <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\ControlStrategy.cpp" />
     <ClCompile Include="src\CrossedCSLStrategy.cpp" />
     <ClCompile Include="src\CSL.cpp" />

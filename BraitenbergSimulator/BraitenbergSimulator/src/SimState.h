@@ -11,7 +11,7 @@ class SimState
 {
 public:
 	SimState();
-	virtual void Init() = 0;
+	virtual void Init(SimEngine & se) = 0;
 	virtual void Cleanup() = 0;
 	virtual void Update(SimEngine& se) = 0;
 	virtual void Draw(SimEngine& se) = 0;

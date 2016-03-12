@@ -29,9 +29,9 @@ LightSensor::LightSensor(Vehicle * parent, b2Vec2 offset, float aperture, b2Vec2
 {
 }
 
-void LightSensor::Render(Renderer& r)
+void LightSensor::Render(NVGcontext* vg, Renderer& r)
 {
-	r.RenderLightSensor(*this);
+	r.RenderLightSensor(vg, *this);
 }
 
 b2Vec2 LightSensor::GetPosition()

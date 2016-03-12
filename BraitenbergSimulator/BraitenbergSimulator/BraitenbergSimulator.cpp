@@ -9,6 +9,7 @@
 #define GLEW_STATIC
 #include <glew\glew.h>
 //GLFW
+#define _GLFW_USE_DWM_SWAP_INTERVAL 1
 #include <glfw\glfw3.h>
 
 //STL
@@ -26,11 +27,25 @@ int main(int argc, char** argv)
 
 	se.Init();
 
+	glfwSwapInterval(1);
+
+	//measure frame time
+	double time1 = glfwGetTime();
+	double frameTime = 0.0;
+
 	while (!glfwWindowShouldClose(se.GetWindow()))
 	{
 		se.HandleEvents();
-		se.Update();
+		se.Update(frameTime);
 		se.Render();
+
+		double time2 = glfwGetTime();
+		double alpha = 0.9f;
+		frameTime = alpha * frameTime + (1.0 - alpha) * (time2 - time1);
+		time1 = time2;
+
+		glfwPollEvents();
+		glfwSwapBuffers(se.GetWindow());
 	}
 
 	se.Cleanup();

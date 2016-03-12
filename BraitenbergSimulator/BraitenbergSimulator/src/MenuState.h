@@ -19,7 +19,7 @@ class MenuState : public SimState
 {
 public:
 	MenuState();
-	void Init() override;
+	void Init(SimEngine & se) override;
 	void Cleanup() override;
 	void Update(SimEngine& se) override;
 	void Draw(SimEngine& se) override;

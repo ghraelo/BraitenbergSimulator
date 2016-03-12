@@ -9,7 +9,7 @@ MenuState::MenuState()
 {
 }
 
-void MenuState::Init()
+void MenuState::Init(SimEngine & se)
 {
 }
 
@@ -33,7 +33,7 @@ void MenuState::Draw(SimEngine & se)
 	float x = se.GetWindowState().width / 2 - (menuWidth * se.GetWindowState().width) / 2;
 	float y = se.GetWindowState().height / 2 - (menuWidth * se.GetWindowState().height) / 2;
 
-	imguiBeginScrollArea("test", x, y, (menuWidth * se.GetWindowState().width), (menuHeight * se.GetWindowState().height), &scroll);
+	imguiBeginScrollArea("Main Menu", x, y, (menuWidth * se.GetWindowState().width), (menuHeight * se.GetWindowState().height), &scroll);
 	if (imguiButton("Run simulation", true))
 	{
 		//set flag

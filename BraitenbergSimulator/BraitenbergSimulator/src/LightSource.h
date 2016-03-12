@@ -15,7 +15,7 @@ public:
 	LightSource();
 	LightSource(b2Vec2 position, float radius);
 	float GetRadius();
-	void Render(Renderer& r) override;
+	void Render(NVGcontext* vg, Renderer& r) override;
 	void Update() override;
 protected:
 	float m_radius;

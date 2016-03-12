@@ -12,7 +12,7 @@ public:
 	SimObject(b2Vec2 position);
 	virtual b2Vec2 GetPosition();
 	virtual void Update();
-	virtual void Render(Renderer& r);
+	virtual void Render(NVGcontext* vg, Renderer& r);
 protected:
 	b2Vec2 m_position;
 };

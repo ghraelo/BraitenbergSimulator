@@ -30,7 +30,7 @@ public:
 	b2Body* m_body;
 	LightSensor leftSensor;
 	LightSensor rightSensor;
-	void Render(Renderer& r) override;
+	void Render(NVGcontext* vg, Renderer& r) override;
 	void EnableControl();
 	void DisableControl();
 	bool ControlStatus();

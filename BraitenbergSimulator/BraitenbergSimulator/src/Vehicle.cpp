@@ -127,11 +127,11 @@ void Vehicle::Update(std::vector<LightSource> ls)
 	}
 }
 
-void Vehicle::Render(Renderer & r)
+void Vehicle::Render(NVGcontext* vg, Renderer & r)
 {
-	leftSensor.Render(r);
-	rightSensor.Render(r);
-	r.RenderVehicle(*this);
+	leftSensor.Render(vg, r);
+	rightSensor.Render(vg, r);
+	r.RenderVehicle(vg, *this);
 }
 
 void Vehicle::EnableControl()

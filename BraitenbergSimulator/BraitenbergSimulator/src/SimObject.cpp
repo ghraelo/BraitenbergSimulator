@@ -24,6 +24,6 @@ void SimObject::Update()
 {
 }
 
-void SimObject::Render(Renderer & r)
+void SimObject::Render(NVGcontext* vg, Renderer & r)
 {
 }
