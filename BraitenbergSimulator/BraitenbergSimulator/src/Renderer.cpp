@@ -30,13 +30,14 @@ void Renderer::RenderLightSource(NVGcontext* vg, LightSource & renderable)
 {
 	nvgBeginPath(vg);
 	b2Vec2 pos = m_cam->ConvertWorldToScreen(renderable.GetPosition());
-	printf("pos : %f,%f\n", pos.x, pos.y);
-	nvgCircle(vg, pos.x, pos.y, m_cam->ConvertWorldToScreen(renderable.GetRadius()));
-	nvgStrokeWidth(vg, 1);
-	nvgStrokeColor(vg, nvgRGBA(0, 255, 0, 255));
-	nvgFillColor(vg, nvgRGBA(0, 180, 0, 255));
+
+	float rad = m_cam->ConvertWorldToScreen(renderable.GetRadius());
+
+	NVGpaint grad = nvgRadialGradient(vg, pos.x, pos.y, rad/2, rad, nvgRGBA(255, 255, 255, 255), nvgRGBA(0, 0, 0, 0));
+	nvgCircle(vg, pos.x, pos.y, rad);
+
+	nvgFillPaint(vg, grad);
 	nvgFill(vg);
-	nvgStroke(vg);
 }
 
 void Renderer::RenderLightSensor(NVGcontext* vg, LightSensor& renderable)
@@ -61,6 +62,8 @@ void Renderer::RenderLightSensor(NVGcontext* vg, LightSensor& renderable)
 	nvgLineTo(vg, arc2.x, arc2.y);
 	nvgStrokePaint(vg, grad2);
 	nvgStroke(vg);
+
+	//draw visibility polygon
 }
 
 void Renderer::SetCamera(Camera * cam)

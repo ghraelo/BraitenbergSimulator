@@ -10,6 +10,7 @@ class Camera
 public :
 	Camera(float screenWidth, float screenHeight);
 	b2Vec2 ConvertWorldToScreen(const b2Vec2& worldPt);
+	b2Vec2 ConvertScreenToWorld(const b2Vec2& screenPt);
 	float ConvertWorldToScreen(float pt);
 	Rectangle GetRect();
 private:

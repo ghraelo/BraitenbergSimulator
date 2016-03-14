@@ -55,10 +55,41 @@ void MainState::Update(SimEngine & se)
 	world->Step(1.0f/60, 10, 10);
 ;	for (auto &obj : m_currentScene->m_vehicles)
 	{
-		obj->Update(m_currentScene->m_lights,cam->GetRect());
-	}
+		Rectangle bounds(cam->ConvertScreenToWorld(cam->GetRect().m_topRight), cam->ConvertScreenToWorld(cam->GetRect().m_bottomLeft));
+		obj->Update(m_currentScene->m_lights,bounds);
 
-	//wrap sides
+		/* NEED SCREEN TO WORLD FUNCTION
+		//wrap sides
+		b2Vec2 pos = obj->GetPosition();
+
+		Rectangle bounds = cam->GetRect();
+		printf("pos: (%f,%f)\n",pos.x,pos.y);
+		
+		if (pos.x < bounds.GetSidePos(RS_LEFT))
+		{
+			obj->SetPosition(b2Vec2(bounds.GetSidePos(RS_RIGHT), pos.y));
+			printf("less than LEFT: %f", bounds.GetSidePos(RS_LEFT));
+
+		}
+		else if (pos.x > bounds.GetSidePos(RS_RIGHT))
+		{
+			obj->SetPosition(b2Vec2(bounds.GetSidePos(RS_LEFT), pos.y));
+			printf("greater than RIGHT: %f", bounds.GetSidePos(RS_RIGHT));
+
+		}
+		else if (pos.y > bounds.GetSidePos(RS_BOTTOM))
+		{
+			obj->SetPosition(b2Vec2(pos.x, bounds.GetSidePos(RS_TOP)));
+			printf("greater than BOTTOM: %f", bounds.GetSidePos(RS_BOTTOM));
+
+		}
+		else if (pos.y < bounds.GetSidePos(RS_TOP))
+		{
+			obj->SetPosition(b2Vec2(pos.x, bounds.GetSidePos(RS_BOTTOM)));
+			printf("less than TOP: %f", bounds.GetSidePos(RS_TOP));
+
+		}*/
+	}
 }
 
 void MainState::Draw(SimEngine & se)
@@ -71,7 +102,9 @@ void MainState::Draw(SimEngine & se)
 	imguiEndFrame();
 
 	guiRenderer.Flush(vg);
-	nvgTranslate(vg, se.GetWindowState().width/2, se.GetWindowState().height);
+	Rectangle r = cam->GetRect();
+
+	//nvgTranslate(vg, se.GetWindowState().width/2, se.GetWindowState().height);
 	nvgScale(vg, 1.0f, -1.0f);
 	//render vehicles
 
@@ -84,7 +117,6 @@ void MainState::Draw(SimEngine & se)
 	{
 		obj->Render(vg, m_sceneRenderer);
 	}
-
 }
 
 void MainState::LoadScene(ScenePtr & ptr_scene)

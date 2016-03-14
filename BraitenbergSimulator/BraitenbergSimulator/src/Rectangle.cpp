@@ -24,3 +24,20 @@ bool Rectangle::Inside(const b2Vec2 & point)
 {
 	return (point.x > m_bottomLeft.x && point.x < m_topRight.x && point.y < m_topRight.y && point.y > m_bottomLeft.y);
 }
+
+float Rectangle::GetSidePos(RectangleSide side)
+{
+	switch (side)
+	{
+	case RS_LEFT:
+		return m_bottomLeft.x;
+	case RS_RIGHT:
+		return m_topRight.x;
+	case RS_TOP:
+		return m_topRight.y;
+	case RS_BOTTOM:
+		return m_bottomLeft.y;
+	default:
+		return -1;
+	}
+}

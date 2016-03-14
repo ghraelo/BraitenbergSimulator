@@ -127,6 +127,12 @@ void Vehicle::Update(std::vector<LightSource> ls, Rectangle bounds)
 	}
 }
 
+void Vehicle::SetPosition(b2Vec2 pos)
+{
+	m_position = pos;
+	m_body->SetTransform(pos, m_body->GetAngle());
+}
+
 void Vehicle::Render(NVGcontext* vg, Renderer & r)
 {
 	leftSensor.Render(vg, r);

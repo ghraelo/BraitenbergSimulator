@@ -25,6 +25,7 @@ public:
 	void Update() override;
 	void Update(std::vector<LightSource> ls, Rectangle bounds);
 	b2Vec2 GetPosition() override;
+	void SetPosition(b2Vec2 pos);
 	b2Vec2 GetCOM();
 	std::string GetName();
 	b2Body* m_body;
