@@ -41,9 +41,26 @@ void Renderer::RenderLightSource(NVGcontext* vg, LightSource & renderable)
 
 void Renderer::RenderLightSensor(NVGcontext* vg, LightSensor& renderable)
 {
-	b2Vec2 arc1 = renderable.GetArcEnd(10.0f, true);
-	b2Vec2 arc2 = renderable.GetArcEnd(10.0f, false);
+	b2Vec2 arc1 = m_cam->ConvertWorldToScreen(renderable.GetArcEnd(10.0f, true));
+	b2Vec2 arc2 = m_cam->ConvertWorldToScreen(renderable.GetArcEnd(10.0f, false));
 	b2Color white = b2Color(1, 1, 1, 0.5);
+
+	b2Vec2 pos = m_cam->ConvertWorldToScreen(renderable.GetPosition());
+
+	NVGpaint grad1 = nvgLinearGradient(vg, pos.x, pos.y, arc1.x, arc1.y, nvgRGBA(255,255,255,255), nvgRGBA(255, 255, 255, 0));
+	NVGpaint grad2 = nvgLinearGradient(vg, pos.x, pos.y, arc2.x, arc2.y, nvgRGBA(255, 255, 255, 255), nvgRGBA(255, 255, 255, 0));
+
+	nvgBeginPath(vg); 
+	nvgMoveTo(vg, pos.x,pos.y);
+	nvgLineTo(vg, arc1.x,arc1.y);
+	nvgStrokePaint(vg, grad1);
+	nvgStroke(vg);
+
+	nvgBeginPath(vg);
+	nvgMoveTo(vg, pos.x,pos.y);
+	nvgLineTo(vg, arc2.x, arc2.y);
+	nvgStrokePaint(vg, grad2);
+	nvgStroke(vg);
 }
 
 void Renderer::SetCamera(Camera * cam)

@@ -55,8 +55,10 @@ void MainState::Update(SimEngine & se)
 	world->Step(1.0f/60, 10, 10);
 ;	for (auto &obj : m_currentScene->m_vehicles)
 	{
-		obj->Update(m_currentScene->m_lights);
+		obj->Update(m_currentScene->m_lights,cam->GetRect());
 	}
+
+	//wrap sides
 }
 
 void MainState::Draw(SimEngine & se)

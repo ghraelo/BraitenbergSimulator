@@ -108,10 +108,10 @@ void Vehicle::Update()
 
 }
 
-void Vehicle::Update(std::vector<LightSource> ls)
+void Vehicle::Update(std::vector<LightSource> ls, Rectangle bounds)
 {
-	float leftLight = leftSensor.GetLight(ls)* 2 - 1;
-	float rightLight = rightSensor.GetLight(ls) * 2 - 1;
+	float leftLight = leftSensor.GetLight(ls, bounds)* 2 - 1;
+	float rightLight = rightSensor.GetLight(ls, bounds) * 2 - 1;
 	//printf("leftlight: %f, rightlight: %f\n", leftLight, rightLight);
 	float leftForce = 0;
 	float rightForce = 0;

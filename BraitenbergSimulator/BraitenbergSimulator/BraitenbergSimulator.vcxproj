@@ -181,7 +181,6 @@
     <ClInclude Include="src\Renderer.h" />
     <ClInclude Include="src\ResourceManager.h" />
     <ClInclude Include="src\Scene.h" />
-    <ClInclude Include="src\SceneManager.h" />
     <ClInclude Include="src\SimEngine.h" />
     <ClInclude Include="src\SimObject.h" />
     <ClInclude Include="src\SimObjectInfo.h" />
@@ -231,7 +230,6 @@
     <ClCompile Include="src\Rectangle.cpp" />
     <ClCompile Include="src\Renderer.cpp" />
     <ClCompile Include="src\ResourceManager.cpp" />
-    <ClCompile Include="src\SceneManager.cpp" />
     <ClCompile Include="src\SimEngine.cpp" />
     <ClCompile Include="src\SimObject.cpp" />
     <ClCompile Include="src\SimState.cpp" />

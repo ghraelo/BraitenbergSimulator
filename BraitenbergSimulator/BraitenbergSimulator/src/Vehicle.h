@@ -23,7 +23,7 @@ public:
 	void LeftForce(float magnitude);
 	void RightForce(float magnitude);
 	void Update() override;
-	void Update(std::vector<LightSource> ls);
+	void Update(std::vector<LightSource> ls, Rectangle bounds);
 	b2Vec2 GetPosition() override;
 	b2Vec2 GetCOM();
 	std::string GetName();

@@ -74,7 +74,7 @@ void UIManager::DrawBaseUI(BaseUISettings& settings, const WindowState& ws)
 	imguiBeginScrollArea("Simulator v0.1a", 0, 0, ws.width*0.2, ws.height, &settings.scroll);
 	
 	std::stringstream sStream;
-	sStream << "Frame time: " << std::setprecision(1) << std::fixed << settings.frameTime * 1000 << "ms";
+	sStream << "Frame rate: " << std::setprecision(1) << std::fixed << 1/(settings.frameTime) << " hz";
 	imguiLabel(sStream.str().c_str());
 	imguiLabel("Select scene: ");
 	if (imguiButton(settings.activeSceneFilename.c_str(), true))
