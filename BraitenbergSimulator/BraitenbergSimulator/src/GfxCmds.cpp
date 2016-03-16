@@ -77,7 +77,25 @@ void GfxCmdLine::Execute(NVGcontext * vg)
 	nvgBeginPath(vg);
 	nvgMoveTo(vg, m_x0, m_y0);
 	nvgLineTo(vg, m_x1, m_y1);
-	nvgStrokeWidth(vg, 1);
+	nvgStrokeWidth(vg, m_r);
+	nvgStrokeColor(vg, m_color);
+	nvgStroke(vg);
+}
+
+GfxCmdPolyLine::GfxCmdPolyLine(std::vector<std::pair<float, float>> points, float r, NVGcolor color)
+	:GfxCmd(), m_points(points), m_r(r), m_color(color)
+{
+}
+
+void GfxCmdPolyLine::Execute(NVGcontext * vg)
+{
+	nvgBeginPath(vg);
+	nvgMoveTo(vg,m_points[0].first, m_points[0].second);
+	for (int i = 1; i < m_points.size(); i++)
+	{
+		nvgLineTo(vg, m_points[i].first, m_points[i].second);
+	}
+	nvgStrokeWidth(vg, m_r);
 	nvgStrokeColor(vg, m_color);
 	nvgStroke(vg);
 }

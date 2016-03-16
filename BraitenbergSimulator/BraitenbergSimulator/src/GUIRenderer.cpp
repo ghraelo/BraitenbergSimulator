@@ -12,6 +12,13 @@ void GUIRenderer::AddGfxCmdLine(float x0, float y0, float x1, float y1, float si
 
 }
 
+void GUIRenderer::AddGfxCmdPolyLine(const std::vector<std::pair<float, float>> points, float r, NVGcolor color)
+{
+	GfxCmdPtr p = std::make_unique<GfxCmdPolyLine>(points, r, color);
+	m_cmdList.push_back(std::move(p));
+
+}
+
 void GUIRenderer::AddGfxCmdRect(float x, float y, float w, float h, NVGcolor color)
 {
 	GfxCmdPtr p = std::make_unique<GfxCmdRect>(x, y, w, h, color);

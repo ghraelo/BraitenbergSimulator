@@ -36,4 +36,3 @@ Rectangle Camera::GetRect()
 {
 	return Rectangle(b2Vec2(m_screenWidth, 0), b2Vec2(0, m_screenHeight));
 }
-

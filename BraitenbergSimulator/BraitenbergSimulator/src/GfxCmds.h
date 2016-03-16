@@ -5,6 +5,7 @@
 #include <nanovg\nanovg.h>
 #include <string>
 #include <memory>
+#include <vector>
 
 class GfxCmd {
 public:
@@ -64,6 +65,17 @@ private:
 	float m_y0;
 	float m_x1;
 	float m_y1;
+	float m_r;
+	NVGcolor m_color;
+};
+
+class GfxCmdPolyLine : public GfxCmd
+{
+public:
+	GfxCmdPolyLine(std::vector<std::pair<float,float>> points, float r, NVGcolor color);
+	void Execute(NVGcontext* vg) override;
+private:
+	std::vector<std::pair<float, float>> m_points;
 	float m_r;
 	NVGcolor m_color;
 };

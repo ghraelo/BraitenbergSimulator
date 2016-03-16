@@ -409,11 +409,21 @@ void imguiGraphDisplay(std::vector<float> data, float min, float max)
 	g_rend->AddGfxCmdRect((float)x, (float)y, (float)w2, (float)h, nvgRGBA(255, 255, 255, 32));
 
 	//downsample data
-	std::vector<float> downSampled;
-	int dsRate = floor((data.size()-2)/(s_state.widgetW / 4));
+	std::vector<std::pair<float,float>> downSampled;
 
-	downSampled.push_back(data[0]);
-	for (int i = 1; i < data.size() - (dsRate+1); i += dsRate)
+
+	int dsRate = floor((data.size()-2)/(s_state.widgetW / 4));
+	int dsLength = data.size() - (dsRate + 1);
+	downSampled.reserve(dsLength);
+
+	float scaling = (h / 2) / fmax(fabs(min), fabs(max));
+	float spacing = w / dsLength;
+
+	std::pair<float, float> startPt(x, y_mid + data[0] * scaling);
+
+	downSampled.push_back(startPt);
+
+	for (int i = 1; i < dsLength; i += dsRate)
 	{
 		float temp = 0;
 		for (int j = 0; j < dsRate; j++)
@@ -421,21 +431,15 @@ void imguiGraphDisplay(std::vector<float> data, float min, float max)
 			temp += data[i + j];
 		}
 		temp = temp / dsRate;
-		downSampled.push_back(temp);
+		std::pair<float, float> pt(x + spacing*i, y_mid + temp*scaling);
+;		downSampled.push_back(pt);
 	}
-	downSampled.push_back(*(data.end()-1));
-	
 
-	float scaling = (h / 2) / fmax(fabs(min), fabs(max));
-	float spacing = w / downSampled.size();
+	std::pair<float, float> endPt(x + dsLength*spacing, y_mid + *(data.end() - 1) * scaling);
+	downSampled.push_back(endPt);
 
-	//data
-	float y0 = downSampled[0];
-	for (int i = 1; i <  downSampled.size(); i++)
-	{
-		g_rend->AddGfxCmdLine(x + spacing*(i - 1), y_mid + y0*scaling, x + spacing*i, y_mid + downSampled[i] * scaling, 1, nvgRGBA(255, 196, 0, 255));
-		y0 = downSampled[i];
-	}
+	g_rend->AddGfxCmdPolyLine(downSampled,1, nvgRGBA(255, 196, 0, 255));
+
 }
 
 bool imguiItem(const char* text, bool enabled)

@@ -5,8 +5,11 @@
 #include "imgui.h"
 #include "SimEngine.h"
 #include "ResourceManager.h"
+#include "MathUtils.h"
+#include "Statistics.h"
 
 MainState::MainState()
+	:sm(30)
 {
 }
 
@@ -36,7 +39,39 @@ void MainState::Init(SimEngine & se)
 	}
 
 	cam = std::make_unique<Camera>(se.GetWindowState().width,se.GetWindowState().height);
+
 	m_sceneRenderer.SetCamera(cam.get());
+
+	for (auto &obj : m_currentScene->m_vehicles)
+	{
+		std::function<float()> angleCallback = [&]() {
+			return atan2(obj->m_body->GetWorldVector(b2Vec2(0, 1)).y, obj->m_body->GetWorldVector(b2Vec2(0, 1)).x);
+		};
+
+		std::function<float()> distCallback = [&]() {
+			return b2Distance(obj->m_body->GetPosition(), m_currentScene->m_lights[0].GetPosition());
+		};
+
+
+		//add statistics watchers
+		StatisticPtr s = std::make_unique<FixedWatcher>(obj->GetName() + " - angle", 10, 170,
+			angleCallback, -M_PI, M_PI);
+
+		StatisticPtr s2 = std::make_unique<Watcher>(obj->GetName() + " - distance", 10, 170,
+			distCallback);
+
+		StatisticPtr p1 = std::make_unique<AutocorrelationProcessor>(obj->GetName() + " - acor(distance)", dynamic_cast<Watcher*>(s2.get()));
+
+		StatisticPtr p2 = std::make_unique<AutocorrelationProcessor>(obj->GetName() + " - acor(angle)", dynamic_cast<FixedWatcher*>(s.get()));
+
+		StatisticPtr p3 = std::make_unique<PeriodicityDetectionProcessor>(obj->GetName() + " - dct(angle)", dynamic_cast<Watcher*>(s.get()));
+
+		sm.AddStat(std::move(s));
+		sm.AddStat(std::move(s2));
+		sm.AddStat(std::move(p1));
+		sm.AddStat(std::move(p2));
+		//sm.AddStat(std::move(p3));
+	}
 }
 
 void MainState::Cleanup()
@@ -90,6 +125,7 @@ void MainState::Update(SimEngine & se)
 
 		}*/
 	}
+	sm.Update();
 }
 
 void MainState::Draw(SimEngine & se)
@@ -99,6 +135,10 @@ void MainState::Draw(SimEngine & se)
 	// draw interface here
 	imguiBeginFrame(se.GetMouseState().xPos, se.GetMouseState().yPos, se.GetMouseState().leftMouse, 0, &guiRenderer);
 	uim.DrawBaseUI(m_baseSettings, se.GetWindowState());
+
+	if (m_baseSettings.showStatsPane)
+		uim.DrawStatsPane(sm, se.GetWindowState());
+
 	imguiEndFrame();
 
 	guiRenderer.Flush(vg);

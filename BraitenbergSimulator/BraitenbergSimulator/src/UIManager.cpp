@@ -22,7 +22,7 @@ void UIManager::DrawUI(const StatisticsManager& sm)
 	{
 		DrawVehicleUI(m_selectedVehicle);
 	}
-	DrawStatsPane(sm);
+//	DrawStatsPane(sm);
 }
 
 void UIManager::DrawVehicleUI(Vehicle* veh)
@@ -126,11 +126,11 @@ void UIManager::DrawBaseUI(BaseUISettings& settings, const WindowState& ws)
 	}
 }
 
-void UIManager::DrawStatsPane(const StatisticsManager & sm)
+void UIManager::DrawStatsPane(const StatisticsManager & sm, const WindowState& ws)
 {
-	/*int testScroll = 0;
-	bool over = imguiBeginScrollArea("Statistics", 0, 10, 200, g_camera.m_height - 20, &testScroll);
-
+	int testScroll = 0;
+	bool over = imguiBeginScrollArea("Statistics", ws.width - 200, 0, 200, ws.height, &testScroll);
+	
 	for (int i = 0; i < sm.GetStats().size(); i++)
 	{
 		imguiSeparatorLine();
@@ -165,8 +165,8 @@ void UIManager::DrawStatsPane(const StatisticsManager & sm)
 
 
 	}
-
-	imguiEndScrollArea();*/
+	
+	imguiEndScrollArea();
 
 }
 

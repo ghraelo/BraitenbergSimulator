@@ -30,5 +30,6 @@ private:
 	b2WorldPtr world;
 	ScenePtr m_currentScene;
 	Renderer m_sceneRenderer;
+	StatisticsManager sm;
 	CameraPtr cam;
 };

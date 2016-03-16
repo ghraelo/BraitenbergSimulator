@@ -5,6 +5,7 @@
 #include <numeric>
 #include <algorithm>
 
+
 PeriodicityDetectionProcessor::PeriodicityDetectionProcessor(std::string name, Watcher * watcherToProcess)
 	:Processor(name, watcherToProcess)
 {
@@ -45,7 +46,6 @@ void PeriodicityDetectionProcessor::Update()
 			//get start point
 			if (dct[i] != 0 && dct[i - 1] == 0)
 			{
-				printf("GO!");
 				iterators.push_back(std::next(dct.begin(), i));
 				open = true;
 			}
@@ -72,7 +72,6 @@ void PeriodicityDetectionProcessor::Update()
 		}
 	}
 	std::vector<std::vector<float>>ranges;
-	printf("size: %d \n", iterators.size());
 	if (iterators.size() >= 2)
 	{
 		for (int i = 0; i < iterators.size(); i++)
@@ -121,22 +120,27 @@ std::vector<float> PeriodicityDetectionProcessor::DiscreteCosine(const boost::ci
 	dct_plan = fftw_plan_r2r_1d(N, in, out, FFTW_REDFT10, FFTW_MEASURE);
 
 	//initialise in (as fftw plan overwrites it)
-	for (int i = 0; i < N; i++)
-	{
-		in[i] = x_cent[i];
-	}
+	std::copy(x_cent.begin(), x_cent.end(), stdext::checked_array_iterator<double*>(in,N));
+
+	//for (int i = 0; i < N; i++)
+	//{
+	//	in[i] = x_cent[i];
+	//}
 
 	fftw_execute(dct_plan);
 
 	std::vector<float> result;
 	result.reserve(N);
 
+	result.assign(out, out + N);
+
+	/*
 	for (int i = 0; i < N; i++)
 	{
 
 		float temp = (float)out[i];
 		result.push_back(temp);
-	}
+	}*/
 
 	//calculate std deviation
 
@@ -182,22 +186,17 @@ std::vector<float> PeriodicityDetectionProcessor::InverseDiscreteCosine(const st
 	dct_plan = fftw_plan_r2r_1d(N, in, out, FFTW_REDFT01, FFTW_MEASURE);
 
 	//initialise in (as fftw plan overwrites it)
-	for (int i = 0; i < N; i++)
+	std::copy(x_cent.begin(), x_cent.end(), stdext::checked_array_iterator<double*>(in, N));
+	/*for (int i = 0; i < N; i++)
 	{
 		in[i] = x_cent[i];
-	}
+	}*/
 
 	fftw_execute(dct_plan);
 
 	std::vector<float> result;
 	result.reserve(N);
-
-	for (int i = 0; i < N; i++)
-	{
-
-		float temp = (float)out[i];
-		result.push_back(temp);
-	}
+	result.assign(out, out + N);
 
 	//calculate std deviation
 

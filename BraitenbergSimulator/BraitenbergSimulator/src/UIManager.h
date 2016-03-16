@@ -18,7 +18,7 @@ public:
 	void DeselectVehicle();
 	void DrawVehicleUI(Vehicle* veh);
 	void DrawBaseUI(BaseUISettings& settings, const WindowState& ws);
-	void DrawStatsPane(const StatisticsManager& sm);
+	void DrawStatsPane(const StatisticsManager& sm, const WindowState& ws);
 	bool InRegion(const b2Vec2& point);
 private:
 	 Vehicle* m_selectedVehicle;
