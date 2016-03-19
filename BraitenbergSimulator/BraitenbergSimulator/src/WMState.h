@@ -6,6 +6,7 @@ struct MouseState
 	float yPos;
 	int leftMouse;
 	int rightMouse;
+	int scrollOffset;
 };
 
 struct WindowState

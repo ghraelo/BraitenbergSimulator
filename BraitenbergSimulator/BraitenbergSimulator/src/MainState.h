@@ -22,6 +22,8 @@ public:
 	void Cleanup() override;
 	void Update(SimEngine& se) override;
 	void Draw(SimEngine& se) override;
+	void HandleEvents(SimEngine& se) override;
+	void OnScroll(double scrollOffset) override;
 private:
 	void LoadScene(ScenePtr& ptr_scene);
 	UIManager uim;
@@ -32,4 +34,6 @@ private:
 	Renderer m_sceneRenderer;
 	StatisticsManager sm;
 	CameraPtr cam;
+	bool m_dragging = false;
+	MouseState prevMouseState;
 };

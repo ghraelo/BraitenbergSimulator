@@ -50,6 +50,26 @@ void SimEngine::Init()
 	int fontHandle = nvgCreateFont(nvg, "droidsans", "Data/DroidSans.ttf");
 	nvgFontFace(nvg, "droidsans");
 	nvgFontSize(nvg, 10);
+
+	//set callbacks
+	glfwSetWindowUserPointer(mainWindow, this);
+
+	auto scrollFunc = [](GLFWwindow* w, double xoffset, double yoffset)
+	{
+		static_cast<SimEngine*>(glfwGetWindowUserPointer(w))->OnScroll(yoffset);
+	};
+
+	glfwSetScrollCallback(mainWindow, scrollFunc);
+
+	auto mouseFunc = [](GLFWwindow* w, int button, int action, int mods)
+	{
+		if(action == GLFW_PRESS)
+			static_cast<SimEngine*>(glfwGetWindowUserPointer(w))->OnMouseDown(button);
+		else if(action == GLFW_RELEASE)
+			static_cast<SimEngine*>(glfwGetWindowUserPointer(w))->OnMouseUp(button);
+	};
+
+	glfwSetMouseButtonCallback(mainWindow, mouseFunc);
 }
 
 void SimEngine::HandleEvents()
@@ -70,6 +90,8 @@ void SimEngine::HandleEvents()
 	glfwGetWindowSize(mainWindow, &width, &height);
 	windowState.width = width;
 	windowState.height = height;
+
+	states.front()->HandleEvents(*this);
 }
 
 void SimEngine::Update(double frameTime)
@@ -153,4 +175,19 @@ NVGcontext * SimEngine::GetContext()
 double SimEngine::GetFrameTime()
 {
 	return m_frameTime;
+}
+
+void SimEngine::OnScroll(double yoffset)
+{
+	mouseState.scrollOffset = yoffset;
+	//printf("scrollOffset: %f\n", yoffset);
+	states.front()->OnScroll(yoffset);
+}
+
+void SimEngine::OnMouseDown(int button)
+{
+}
+
+void SimEngine::OnMouseUp(int button)
+{
 }

@@ -15,6 +15,8 @@ public:
 	virtual void Cleanup() = 0;
 	virtual void Update(SimEngine& se) = 0;
 	virtual void Draw(SimEngine& se) = 0;
+	virtual void HandleEvents(SimEngine& se) = 0;
+	virtual void OnScroll(double scrollOffset) = 0;
 	void ChangeState(SimEngine& se, SimStatePtr& state);
 private:
 };

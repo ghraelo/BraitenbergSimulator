@@ -23,7 +23,8 @@ public:
 	void Cleanup() override;
 	void Update(SimEngine& se) override;
 	void Draw(SimEngine& se) override;
-
+	void HandleEvents(SimEngine& se) override;
+	void OnScroll(double scrollOffset) override;
 private:
 	UIState ui;
 	const float menuWidth = 0.4f;

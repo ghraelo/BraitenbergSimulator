@@ -58,3 +58,11 @@ void MenuState::Draw(SimEngine & se)
 	}
 
 }
+
+void MenuState::HandleEvents(SimEngine & se)
+{
+}
+
+void MenuState::OnScroll(double scrollOffset)
+{
+}

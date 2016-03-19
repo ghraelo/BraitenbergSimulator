@@ -72,6 +72,8 @@ void MainState::Init(SimEngine & se)
 		sm.AddStat(std::move(p2));
 		//sm.AddStat(std::move(p3));
 	}
+
+	prevMouseState = se.GetMouseState();
 }
 
 void MainState::Cleanup()
@@ -132,18 +134,6 @@ void MainState::Draw(SimEngine & se)
 {
 	NVGcontext* vg = se.GetContext();
 
-	// draw interface here
-	imguiBeginFrame(se.GetMouseState().xPos, se.GetMouseState().yPos, se.GetMouseState().leftMouse, 0, &guiRenderer);
-	uim.DrawBaseUI(m_baseSettings, se.GetWindowState());
-
-	if (m_baseSettings.showStatsPane)
-		uim.DrawStatsPane(sm, se.GetWindowState());
-
-	imguiEndFrame();
-
-	guiRenderer.Flush(vg);
-	Rectangle r = cam->GetRect();
-
 	//nvgTranslate(vg, se.GetWindowState().width/2, se.GetWindowState().height);
 	nvgScale(vg, 1.0f, -1.0f);
 	//render vehicles
@@ -156,6 +146,76 @@ void MainState::Draw(SimEngine & se)
 	for (auto &obj : m_currentScene->m_vehicles)
 	{
 		obj->Render(vg, m_sceneRenderer);
+	}
+
+	nvgScale(vg, 1.0f, -1.0f);
+
+	// draw interface here
+	imguiBeginFrame(se.GetMouseState().xPos, se.GetMouseState().yPos, se.GetMouseState().leftMouse, 0, &guiRenderer);
+	uim.DrawBaseUI(m_baseSettings, se.GetWindowState());
+
+	if (m_baseSettings.showStatsPane)
+		uim.DrawStatsPane(sm, se.GetWindowState());
+
+	imguiEndFrame();
+
+	guiRenderer.Flush(vg);
+	Rectangle r = cam->GetRect();
+}
+
+void MainState::HandleEvents(SimEngine & se)
+{
+	MouseState currState = se.GetMouseState();
+
+	//mouse dragging
+	if (currState.rightMouse == GLFW_PRESS && m_dragging == false)
+		m_dragging = true;
+
+	if (currState.rightMouse == GLFW_RELEASE && m_dragging == true)
+		m_dragging = false;
+
+	if (m_dragging)
+	{
+		b2Vec2 currOrigin = cam->GetOrigin();
+		b2Vec2 increment(0, 0);
+
+		float diffX = currState.xPos - prevMouseState.xPos;
+		float diffY = currState.yPos - prevMouseState.yPos;
+
+		if (diffX < 0)
+		{
+			increment.x = diffX;
+		}
+		else if(diffX > 0)
+		{
+			increment.x = diffX;
+		}
+
+		if (diffY < 0)
+		{
+			increment.y = diffY;
+		}
+		else if (diffY > 0)
+		{
+			increment.y = diffY;
+		}
+
+		cam->SetOrigin(currOrigin + increment);
+	}
+
+	prevMouseState = se.GetMouseState();
+}
+
+void MainState::OnScroll(double scrollOffset)
+{
+	float zoom = cam->GetZoom();
+	if (scrollOffset < 0)
+	{
+		cam->SetZoom(zoom / fabs(scrollOffset * 0.5));
+	}
+	else
+	{
+		cam->SetZoom(zoom * fabs(scrollOffset * 0.5));
 	}
 }
 

@@ -34,6 +34,11 @@ public:
 	GLFWwindow* GetWindow();
 	NVGcontext* GetContext();
 	double GetFrameTime();
+
+	void OnScroll(double yoffset);
+	void OnMouseDown(int button);
+	void OnMouseUp(int button);
+
 private:
 	GLFWwindow* mainWindow;
 	std::vector<SimStatePtr> states;

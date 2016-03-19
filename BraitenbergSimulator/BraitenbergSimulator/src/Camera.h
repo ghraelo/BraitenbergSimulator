@@ -13,10 +13,16 @@ public :
 	b2Vec2 ConvertScreenToWorld(const b2Vec2& screenPt);
 	float ConvertWorldToScreen(float pt);
 	Rectangle GetRect();
+	void SetOrigin(b2Vec2 newOrigin);
+	b2Vec2 GetOrigin();
+	void SetZoom(float newZoom);
+	float GetZoom();
 private:
 	float m_screenWidth;
 	float m_screenHeight;
-	float worldScale = 75.0f;
+	float m_worldScale = 75.0f;
+	float m_zoom;
+	b2Vec2 m_origin;
 };
 
 typedef std::unique_ptr<Camera> CameraPtr;
