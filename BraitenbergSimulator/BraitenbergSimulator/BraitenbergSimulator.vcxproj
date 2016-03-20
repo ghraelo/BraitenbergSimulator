@@ -154,6 +154,7 @@
   <ItemGroup>
     <ClInclude Include="src\AutocorrelationProcessor.h" />
     <ClInclude Include="src\BaseUISettings.h" />
+    <ClInclude Include="src\Boundary.h" />
     <ClInclude Include="src\Camera.h" />
     <ClInclude Include="src\ControlStrategy.h" />
     <ClInclude Include="src\CrossedCSLStrategy.h" />
@@ -204,6 +205,7 @@
   <ItemGroup>
     <ClCompile Include="BraitenbergSimulator.cpp" />
     <ClCompile Include="src\AutocorrelationProcessor.cpp" />
+    <ClCompile Include="src\Boundary.cpp" />
     <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\ControlStrategy.cpp" />
     <ClCompile Include="src\CrossedCSLStrategy.cpp" />

@@ -7,6 +7,7 @@
 #include "Renderer.h"
 #include "Scene.h"
 #include "Camera.h"
+#include "Boundary.h"
 
 #include <Box2D\Box2D.h>
 #include <memory>
@@ -36,4 +37,5 @@ private:
 	CameraPtr cam;
 	bool m_dragging = false;
 	MouseState prevMouseState;
+	BoundaryPtr worldBoundary;
 };

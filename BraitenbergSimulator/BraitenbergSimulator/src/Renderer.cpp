@@ -31,7 +31,9 @@ void Renderer::RenderLightSource(NVGcontext* vg, LightSource & renderable)
 	nvgBeginPath(vg);
 	b2Vec2 pos = m_cam->ConvertWorldToScreen(renderable.GetPosition());
 
-	float rad = m_cam->ConvertWorldToScreen(renderable.GetRadius());
+	b2Vec2 pos2 = m_cam->ConvertWorldToScreen(renderable.GetPosition() + b2Vec2(0, renderable.GetRadius()));
+
+	float rad = b2Distance(pos, pos2);
 
 	NVGpaint grad = nvgRadialGradient(vg, pos.x, pos.y, rad/2, rad, nvgRGBA(255, 255, 255, 255), nvgRGBA(0, 0, 0, 0));
 	nvgCircle(vg, pos.x, pos.y, rad);
@@ -64,6 +66,42 @@ void Renderer::RenderLightSensor(NVGcontext* vg, LightSensor& renderable)
 	nvgStroke(vg);
 
 	//draw visibility polygon
+}
+
+void Renderer::RenderBoundary(NVGcontext * vg, Boundary & renderable)
+{
+	nvgBeginPath(vg);
+
+	b2Vec2 topLeft = m_cam->ConvertWorldToScreen(renderable.GetRect().m_topLeft);
+	b2Vec2 bottomRight = m_cam->ConvertWorldToScreen(renderable.GetRect().m_bottomRight);
+
+	b2Vec2 innerTopLeft = m_cam->ConvertWorldToScreen(renderable.GetRect().m_topLeft + b2Vec2(renderable.GetInfluence(),-renderable.GetInfluence()));
+	b2Vec2 innerBottomRight = m_cam->ConvertWorldToScreen(renderable.GetRect().m_bottomRight - b2Vec2(renderable.GetInfluence(), -renderable.GetInfluence()));
+
+	nvgRect(vg, topLeft.x, topLeft.y, bottomRight.x - topLeft.x, bottomRight.y - topLeft.y);
+
+	nvgRect(vg, innerTopLeft.x, innerTopLeft.y, innerBottomRight.x - innerTopLeft.x, innerBottomRight.y - innerTopLeft.y);
+	nvgPathWinding(vg, NVG_HOLE);
+
+	nvgFillColor(vg, nvgRGBA(255, 192, 203, 180));
+	nvgFill(vg);
+
+	nvgBeginPath(vg);
+	nvgRect(vg, topLeft.x, topLeft.y, bottomRight.x - topLeft.x, bottomRight.y - topLeft.y);
+	nvgStrokeColor(vg, nvgRGBA(255, 192, 203, 255));
+	nvgStroke(vg);
+
+	for (auto& rect : renderable.aabbs)
+	{
+		nvgBeginPath(vg);
+		b2Vec2 tl = m_cam->ConvertWorldToScreen(rect.m_topLeft);
+		b2Vec2 br = m_cam->ConvertWorldToScreen(rect.m_bottomRight);
+
+		nvgRect(vg, tl.x,tl.y,br.x - tl.x, br.y - tl.y);
+		nvgStrokeColor(vg, nvgRGBA(120, 81, 169, 255));
+		nvgStroke(vg);
+	}
+
 }
 
 void Renderer::SetCamera(Camera * cam)
