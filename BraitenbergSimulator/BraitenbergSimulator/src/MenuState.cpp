@@ -1,5 +1,6 @@
 #include "MenuState.h"
 #include "MainState.h"
+#include "NoVisualisationState.h"
 
 #include "SimEngine.h"
 #include <glew\glew.h>
@@ -11,6 +12,7 @@ MenuState::MenuState()
 
 void MenuState::Init(SimEngine & se)
 {
+	nextState = NS_MenuState;
 }
 
 void MenuState::Cleanup()
@@ -27,21 +29,21 @@ void MenuState::Draw(SimEngine & se)
 
 	bool changing = false;
 
-	imguiBeginFrame(se.GetMouseState().xPos, se.GetMouseState().yPos, se.GetMouseState().leftMouse, 0, &guiRenderer);
+	imguiBeginFrame((int)se.GetMouseState().xPos, (int)se.GetMouseState().yPos, se.GetMouseState().leftMouse, 0, &guiRenderer);
 
 
 	float x = se.GetWindowState().width / 2 - (menuWidth * se.GetWindowState().width) / 2;
 	float y = se.GetWindowState().height / 2 - (menuWidth * se.GetWindowState().height) / 2;
 
-	imguiBeginScrollArea("Main Menu", x, y, (menuWidth * se.GetWindowState().width), (menuHeight * se.GetWindowState().height), &scroll);
+	imguiBeginScrollArea("Main Menu", (int)x, (int)y, (int)(menuWidth * se.GetWindowState().width), (int)(menuHeight * se.GetWindowState().height), &scroll);
 	if (imguiButton("Run simulation", true))
 	{
 		//set flag
-		changing = true;
+		nextState = NS_MainState;
 	}
 	if (imguiButton("Run simulations (no visualisation)",true))
 	{
-		//TODO
+		nextState = NS_NoVisualisationState;
 	}
 	if (imguiButton("Exit", true))
 	{
@@ -51,10 +53,18 @@ void MenuState::Draw(SimEngine & se)
 	imguiEndFrame();
 
 	guiRenderer.Flush(vg);
-	if (changing)
+	SimStatePtr p;
+
+	switch (nextState)
 	{
-		SimStatePtr p = std::make_unique<MainState>();
+	case NS_MainState:
+		p = std::make_unique<MainState>();
 		ChangeState(se, p);
+		break;
+	case NS_NoVisualisationState:
+		p = std::make_unique<NoVisualisationState>();
+		ChangeState(se, p);
+		break;
 	}
 
 }

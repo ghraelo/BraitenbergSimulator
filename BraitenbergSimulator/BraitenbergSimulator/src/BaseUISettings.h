@@ -14,4 +14,5 @@ struct BaseUISettings
 	bool selectPanelOpen = false; //scene selection panel open
 	bool showStatsPane = true; //show stats pane
 	double frameTime = 0.0; //frame time
+	double startTime = 0.0;
 };

@@ -19,4 +19,6 @@ public:
 	void SetCamera(Camera* cam);
 private:
 	Camera* m_cam;
+	void DrawPolygon(NVGcontext * vg, const std::vector<b2Vec2>& poly, const NVGcolor& color);
+	void DrawFilledPolygon(NVGcontext * vg, const std::vector<b2Vec2>& poly, const NVGcolor& color);
 };

@@ -19,9 +19,6 @@
     <Filter Include="Source Files\GUI">
       <UniqueIdentifier>{577b112e-df9d-4cf0-807f-5aba5c9e2111}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Renderer">
-      <UniqueIdentifier>{5b437864-93f5-4ed0-a7b9-41c50a4c217e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Stats">
       <UniqueIdentifier>{de6a6bc5-b6f0-4f47-8f7a-ecf8065910ba}</UniqueIdentifier>
     </Filter>
@@ -37,6 +34,21 @@
     <Filter Include="YAML">
       <UniqueIdentifier>{ebf287bf-f760-4cdd-8cc9-a19a35cb55c6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Framework">
+      <UniqueIdentifier>{f5c1e0ef-39ff-452b-896f-d1869683276b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GUI">
+      <UniqueIdentifier>{023d7dca-dcde-460c-a807-2be72bf83c95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Simulation">
+      <UniqueIdentifier>{5656d652-f7d3-4726-af50-a21eba449afb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Stats">
+      <UniqueIdentifier>{2305d86f-4993-458a-b7ed-5a556d82d8aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Simulation\ControlStrategies">
+      <UniqueIdentifier>{170eb183-bc4e-477a-b2cf-d045769d07ad}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -45,149 +57,158 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\MainState.h">
-      <Filter>Source Files\Framework</Filter>
-    </ClInclude>
-    <ClInclude Include="src\MenuState.h">
-      <Filter>Source Files\Framework</Filter>
-    </ClInclude>
-    <ClInclude Include="src\SimEngine.h">
-      <Filter>Source Files\Framework</Filter>
-    </ClInclude>
-    <ClInclude Include="src\SimState.h">
-      <Filter>Source Files\Framework</Filter>
-    </ClInclude>
-    <ClInclude Include="src\imgui.h">
-      <Filter>Source Files\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Rectangle.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\WMState.h">
-      <Filter>Source Files\Framework</Filter>
-    </ClInclude>
-    <ClInclude Include="src\GfxCmds.h">
-      <Filter>Source Files\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="src\GUIRenderer.h">
-      <Filter>Source Files\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="src\DataRecorder.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\IRenderable.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\LightRayCastCallback.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\MathUtils.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Raycaster.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Renderer.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Scene.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\SimObjectInfo.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\stb_truetype.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Strategies.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Triangulate.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\UIManager.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\AutocorrelationProcessor.h">
-      <Filter>Source Files\Stats</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Statistic.h">
-      <Filter>Source Files\Stats</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Statistics.h">
-      <Filter>Source Files\Stats</Filter>
-    </ClInclude>
-    <ClInclude Include="src\StatisticsManager.h">
-      <Filter>Source Files\Stats</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Watcher.h">
-      <Filter>Source Files\Stats</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ControlStrategy.h">
-      <Filter>Source Files\Simulation\ControlStrategies</Filter>
-    </ClInclude>
-    <ClInclude Include="src\CrossedCSLStrategy.h">
-      <Filter>Source Files\Simulation\ControlStrategies</Filter>
-    </ClInclude>
-    <ClInclude Include="src\CSL.h">
-      <Filter>Source Files\Simulation\ControlStrategies</Filter>
-    </ClInclude>
-    <ClInclude Include="src\CSL2.h">
-      <Filter>Source Files\Simulation\ControlStrategies</Filter>
-    </ClInclude>
-    <ClInclude Include="src\CSL2Strategy.h">
-      <Filter>Source Files\Simulation\ControlStrategies</Filter>
-    </ClInclude>
-    <ClInclude Include="src\CSLStrategy.h">
-      <Filter>Source Files\Simulation\ControlStrategies</Filter>
-    </ClInclude>
-    <ClInclude Include="src\TwoAStrategy.h">
-      <Filter>Source Files\Simulation\ControlStrategies</Filter>
-    </ClInclude>
-    <ClInclude Include="src\TwoBStrategy.h">
-      <Filter>Source Files\Simulation\ControlStrategies</Filter>
-    </ClInclude>
-    <ClInclude Include="src\DiscreteCosineProcessor.h">
-      <Filter>Source Files\Stats</Filter>
-    </ClInclude>
-    <ClInclude Include="src\PeriodicityDetectionProcessor.h">
-      <Filter>Source Files\Stats</Filter>
-    </ClInclude>
-    <ClInclude Include="src\FixedWatcher.h">
-      <Filter>Source Files\Stats</Filter>
-    </ClInclude>
-    <ClInclude Include="src\SingleCSLStrategy.h">
-      <Filter>Source Files\Simulation\ControlStrategies</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Processor.h">
-      <Filter>Source Files\Stats</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Vehicle.h">
-      <Filter>Source Files\Simulation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\SimObject.h">
-      <Filter>Source Files\Simulation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\LightSensor.h">
-      <Filter>Source Files\Simulation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\LightSource.h">
-      <Filter>Source Files\Simulation</Filter>
-    </ClInclude>
     <ClInclude Include="src\ResourceManager.h">
       <Filter>Source Files\Resources</Filter>
     </ClInclude>
     <ClInclude Include="src\YAMLConverters.h">
       <Filter>Source Files\Resources</Filter>
     </ClInclude>
-    <ClInclude Include="src\BaseUISettings.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="src\MainState.h">
+      <Filter>Header Files\Framework</Filter>
     </ClInclude>
-    <ClInclude Include="src\Camera.h">
-      <Filter>Source Files\Simulation</Filter>
+    <ClInclude Include="src\MenuState.h">
+      <Filter>Header Files\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SimEngine.h">
+      <Filter>Header Files\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SimState.h">
+      <Filter>Header Files\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="src\WMState.h">
+      <Filter>Header Files\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GfxCmds.h">
+      <Filter>Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GUIRenderer.h">
+      <Filter>Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\imgui.h">
+      <Filter>Header Files\GUI</Filter>
     </ClInclude>
     <ClInclude Include="src\Boundary.h">
-      <Filter>Source Files\Simulation</Filter>
+      <Filter>Header Files\Simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Camera.h">
+      <Filter>Header Files\Simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LightSensor.h">
+      <Filter>Header Files\Simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LightSource.h">
+      <Filter>Header Files\Simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SimObject.h">
+      <Filter>Header Files\Simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Vehicle.h">
+      <Filter>Header Files\Simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ControlStrategy.h">
+      <Filter>Header Files\Simulation\ControlStrategies</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CrossedCSLStrategy.h">
+      <Filter>Header Files\Simulation\ControlStrategies</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CSL.h">
+      <Filter>Header Files\Simulation\ControlStrategies</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CSL2.h">
+      <Filter>Header Files\Simulation\ControlStrategies</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CSL2Strategy.h">
+      <Filter>Header Files\Simulation\ControlStrategies</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CSLStrategy.h">
+      <Filter>Header Files\Simulation\ControlStrategies</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SingleCSLStrategy.h">
+      <Filter>Header Files\Simulation\ControlStrategies</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Strategies.h">
+      <Filter>Header Files\Simulation\ControlStrategies</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ThreeAStrategy.h">
+      <Filter>Header Files\Simulation\ControlStrategies</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ThreeBStrategy.h">
+      <Filter>Header Files\Simulation\ControlStrategies</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TwoAStrategy.h">
+      <Filter>Header Files\Simulation\ControlStrategies</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TwoBStrategy.h">
+      <Filter>Header Files\Simulation\ControlStrategies</Filter>
+    </ClInclude>
+    <ClInclude Include="src\AutocorrelationProcessor.h">
+      <Filter>Header Files\Stats</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DiscreteCosineProcessor.h">
+      <Filter>Header Files\Stats</Filter>
+    </ClInclude>
+    <ClInclude Include="src\FixedWatcher.h">
+      <Filter>Header Files\Stats</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PeriodicityDetectionProcessor.h">
+      <Filter>Header Files\Stats</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Processor.h">
+      <Filter>Header Files\Stats</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Statistic.h">
+      <Filter>Header Files\Stats</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Statistics.h">
+      <Filter>Header Files\Stats</Filter>
+    </ClInclude>
+    <ClInclude Include="src\StatisticsManager.h">
+      <Filter>Header Files\Stats</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Watcher.h">
+      <Filter>Header Files\Stats</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BaseUISettings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DataRecorder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\IRenderable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LightRayCastCallback.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MathUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Raycaster.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Rectangle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Renderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SimObjectInfo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\stb_truetype.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triangulate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UIManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NoVisualisationState.h">
+      <Filter>Header Files\Framework</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -313,6 +334,15 @@
     </ClCompile>
     <ClCompile Include="src\Boundary.cpp">
       <Filter>Source Files\Simulation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ThreeAStrategy.cpp">
+      <Filter>Source Files\Simulation\ControlStrategies</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ThreeBStrategy.cpp">
+      <Filter>Source Files\Simulation\ControlStrategies</Filter>
+    </ClCompile>
+    <ClCompile Include="src\NoVisualisationState.cpp">
+      <Filter>Source Files\Framework</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

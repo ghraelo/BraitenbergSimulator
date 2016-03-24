@@ -6,6 +6,8 @@
 #include <nanovg\nanovg.h>
 #include <nanovg\nanovg_gl.h>
 
+enum NextState {NS_MenuState, NS_NoVisualisationState, NS_MainState};
+
 struct UIState
 {
 	bool showMenu;
@@ -31,4 +33,5 @@ private:
 	const float menuHeight = 0.2f;
 	GUIRenderer guiRenderer;
 	int scroll = 0;
+	NextState nextState;
 };

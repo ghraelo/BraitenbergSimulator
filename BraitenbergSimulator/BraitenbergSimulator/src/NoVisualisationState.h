@@ -8,17 +8,17 @@
 #include "Scene.h"
 #include "Camera.h"
 #include "Boundary.h"
-#include "DataRecorder.h"
 
 #include <Box2D\Box2D.h>
 #include <memory>
+//base UI settings (passed to/from UI manager)
 
 typedef std::unique_ptr<b2World> b2WorldPtr;
 
-class MainState : public SimState
+class NoVisualisationState : public SimState
 {
 public:
-	MainState();
+	NoVisualisationState();
 	void Init(SimEngine & se) override;
 	void Cleanup() override;
 	void Update(SimEngine& se) override;
@@ -34,9 +34,7 @@ private:
 	ScenePtr m_currentScene;
 	Renderer m_sceneRenderer;
 	StatisticsManager sm;
-	CameraPtr cam;
 	bool m_dragging = false;
 	MouseState prevMouseState;
 	BoundaryPtr worldBoundary;
-	DataRecorder dr;
 };

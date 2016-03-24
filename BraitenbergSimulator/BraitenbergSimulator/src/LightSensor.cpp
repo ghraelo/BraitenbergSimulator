@@ -83,7 +83,7 @@ float LightSensor::GetLight(std::vector<LightSource>& lightSources, Rectangle bo
 
 	r.Cast(angle1,angle2);
 
-	std::vector<b2Vec2> rcp = r.GetRayCastPoly();
+	m_rayCastPoly = r.GetRayCastPoly();
 
 	//g_debugDraw.DrawConcavePolygon(rcp, b2Color(1, 1, 1, 0.5));
 
@@ -98,7 +98,7 @@ float LightSensor::GetLight(std::vector<LightSource>& lightSources, Rectangle bo
 		relLightPos rlp;
 		std::vector<Interval> temp;
 
-		GetLightBoundary(ls.GetPosition(), ls.GetRadius(), temp, rcp);
+		GetLightBoundary(ls.GetPosition(), ls.GetRadius(), temp, m_rayCastPoly);
 		intervals.insert(intervals.end(),temp.begin(),temp.end());
 	}
 
@@ -264,6 +264,11 @@ sensorInfo LightSensor::GetSensorInfo() const
 	s.m_offset = m_offset;
 
 	return s;
+}
+
+const std::vector<b2Vec2>& LightSensor::GetRayCastPolygon()
+{
+	return m_rayCastPoly;
 }
 
 b2Body* LightSensor::GetParentBody()

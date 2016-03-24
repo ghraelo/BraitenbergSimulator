@@ -45,10 +45,11 @@ public:
 	b2Vec2 GetArcEnd(float radius, bool positive);
 	sensorInfo GetSensorInfo() const;
 	std::vector<Interval> m_intervals;
+	const std::vector<b2Vec2>& GetRayCastPolygon();
 private:
 	Vehicle* m_parent;
 	b2Vec2 m_offset;
 	float m_aperture_angle;
 	b2Vec2 m_direction_vector;
-
+	std::vector<b2Vec2> m_rayCastPoly;
 };

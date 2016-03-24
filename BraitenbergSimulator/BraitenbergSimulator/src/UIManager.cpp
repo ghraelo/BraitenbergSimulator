@@ -21,6 +21,7 @@ void UIManager::DrawUI(const StatisticsManager& sm)
 	if (m_selectedVehicle != nullptr)
 	{
 		DrawVehicleUI(m_selectedVehicle);
+		printf("selected!\n");
 	}
 //	DrawStatsPane(sm);
 }
@@ -76,6 +77,11 @@ void UIManager::DrawBaseUI(BaseUISettings& settings, const WindowState& ws)
 	std::stringstream sStream;
 	sStream << "Frame rate: " << std::setprecision(1) << std::fixed << 1/(settings.frameTime) << " hz";
 	imguiLabel(sStream.str().c_str());
+	std::stringstream sStream2;
+
+	sStream2 << "Elapsed time: " << std::setprecision(2) << std::fixed << (glfwGetTime() - settings.startTime) << " s";
+	imguiLabel(sStream2.str().c_str());
+
 	imguiLabel("Select scene: ");
 	if (imguiButton(settings.activeSceneFilename.c_str(), true))
 	{

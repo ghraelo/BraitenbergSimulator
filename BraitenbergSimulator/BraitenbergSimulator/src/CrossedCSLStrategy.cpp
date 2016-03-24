@@ -12,6 +12,6 @@ CrossedCSLStrategy::CrossedCSLStrategy(float gi, float gf)
 
 void CrossedCSLStrategy::Update()
 {
-	m_leftOutput = m_leftCSL.Update(m_rightInput);
-	m_rightOutput = m_rightCSL.Update(m_leftInput);
+	m_leftOutput = m_leftCSL.Update(m_rightInput * 2 - 1);
+	m_rightOutput = m_rightCSL.Update(m_leftInput * 2 - 1);
 }

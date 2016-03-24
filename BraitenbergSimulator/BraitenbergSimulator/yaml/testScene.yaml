@@ -3,7 +3,7 @@ vehicles: [testVehicle]
 testVehicle:
     position: [0.0, 0.0]
     strategy:
-        type: 2a
+        type: csl
         gi: 0.9
         gf: 1.1
     leftsensor:

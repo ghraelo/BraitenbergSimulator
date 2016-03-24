@@ -3,8 +3,6 @@
 
 #include <Box2D\Box2D.h>
 
-#include "main.h"
-
 //GLEW
 #define GLEW_STATIC
 #include <glew\glew.h>

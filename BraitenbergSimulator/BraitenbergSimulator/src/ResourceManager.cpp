@@ -110,6 +110,14 @@ VehiclePtr ResourceManager::LoadVehicle(YAML::Node vehicleNode, std::string vehi
 	{
 		cs_ptr = std::make_unique<TwoBStrategy>();
 	}
+	else if (strat_type == "3a")
+	{
+		cs_ptr = std::make_unique<ThreeAStrategy>();
+	}
+	else if (strat_type == "3b")
+	{
+		cs_ptr = std::make_unique<ThreeBStrategy>();
+	}
 
 	//got all information, create vehicle
 	return std::make_unique<Vehicle>(leftInfo, rightInfo, cs_ptr, vehicleName);
