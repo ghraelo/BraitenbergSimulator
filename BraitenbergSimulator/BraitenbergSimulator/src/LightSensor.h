@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Box2D\Box2D.h"
-#include "DebugDraw.h"
 
 #include "LightSource.h"
 #include "IRenderable.h"
@@ -40,16 +39,17 @@ public:
 
 	b2Body* GetParentBody();
 	b2Vec2 GetPosition();
-	void Render(Renderer& r) override;
-	float GetLight(std::vector<LightSource>& lightSources);
+	void Render(NVGcontext* vg, Renderer& r) override;
+	float GetLight(std::vector<LightSource>& lightSources, Rectangle bounds);
 	void GetLightBoundary(b2Vec2& lightPos, float lightRadius, std::vector<Interval>& intervals, std::vector<b2Vec2>& rayCastPoly);
 	b2Vec2 GetArcEnd(float radius, bool positive);
 	sensorInfo GetSensorInfo() const;
 	std::vector<Interval> m_intervals;
+	const std::vector<b2Vec2>& GetRayCastPolygon();
 private:
 	Vehicle* m_parent;
 	b2Vec2 m_offset;
 	float m_aperture_angle;
 	b2Vec2 m_direction_vector;
-
+	std::vector<b2Vec2> m_rayCastPoly;
 };

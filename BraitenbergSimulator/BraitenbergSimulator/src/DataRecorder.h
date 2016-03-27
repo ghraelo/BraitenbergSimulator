@@ -4,6 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <map>
 struct CSVRow
 {
 	std::vector<std::string> m_cellData;
@@ -15,13 +16,12 @@ class DataRecorder
 public:
 	DataRecorder();
 	DataRecorder(std::string directoryPath);
-	void GetData(float data);
-	void BeginFile(CSVRow headerRow);
-	void Record(CSVRow row);
+
+	void BeginFile(CSVRow headerRow, std::string identifier);
+	void Record(CSVRow row, std::string identifier);
 private:
 	std::ofstream m_outputStream;
 	std::string m_directoryPath;
-	std::string m_currentFile;
+	std::map<std::string, std::string> m_filePaths; //identifier, filePath
 	int m_columns = 0;
-	std::vector<double> fft_data;
 };

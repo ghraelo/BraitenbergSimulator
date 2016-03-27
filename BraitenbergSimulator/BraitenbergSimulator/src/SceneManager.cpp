@@ -28,8 +28,6 @@ SceneManager::SceneManager()
 	{
 		circ[i] = 0;
 	}
-	m_world->SetDebugDraw(&g_debugDraw);
-
 }
 
 SceneManager::SceneManager(WorldPtr world)
@@ -149,15 +147,4 @@ const StatisticsManager & SceneManager::GetStatsMan() const
 
 void SceneManager::Render()
 {	
-	//render vehicles
-	for (auto &obj : m_currentScene->m_vehicles)
-	{
-		obj->Render(m_sceneRenderer);
-}	
-
-	//render lights
-	for (auto &obj : m_currentScene->m_lights)
-	{
-		obj.Render(m_sceneRenderer);
-	}
 }

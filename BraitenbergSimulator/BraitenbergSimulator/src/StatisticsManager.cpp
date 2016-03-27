@@ -19,25 +19,28 @@ StatisticsManager::StatisticsManager(int sampleRate)
 
 void StatisticsManager::Update()
 {
-	std::vector<StatisticPtr>::const_iterator max_it = (std::max_element(stats.begin(), stats.end(),
-		[&](StatisticPtr& a, StatisticPtr& b) {
-		return a->GetSampleRate() < b->GetSampleRate();
-	}
-	));
-
-	int maxSampleRate = (*max_it)->GetSampleRate();
-
-	accumulator++;
-
-	for (auto& sp : stats)
+	if (stats.size() > 0)
 	{
-		if(accumulator % sp->GetSampleRate() == 0)
-			sp->Update();
-	}
+		std::vector<StatisticPtr>::const_iterator max_it = (std::max_element(stats.begin(), stats.end(),
+			[&](StatisticPtr& a, StatisticPtr& b) {
+			return a->GetSampleRate() < b->GetSampleRate();
+		}
+		));
 
-	if (accumulator > maxSampleRate)
-	{
-		accumulator = 0;
+		int maxSampleRate = (*max_it)->GetSampleRate();
+
+		accumulator++;
+
+		for (auto& sp : stats)
+		{
+			if (accumulator % sp->GetSampleRate() == 0)
+				sp->Update();
+		}
+
+		if (accumulator > maxSampleRate)
+		{
+			accumulator = 0;
+		}
 	}
 }
 

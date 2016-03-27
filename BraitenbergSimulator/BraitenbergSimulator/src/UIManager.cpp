@@ -1,12 +1,16 @@
 #include "UIManager.h"
 
 #include "imgui.h"
-#include "RenderGL3.h"
 
 #include <iostream>
 #include <Box2D\Common\b2Math.h>
 #include <exception>
 #include "Processor.h"
+#include "ResourceManager.h"
+#include <string>
+#include <sstream>
+#include <iomanip>
+#include <ios>
 
 UIManager::UIManager()
 {
@@ -17,13 +21,14 @@ void UIManager::DrawUI(const StatisticsManager& sm)
 	if (m_selectedVehicle != nullptr)
 	{
 		DrawVehicleUI(m_selectedVehicle);
+		printf("selected!\n");
 	}
-	DrawStatsPane(sm);
+//	DrawStatsPane(sm);
 }
 
 void UIManager::DrawVehicleUI(Vehicle* veh)
 {
-	m_regions.clear();
+	/*m_regions.clear();
 
 
 	b2Vec2 vehScreenCoords = g_camera.ConvertWorldToScreen(m_selectedVehicle->GetPosition());
@@ -62,14 +67,76 @@ void UIManager::DrawVehicleUI(Vehicle* veh)
 	imguiBarDisplay(veh->leftSensor.m_intervals);
 	imguiLabel("Right sensor:");
 	imguiBarDisplay(veh->rightSensor.m_intervals);
-	imguiEndScrollArea();
+	imguiEndScrollArea();*/
 }
 
-void UIManager::DrawStatsPane(const StatisticsManager & sm)
+void UIManager::DrawBaseUI(BaseUISettings& settings, const WindowState& ws)
+{
+	imguiBeginScrollArea("Simulator v0.1a", 0, 0, ws.width*0.2, ws.height, &settings.scroll);
+	
+	std::stringstream sStream;
+	sStream << "Frame rate: " << std::setprecision(1) << std::fixed << 1/(settings.frameTime) << " hz";
+	imguiLabel(sStream.str().c_str());
+	std::stringstream sStream2;
+
+	sStream2 << "Elapsed time: " << std::setprecision(2) << std::fixed << (glfwGetTime() - settings.startTime) << " s";
+	imguiLabel(sStream2.str().c_str());
+
+	imguiLabel("Select scene: ");
+	if (imguiButton(settings.activeSceneFilename.c_str(), true))
+	{
+		settings.selectPanelOpen = true;
+	}
+	if (settings.paused == false)
+	{
+		if (imguiButton("Pause", true))
+		{
+			settings.paused = true;
+		}
+	}
+	else
+	{
+		if (imguiButton("Unpause", true))
+		{
+			settings.paused = false;
+		}
+	}
+	if (imguiCheck("Enable dragging", settings.mouseDrag, true))
+	{
+		settings.mouseDrag = !settings.mouseDrag;
+	}
+	if (imguiCheck("Show stats pane", settings.showStatsPane, true))
+	{
+		settings.showStatsPane = !settings.showStatsPane;
+	}
+	settings.shouldExit = imguiButton("Exit to menu", true);
+	imguiEndScrollArea();
+
+	//draw scene select panel
+	if (settings.selectPanelOpen == true)
+	{
+		imguiBeginScrollArea("Select scene", ws.width*0.2, 0, ws.width*0.2, ws.height, &settings.scroll2);
+
+		std::vector<std::string> files;
+		ResourceManager::GetFilesInDirectory(files, "yaml");
+		for (auto& file : files)
+		{
+			if (imguiButton(file.c_str(), true))
+			{
+				settings.activeSceneFilename = file.c_str();
+				settings.selectPanelOpen = false;
+			}
+		}
+
+		imguiEndScrollArea();
+	}
+}
+
+void UIManager::DrawStatsPane(const StatisticsManager & sm, const WindowState& ws)
 {
 	int testScroll = 0;
-	bool over = imguiBeginScrollArea("Statistics", 0, 10, 200, g_camera.m_height - 20, &testScroll);
-
+	bool over = imguiBeginScrollArea("Statistics", ws.width - 200, 0, 200, ws.height, &testScroll);
+	
 	for (int i = 0; i < sm.GetStats().size(); i++)
 	{
 		imguiSeparatorLine();
@@ -104,7 +171,7 @@ void UIManager::DrawStatsPane(const StatisticsManager & sm)
 
 
 	}
-
+	
 	imguiEndScrollArea();
 
 }

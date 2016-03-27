@@ -13,6 +13,6 @@ CSL2Strategy::CSL2Strategy(float gi, float gf)
 void CSL2Strategy::Update()
 {
 
-	m_leftOutput = m_leftCSL.Update(m_leftInput);
-	m_rightOutput = m_rightCSL.Update(m_rightInput);
+	m_leftOutput = m_leftCSL.Update(m_leftInput * 2 - 1);
+	m_rightOutput = m_rightCSL.Update(m_rightInput * 2 - 1);
 }

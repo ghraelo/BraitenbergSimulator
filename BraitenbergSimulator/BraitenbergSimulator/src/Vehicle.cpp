@@ -14,17 +14,51 @@ Vehicle::Vehicle(sensorInfo leftInfo, sensorInfo rightInfo, ControlStrategyPtr& 
 
 Vehicle::~Vehicle()
 {
-	if (m_physicsBound)
-	{
-		delete (SimObjectInfo*)m_body->GetUserData();
-		//theWorld->DestroyBody(m_body);
-	}
+	//if (m_physicsBound)
+	//{
+	//	delete (SimObjectInfo*)m_body->GetUserData();
+	//	//theWorld->DestroyBody(m_body);
+	//}
 }
 
 b2Vec2 Vehicle::GetPosition()
 {
 	m_position = m_body->GetPosition();
 	return m_body->GetPosition();
+}
+
+void Vehicle::SetPosition(b2Vec2 pos)
+{
+	void* data = m_body->GetUserData();
+	float angle = m_body->GetAngle();
+	theWorld->DestroyBody(m_body);
+
+	bodyDef.position = pos;
+	bodyDef.angle = angle;
+	m_body = (*theWorld).CreateBody(&bodyDef);
+
+	//init shape
+
+	b2Vec2 vertices[3];
+	vertices[0].Set(-1.0f, 0.0f);
+	vertices[1].Set(1.0f, 0.0f);
+	vertices[2].Set(0.0f, 3.0f);
+	int32 count = 3;
+
+	vehicleShape.Set(vertices, count);
+
+	//init fixture
+
+	fixtureDef.shape = &vehicleShape;
+	fixtureDef.density = 1.0f;
+	fixtureDef.friction = 0.3f;
+
+	//create fixture
+	b2Fixture* theFixture = m_body->CreateFixture(&fixtureDef);
+
+	m_body->SetUserData(data);
+	m_position = m_body->GetPosition();
+	int s = 4;
 }
 
 b2Vec2 Vehicle::GetCOM()
@@ -40,10 +74,10 @@ std::string Vehicle::GetName()
 void Vehicle::SetUserData()
 {
 	//user data
-	SimObjectInfo* soi = new SimObjectInfo;
-	soi->m_obj = this;
-	soi->m_type = "Vehicle";
-	m_body->SetUserData(soi);
+	m_soiPtr = std::make_unique<SimObjectInfo>();
+	m_soiPtr->m_obj = this;
+	m_soiPtr->m_type = "Vehicle";
+	m_body->SetUserData(m_soiPtr.get());
 }
 
 void Vehicle::BindPhysics(b2World* world)
@@ -108,10 +142,10 @@ void Vehicle::Update()
 
 }
 
-void Vehicle::Update(std::vector<LightSource> ls)
+void Vehicle::Update(std::vector<LightSource> ls, Rectangle bounds)
 {
-	float leftLight = leftSensor.GetLight(ls)* 2 - 1;
-	float rightLight = rightSensor.GetLight(ls) * 2 - 1;
+	float leftLight = leftSensor.GetLight(ls, bounds);
+	float rightLight = rightSensor.GetLight(ls, bounds);
 	//printf("leftlight: %f, rightlight: %f\n", leftLight, rightLight);
 	float leftForce = 0;
 	float rightForce = 0;
@@ -127,11 +161,11 @@ void Vehicle::Update(std::vector<LightSource> ls)
 	}
 }
 
-void Vehicle::Render(Renderer & r)
+void Vehicle::Render(NVGcontext* vg, Renderer & r)
 {
-	leftSensor.Render(r);
-	rightSensor.Render(r);
-	r.RenderVehicle(*this);
+	leftSensor.Render(vg, r);
+	rightSensor.Render(vg, r);
+	r.RenderVehicle(vg, *this);
 }
 
 void Vehicle::EnableControl()

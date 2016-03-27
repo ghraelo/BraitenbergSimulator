@@ -7,3 +7,5 @@
 #include "SingleCSLStrategy.h"
 #include "TwoAStrategy.h"
 #include "TwoBStrategy.h"
+#include "ThreeAStrategy.h"
+#include "ThreeBStrategy.h"

@@ -29,9 +29,9 @@ LightSensor::LightSensor(Vehicle * parent, b2Vec2 offset, float aperture, b2Vec2
 {
 }
 
-void LightSensor::Render(Renderer& r)
+void LightSensor::Render(NVGcontext* vg, Renderer& r)
 {
-	r.RenderLightSensor(*this);
+	r.RenderLightSensor(vg, *this);
 }
 
 b2Vec2 LightSensor::GetPosition()
@@ -70,10 +70,10 @@ bool compareIntervals(Interval a, Interval b)
 }
 
 
-float LightSensor::GetLight(std::vector<LightSource>& lightSources)
+float LightSensor::GetLight(std::vector<LightSource>& lightSources, Rectangle bounds)
 {
 	b2World* world = m_parent->m_body->GetWorld();
-	Raycaster r(world, GetPosition(), Rectangle(g_camera.GetCorner(CC_TOP_RIGHT), g_camera.GetCorner(CC_BOTTOM_LEFT)));
+	Raycaster r(world, GetPosition(), bounds);
 	r.AddIgnoreBody(m_parent->m_body);
 	b2Vec2 right_bound = GetArcEnd(10.0f, false);
 	b2Vec2 left_bound = GetArcEnd(10.0f, true);
@@ -83,9 +83,9 @@ float LightSensor::GetLight(std::vector<LightSource>& lightSources)
 
 	r.Cast(angle1,angle2);
 
-	std::vector<b2Vec2> rcp = r.GetRayCastPoly();
+	m_rayCastPoly = r.GetRayCastPoly();
 
-	g_debugDraw.DrawConcavePolygon(rcp, b2Color(1, 1, 1, 0.5));
+	//g_debugDraw.DrawConcavePolygon(rcp, b2Color(1, 1, 1, 0.5));
 
 
 	m_intervals.clear();
@@ -98,7 +98,7 @@ float LightSensor::GetLight(std::vector<LightSource>& lightSources)
 		relLightPos rlp;
 		std::vector<Interval> temp;
 
-		GetLightBoundary(ls.GetPosition(), ls.GetRadius(), temp, rcp);
+		GetLightBoundary(ls.GetPosition(), ls.GetRadius(), temp, m_rayCastPoly);
 		intervals.insert(intervals.end(),temp.begin(),temp.end());
 	}
 
@@ -163,16 +163,7 @@ void LightSensor::GetLightBoundary(b2Vec2& lightPos, float lightRadius, std::vec
 
 	b2Vec2 pos1 = lightPos + lightRadius * normal;
 	b2Vec2 pos2 = lightPos - lightRadius * normal;
-	/*
-	if (MathUtils::PointInPoly(rayCastPoly, pos1))
-		g_debugDraw.DrawPoint(pos1, 5, b2Color(1, 0, 0));
-	else
-		g_debugDraw.DrawPoint(pos1, 5, b2Color(0, 1, 0)); 
-	if (MathUtils::PointInPoly(rayCastPoly, pos2))
-		g_debugDraw.DrawPoint(pos2, 5, b2Color(1, 0, 0));
-	else
-		g_debugDraw.DrawPoint(pos2, 5, b2Color(0, 1, 0));
-		*/
+
 	std::vector<b2Vec2> intersections;
 
 	//g_debugDraw.DrawPolygon(&rayCastPoly[0], rayCastPoly.size(), b2Color(1, 0, 1));
@@ -242,8 +233,6 @@ void LightSensor::GetLightBoundary(b2Vec2& lightPos, float lightRadius, std::vec
 			i1 = i2;
 		}
 	}
-
-
 }
 
 
@@ -275,6 +264,11 @@ sensorInfo LightSensor::GetSensorInfo() const
 	s.m_offset = m_offset;
 
 	return s;
+}
+
+const std::vector<b2Vec2>& LightSensor::GetRayCastPolygon()
+{
+	return m_rayCastPoly;
 }
 
 b2Body* LightSensor::GetParentBody()

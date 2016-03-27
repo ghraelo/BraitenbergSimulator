@@ -11,7 +11,7 @@ public:
 
 	}
 
-	LightRayCastCallback(std::vector<b2Body*> ignoreList)
+	LightRayCastCallback(std::vector<b2Body*>& ignoreList)
 		:b2RayCastCallback(), m_ignoreList(ignoreList)
 	{
 

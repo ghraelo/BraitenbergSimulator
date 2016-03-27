@@ -234,3 +234,15 @@ _Pvt_Extensions
 
 # FAKE - F# Make
 .fake/
+
+# diag sessions
+.diagsession
+.vspx
+
+## Project specific ignores
+
+# CSV log files
+*.csv
+
+#exes
+*.exe

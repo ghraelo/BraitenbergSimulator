@@ -1,9 +1,10 @@
 #pragma once
+#include <nanovg\nanovg.h>
 
 class Renderer;
 
 class IRenderable
 {
 public:
-	virtual void Render(Renderer& r) = 0;
+	virtual void Render(NVGcontext* vg, Renderer& r) = 0;
 };

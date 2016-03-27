@@ -6,7 +6,7 @@
 #include "IRenderable.h"
 #include "SimObject.h"
 #include "ControlStrategy.h"
-
+#include "SimObjectInfo.h"
 #include <string>
 
 //forward declarations
@@ -23,14 +23,15 @@ public:
 	void LeftForce(float magnitude);
 	void RightForce(float magnitude);
 	void Update() override;
-	void Update(std::vector<LightSource> ls);
+	void Update(std::vector<LightSource> ls, Rectangle bounds);
 	b2Vec2 GetPosition() override;
+	void SetPosition(b2Vec2 pos);
 	b2Vec2 GetCOM();
 	std::string GetName();
 	b2Body* m_body;
 	LightSensor leftSensor;
 	LightSensor rightSensor;
-	void Render(Renderer& r) override;
+	void Render(NVGcontext* vg, Renderer& r) override;
 	void EnableControl();
 	void DisableControl();
 	bool ControlStatus();
@@ -45,6 +46,7 @@ private:
 	bool m_physicsBound = false;
 	bool m_controllerEnabled = true;
 	void SetUserData();
+	SimObjectInfoPtr m_soiPtr;
 };
 
 typedef std::unique_ptr<Vehicle> VehiclePtr;

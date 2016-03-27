@@ -3,39 +3,49 @@
 
 #include <Box2D\Box2D.h>
 
-#include "main.h"
-
 //GLEW
 #define GLEW_STATIC
 #include <glew\glew.h>
 //GLFW
+#define _GLFW_USE_DWM_SWAP_INTERVAL 1
 #include <glfw\glfw3.h>
 
 //STL
 #include <iostream>
 
+
 //...
-//#include <SimEngine.h>
+#include <SimEngine.h>
 
 int main(int argc, char** argv)
 {
 	
-	////FreeConsole();
-	//SimEngine se;
+	//FreeConsole();
+	SimEngine se;
 
-	//se.Init();
+	se.Init();
 
-	//while (!glfwWindowShouldClose(se.GetWindow()))
-	//{
-	//	se.HandleEvents();
-	//	se.Update();
-	//	se.Render();
-	//}
+	glfwSwapInterval(1);
 
-	//se.Cleanup();
-	//
+	//measure frame time
+	double time1 = glfwGetTime();
+	double frameTime = 0.0;
 
-	//
-	main2(argc, argv);
+	while (!glfwWindowShouldClose(se.GetWindow()))
+	{
+		se.HandleEvents();
+		se.Update(frameTime);
+		se.Render();
+
+		double time2 = glfwGetTime();
+		double alpha = 0.9f;
+		frameTime = alpha * frameTime + (1.0 - alpha) * (time2 - time1);
+		time1 = time2;
+
+		glfwPollEvents();
+		glfwSwapBuffers(se.GetWindow());
+	}
+
+	se.Cleanup();
 	return 0;
 }
