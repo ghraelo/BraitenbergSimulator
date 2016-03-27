@@ -27,6 +27,7 @@ public:
 	void Draw(SimEngine& se) override;
 	void HandleEvents(SimEngine& se) override;
 	void OnScroll(double scrollOffset) override;
+	void ThreadTest(std::string msg);
 private:
 	void LoadScene(ScenePtr& ptr_scene);
 	UIManager uim;

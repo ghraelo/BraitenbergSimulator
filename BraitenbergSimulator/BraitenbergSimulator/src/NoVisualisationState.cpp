@@ -8,9 +8,12 @@
 #include "MathUtils.h"
 #include "Statistics.h"
 
+#include <thread>
+
 NoVisualisationState::NoVisualisationState()
 	:sm(30)
 {
+
 }
 
 void NoVisualisationState::Init(SimEngine & se)
@@ -74,6 +77,10 @@ void NoVisualisationState::Init(SimEngine & se)
 	m_baseSettings.startTime = glfwGetTime();
 
 	prevMouseState = se.GetMouseState();
+
+	std::thread q(&NoVisualisationState::ThreadTest, this, "help");
+	q.detach();
+
 }
 
 void NoVisualisationState::Cleanup()
@@ -166,6 +173,11 @@ void NoVisualisationState::HandleEvents(SimEngine & se)
 
 void NoVisualisationState::OnScroll(double scrollOffset)
 {
+}
+
+void NoVisualisationState::ThreadTest(std::string msg)
+{
+	std::cout << "task1 says: " << msg << std::endl;
 }
 
 void NoVisualisationState::LoadScene(ScenePtr & ptr_scene)
