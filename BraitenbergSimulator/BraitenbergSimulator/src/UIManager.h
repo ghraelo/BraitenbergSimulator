@@ -9,6 +9,7 @@
 #include "StatisticsManager.h"
 #include "Watcher.h"
 #include "FixedWatcher.h"
+
 class UIManager
 {
 public:

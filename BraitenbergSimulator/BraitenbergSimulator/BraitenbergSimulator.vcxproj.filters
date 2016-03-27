@@ -216,6 +216,9 @@
     <ClInclude Include="src\UIManager.h">
       <Filter>Header Files\GUI</Filter>
     </ClInclude>
+    <ClInclude Include="src\EventFlags.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BraitenbergSimulator.cpp">

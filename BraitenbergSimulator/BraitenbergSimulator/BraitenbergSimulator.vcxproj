@@ -167,6 +167,7 @@
     <ClInclude Include="src\CSLStrategy.h" />
     <ClInclude Include="src\DataRecorder.h" />
     <ClInclude Include="src\DiscreteCosineProcessor.h" />
+    <ClInclude Include="src\EventFlags.h" />
     <ClInclude Include="src\FixedWatcher.h" />
     <ClInclude Include="src\GfxCmds.h" />
     <ClInclude Include="src\GUIRenderer.h" />

@@ -60,3 +60,15 @@ void SimManager::Render(NVGcontext * vg, Renderer & renderer)
 
 	m_boundary->Render(vg, renderer);
 }
+
+EventFlags SimManager::GetEventFlags()
+{
+	if (m_boundary->IsColliding())
+	{
+		return EF_BoundaryCollision;
+	}
+	else
+	{
+		return EF_None;
+	}
+}

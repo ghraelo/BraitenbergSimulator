@@ -62,12 +62,12 @@ void NoVisualisationState::Init(SimEngine & se)
 		sm.AddStat(std::move(p3));
 
 		CSVRow headerRow;
+		headerRow.m_cellData.push_back("events");
 		headerRow.m_cellData.push_back("t");
 		headerRow.m_cellData.push_back("x");
 		headerRow.m_cellData.push_back("y");
 		headerRow.m_cellData.push_back("angle");
 		headerRow.m_cellData.push_back("distance travelled");
-		headerRow.m_cellData.push_back("events");
 		dr.BeginFile(headerRow, obj->GetName());
 	}
 
@@ -100,6 +100,15 @@ void NoVisualisationState::Update(SimEngine & se)
 			CSVRow dataRow;
 			std::stringstream conv;
 
+			//events
+			if (simManager->GetEventFlags() == EF_BoundaryCollision)
+			{
+				conv << "B";
+			}
+			dataRow.m_cellData.push_back(conv.str());
+			conv.str(std::string());
+			conv.clear();
+
 			//time
 			conv << glfwGetTime();
 			dataRow.m_cellData.push_back(conv.str());
@@ -121,8 +130,6 @@ void NoVisualisationState::Update(SimEngine & se)
 			//angle
 			dataRow.m_cellData.push_back("");
 			//distance travelled
-			dataRow.m_cellData.push_back("");
-			//events
 			dataRow.m_cellData.push_back("");
 
 			dr.Record(dataRow, obj->GetName());

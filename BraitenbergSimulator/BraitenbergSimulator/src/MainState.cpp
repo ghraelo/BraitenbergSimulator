@@ -126,7 +126,12 @@ void MainState::Update(SimEngine & se)
 		//distance travelled
 		dataRow.m_cellData.push_back("");
 		//events
-		dataRow.m_cellData.push_back("");
+
+		if(simManager->GetEventFlags() == EF_BoundaryCollision)
+		{
+			conv << "B";
+		}
+		dataRow.m_cellData.push_back(conv.str());
 
 		dr.Record(dataRow,obj->GetName());
 	}
