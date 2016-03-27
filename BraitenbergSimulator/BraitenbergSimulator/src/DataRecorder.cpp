@@ -3,6 +3,7 @@
 #include <ctime>
 #include <cassert>
 #include <sstream>
+
 DataRecorder::DataRecorder()
 	:m_directoryPath("")
 {
@@ -13,7 +14,7 @@ DataRecorder::DataRecorder(std::string directoryPath)
 {
 }
 
-void DataRecorder::BeginFile(CSVRow headerRow)
+void DataRecorder::BeginFile(CSVRow headerRow, std::string identifier)
 {
 	time_t now = time(0);
 	tm* dt = localtime(&now);
@@ -28,9 +29,11 @@ void DataRecorder::BeginFile(CSVRow headerRow)
 	oss << dt->tm_min;
 	oss << dt->tm_sec;
 
-	m_currentFile = "logs/log" + oss.str() + ".csv";
+	std::string currentFile = "logs/log-" + identifier + "-" + oss.str() + ".csv";
 
-	m_outputStream.open(m_directoryPath + m_currentFile);
+	m_filePaths.insert(std::pair<std::string,std::string>(identifier, currentFile));
+
+	m_outputStream.open(m_directoryPath + currentFile);
 	if (m_outputStream.fail())
 	{
 		int a = 5;
@@ -39,14 +42,13 @@ void DataRecorder::BeginFile(CSVRow headerRow)
 	m_outputStream.close();
 
 	m_columns = headerRow.m_cellData.size();
-
 }
 
-void DataRecorder::Record(CSVRow row)
+void DataRecorder::Record(CSVRow row, std::string identifier)
 {
 	assert(row.m_cellData.size() == m_columns);
 
-	m_outputStream.open(m_directoryPath + m_currentFile, std::ios::app);
+	m_outputStream.open(m_directoryPath + m_filePaths[identifier], std::ios::app);
 	m_outputStream << row.GetRow();
 	m_outputStream.close();
 }

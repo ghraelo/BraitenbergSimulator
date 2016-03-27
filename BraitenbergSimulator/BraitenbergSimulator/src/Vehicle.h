@@ -6,7 +6,7 @@
 #include "IRenderable.h"
 #include "SimObject.h"
 #include "ControlStrategy.h"
-
+#include "SimObjectInfo.h"
 #include <string>
 
 //forward declarations
@@ -46,6 +46,7 @@ private:
 	bool m_physicsBound = false;
 	bool m_controllerEnabled = true;
 	void SetUserData();
+	SimObjectInfoPtr m_soiPtr;
 };
 
 typedef std::unique_ptr<Vehicle> VehiclePtr;

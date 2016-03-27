@@ -83,47 +83,63 @@ void Renderer::RenderLightSensor(NVGcontext* vg, LightSensor& renderable)
 
 void Renderer::RenderBoundary(NVGcontext * vg, Boundary & renderable)
 {
-	int i = 0;
-	NVGcolor col[4];
-	col[0] = nvgRGBA(0, 0, 169, 255);
-	col[1] = nvgRGBA(255, 0, 169, 255);
-	col[2] = nvgRGBA(0, 255, 169, 255);
-	col[3] = nvgRGBA(255, 0, 0, 255);
+	const float dashPercent = 0.05f;
 
-	for (auto& rect : renderable.aabbs)
+	NVGcolor theColor = nvgLerpRGBA(nvgRGBA(255, 255, 255, 255), nvgRGBA(255, 182, 193, 255), (flashTimer / flashTimerMax));
+	std::vector<b2Vec2> rectPts = renderable.GetRect().GetPoints();
+	rectPts.push_back(rectPts[0]);
+
+	b2Vec2 startPt = m_cam->ConvertWorldToScreen(rectPts[0]);
+
+	for (int i = 1; i < rectPts.size(); i++)
 	{
-		b2Vec2 tl = m_cam->ConvertWorldToScreen(rect.m_topLeft);
-		b2Vec2 br = m_cam->ConvertWorldToScreen(rect.m_bottomRight);
+		b2Vec2 endPt = m_cam->ConvertWorldToScreen(rectPts[i]);
 
-		b2Vec2 midL(tl.x, tl.y + (tl.y - br.y) / 2);
-		b2Vec2 midR(br.x, tl.y + (tl.y - br.y) / 2);
+		float lineLength = b2Distance(startPt, endPt);
+		float dashLength = dashPercent * lineLength;
+		b2Vec2 lineDir = endPt - startPt;
+		lineDir.Normalize();
+		int dashNum = ceil(lineLength / (dashLength) + 1);
 
-		b2Vec2 midT(tl.x + (tl.x - br.x) / 2, tl.y);
-		b2Vec2 midB(tl.x + (tl.x - br.x) / 2, br.y);
-
-		NVGpaint thePaint;
-
-		switch (i)
-		{
-			case 0:		
-				thePaint = nvgLinearGradient(vg, midT.x, midT.y, midB.x, midB.y, nvgRGBA(0, 0, 0, 0), nvgRGBA(0, 255, 255, 180));
-				break;
-			case 1:
-				thePaint = nvgLinearGradient(vg, midB.x, midB.y, midT.x, midT.y, nvgRGBA(0, 0, 0, 0), nvgRGBA(0, 255, 255, 180));
-				break;
-			case 2:	
-				thePaint = nvgLinearGradient(vg, midL.x, midL.y, midR.x, midR.y, nvgRGBA(0, 0, 0, 0), nvgRGBA(0, 255, 255, 180));
-				break;
-			case 3:
-				thePaint = nvgLinearGradient(vg, midR.x, midR.y, midL.x, midL.y, nvgRGBA(0, 0, 0, 0), nvgRGBA(0, 255, 255, 180));
-				break;
-		}
 		nvgBeginPath(vg);
+		nvgMoveTo(vg, startPt.x, startPt.y);
 
-		nvgRect(vg, tl.x,tl.y,br.x - tl.x, br.y - tl.y);
-		nvgFillPaint(vg, thePaint);
-		nvgFill(vg);
-		i++;
+		for (int i = 0; i < dashNum; i++)
+		{
+			b2Vec2 pos = startPt + i * dashLength * lineDir;
+			
+			if (i == 0 || i % 2 == 0)
+			{
+				nvgLineTo(vg, pos.x, pos.y);
+			}
+			else
+			{
+				nvgMoveTo(vg, pos.x, pos.y);
+			}
+		}
+
+		nvgStrokeWidth(vg, 1);
+		nvgStrokeColor(vg, theColor);
+		nvgStroke(vg);
+
+		startPt = endPt;
+	}
+
+	if (flashTimer >= flashTimerMax)
+	{
+		flashing = false;
+		flashTimer = flashTimerMax;
+	}
+
+	if (renderable.IsColliding())
+	{
+		flashing = true;
+		flashTimer = 0.0f;
+	}
+
+	if (flashing)
+	{
+		flashTimer = flashTimer + 1.0;
 	}
 
 }

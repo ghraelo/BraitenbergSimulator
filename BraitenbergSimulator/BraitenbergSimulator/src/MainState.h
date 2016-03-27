@@ -9,6 +9,7 @@
 #include "Camera.h"
 #include "Boundary.h"
 #include "DataRecorder.h"
+#include "SimManager.h"
 
 #include <Box2D\Box2D.h>
 #include <memory>
@@ -30,13 +31,11 @@ private:
 	UIManager uim;
 	BaseUISettings m_baseSettings;
 	GUIRenderer guiRenderer;
-	b2WorldPtr world;
-	ScenePtr m_currentScene;
+	SimManagerPtr simManager;
 	Renderer m_sceneRenderer;
 	StatisticsManager sm;
 	CameraPtr cam;
 	bool m_dragging = false;
 	MouseState prevMouseState;
-	BoundaryPtr worldBoundary;
 	DataRecorder dr;
 };

@@ -11,6 +11,11 @@ PeriodicityDetectionProcessor::PeriodicityDetectionProcessor(std::string name, W
 {
 }
 
+PeriodicityDetectionProcessor::PeriodicityDetectionProcessor(std::string name, Watcher * watcherToProcess, OscDetectedCallback callback)
+	: Processor(name, watcherToProcess), odc(callback)
+{
+}
+
 void PeriodicityDetectionProcessor::Update()
 {
 	std::vector<float> data(m_watcher->GetData().begin(), m_watcher->GetData().end());
@@ -148,7 +153,25 @@ void PeriodicityDetectionProcessor::Update()
 			//printf("mean: %f\nstandard deviation: %f\n", mean, standardDeviation);
 
 			if ((standardDeviation / mean) < 0.333f)
-				m_oscStatus = true;
+			{
+				//printf("oscillation detected!\nperiod: %f s\n", mean/(60/m_sampleRate));
+				m_count++;
+				if (m_count >= 6)
+				{
+					m_oscStatus = true;
+					m_oscPeriod = mean;
+					if (odc)
+					{
+						odc(mean);
+
+					}
+					m_count = 0;
+				}
+			}
+			else
+			{
+				m_count = 0;
+			}
 		}
 
 	}
@@ -158,6 +181,14 @@ void PeriodicityDetectionProcessor::Update()
 bool PeriodicityDetectionProcessor::GetOscillationStatus()
 {
 	return m_oscStatus;
+}
+
+float PeriodicityDetectionProcessor::GetOscillationPeriod()
+{
+	if (m_oscStatus)
+		return m_oscPeriod;
+	else
+		return -1.0f;
 }
 
 std::vector<float> PeriodicityDetectionProcessor::DiscreteCosine(const boost::circular_buffer<float>& x)

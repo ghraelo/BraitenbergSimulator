@@ -27,26 +27,19 @@ void NoVisualisationState::Init(SimEngine & se)
 		printf("error: no scene files found\n");
 	}
 
-	//create world
-	world = std::make_unique<b2World>(b2Vec2(0, 0));
+	ScenePtr s = ResourceManager::LoadScene(m_baseSettings.activeSceneFilename);
+
+	simManager = std::make_unique<SimManager>(s);
 
 
-	//load scene and bind physics
-	LoadScene(ResourceManager::LoadScene(m_baseSettings.activeSceneFilename));
-
-	for (auto &obj : m_currentScene->m_vehicles)
-	{
-		obj->BindPhysics(world.get());
-	}
-
-	for (auto &obj : m_currentScene->m_vehicles)
+	for (auto &obj : simManager->GetCurrentScene()->m_vehicles)
 	{
 		std::function<float()> angleCallback = [&]() {
 			return atan2(obj->m_body->GetWorldVector(b2Vec2(0, 1)).y, obj->m_body->GetWorldVector(b2Vec2(0, 1)).x);
 		};
 
 		std::function<float()> distCallback = [&]() {
-			return b2Distance(obj->m_body->GetPosition(), m_currentScene->m_lights[0].GetPosition());
+			return b2Distance(obj->m_body->GetPosition(), simManager->GetCurrentScene()->m_lights[0].GetPosition());
 		};
 
 		//add statistics watchers
@@ -67,9 +60,18 @@ void NoVisualisationState::Init(SimEngine & se)
 		sm.AddStat(std::move(p1));
 		sm.AddStat(std::move(p2));
 		sm.AddStat(std::move(p3));
+
+		CSVRow headerRow;
+		headerRow.m_cellData.push_back("t");
+		headerRow.m_cellData.push_back("x");
+		headerRow.m_cellData.push_back("y");
+		headerRow.m_cellData.push_back("angle");
+		headerRow.m_cellData.push_back("distance travelled");
+		headerRow.m_cellData.push_back("events");
+		dr.BeginFile(headerRow, obj->GetName());
 	}
 
-	worldBoundary = std::make_unique<Boundary>(world.get(), b2Vec2(-150.0f, 150.0f), 300.0f, 300.0f, 50.0f);
+	m_baseSettings.startTime = glfwGetTime();
 
 	prevMouseState = se.GetMouseState();
 }
@@ -88,19 +90,55 @@ void NoVisualisationState::Update(SimEngine & se)
 		return;
 	}
 
-	world->Step(1.0f / 60, 8, 3);
-	;	for (auto &obj : m_currentScene->m_vehicles)
+	for (int i = 0; i < 60; i++)
 	{
-		obj->Update(m_currentScene->m_lights, worldBoundary->GetRect());
+		simManager->Step(1.0f / 60);
+		simTime += 1.0f / 60;
+
+		for (auto &obj : simManager->GetCurrentScene()->m_vehicles)
+		{
+			CSVRow dataRow;
+			std::stringstream conv;
+
+			//time
+			conv << glfwGetTime();
+			dataRow.m_cellData.push_back(conv.str());
+			conv.str(std::string());
+			conv.clear();
+
+			//x
+			conv << obj->GetPosition().x;
+			dataRow.m_cellData.push_back(conv.str());
+			conv.str(std::string());
+			conv.clear();
+
+			//y
+			conv << obj->GetPosition().y;
+			dataRow.m_cellData.push_back(conv.str());
+			conv.str(std::string());
+			conv.clear();
+
+			//angle
+			dataRow.m_cellData.push_back("");
+			//distance travelled
+			dataRow.m_cellData.push_back("");
+			//events
+			dataRow.m_cellData.push_back("");
+
+			dr.Record(dataRow, obj->GetName());
+		}
+
+		sm.Update();
 	}
-
-	worldBoundary->Update();
-
-	sm.Update();
+	printf("simTime: %f s\n", simTime);	
 }
 
 void NoVisualisationState::Draw(SimEngine & se)
 {
+	printf("frame time: %0.2f s\n", se.GetFrameTime());
+	printf("update time: %0.2f s\n", se.GetUpdateTime());
+	printf("draw time: %0.2f s\n", se.GetDrawTime());
+
 	NVGcontext* vg = se.GetContext();
 
 	// draw interface here

@@ -42,7 +42,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -71,11 +71,13 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(ProjectDir)include;$(ProjectDir)src;H:\Users\Jack\Downloads\boost_1_60_0\boost_1_60_0;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)include;$(ProjectDir)src;H:\Program Files\MATLAB\R2015b\extern\include;H:\Users\Jack\Downloads\boost_1_60_0\boost_1_60_0;$(IncludePath)</IncludePath>
+    <LibraryPath>H:\Program Files\MATLAB\R2015b\extern\lib\win64\microsoft;$(ProjectDir)lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(ProjectDir)include;$(ProjectDir)src;H:\Program Files\MATLAB\R2015b\extern\include;H:\Users\Jack\Downloads\boost_1_60_0\boost_1_60_0;$(IncludePath)</IncludePath>
+    <LibraryPath>H:\Program Files\MATLAB\R2015b\extern\lib\win64\microsoft;$(ProjectDir)lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -96,7 +98,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libfftw3-3.lib;Box2D.lib;glew.lib;glfw3.lib;libyaml-cppmdd.lib;nanovg.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libfftw3-3.lib;Box2D.lib;glew.lib;glfw3.lib;libyaml-cppmdd.lib;nanovg.lib;opengl32.lib;libeng.lib;libmx.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -104,12 +106,13 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>libfftw3-3.lib;Box2D.lib;glew.lib;glfw3.lib;libyaml-cppmdd.lib;nanovg.lib;opengl32.lib;libeng.lib;libmx.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -184,6 +187,7 @@
     <ClInclude Include="src\ResourceManager.h" />
     <ClInclude Include="src\Scene.h" />
     <ClInclude Include="src\SimEngine.h" />
+    <ClInclude Include="src\SimManager.h" />
     <ClInclude Include="src\SimObject.h" />
     <ClInclude Include="src\SimObjectInfo.h" />
     <ClInclude Include="src\SimState.h" />
@@ -200,6 +204,7 @@
     <ClInclude Include="src\TwoBStrategy.h" />
     <ClInclude Include="src\UIManager.h" />
     <ClInclude Include="src\Vehicle.h" />
+    <ClInclude Include="src\VehicleMonitor.h" />
     <ClInclude Include="src\Watcher.h" />
     <ClInclude Include="src\WMState.h" />
     <ClInclude Include="src\YAMLConverters.h" />
@@ -237,6 +242,7 @@
     <ClCompile Include="src\Renderer.cpp" />
     <ClCompile Include="src\ResourceManager.cpp" />
     <ClCompile Include="src\SimEngine.cpp" />
+    <ClCompile Include="src\SimManager.cpp" />
     <ClCompile Include="src\SimObject.cpp" />
     <ClCompile Include="src\SimState.cpp" />
     <ClCompile Include="src\SingleCSLStrategy.cpp" />

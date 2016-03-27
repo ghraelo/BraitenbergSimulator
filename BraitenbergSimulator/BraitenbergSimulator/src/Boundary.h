@@ -19,6 +19,8 @@ public:
 	};
 };
 
+typedef std::pair<b2AABB, b2Vec2> AreaForcePair;
+
 class Boundary : public IRenderable
 {
 public:
@@ -27,13 +29,15 @@ public:
 	void Render(NVGcontext* vg, Renderer& r) override;
 	Rectangle GetRect();
 	float GetInfluence();
-	std::vector<Rectangle> aabbs;
+	std::vector<AreaForcePair> aabbs;
+	bool IsColliding();
 private:
 	b2World* m_world;
 	float m_influence;
 	b2Vec2 m_topLeft;
 	float m_width;
 	float m_height;
+	bool m_isColliding = false;
 };
 
 typedef std::unique_ptr<Boundary> BoundaryPtr;

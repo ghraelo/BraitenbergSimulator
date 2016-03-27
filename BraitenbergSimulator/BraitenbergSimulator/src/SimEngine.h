@@ -34,7 +34,8 @@ public:
 	GLFWwindow* GetWindow();
 	NVGcontext* GetContext();
 	double GetFrameTime();
-
+	double GetUpdateTime();
+	double GetDrawTime();
 	void OnScroll(double yoffset);
 	void OnMouseDown(int button);
 	void OnMouseUp(int button);
@@ -46,4 +47,6 @@ private:
 	WindowState windowState;
 	NVGcontext* nvg;
 	double m_frameTime = 0.0;
+	double m_updateTime = 0.0;
+	double m_drawTime = 0.0;
 };

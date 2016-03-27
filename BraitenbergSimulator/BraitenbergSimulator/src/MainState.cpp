@@ -29,30 +29,22 @@ void MainState::Init(SimEngine & se)
 		printf("error: no scene files found\n");
 	}
 
-	//create world
-	world = std::make_unique<b2World>(b2Vec2(0, 0));
+	ScenePtr s = ResourceManager::LoadScene(m_baseSettings.activeSceneFilename);
 
-
-	//load scene and bind physics
-	LoadScene(ResourceManager::LoadScene(m_baseSettings.activeSceneFilename));
-
-	for (auto &obj : m_currentScene->m_vehicles)
-	{
-		obj->BindPhysics(world.get());
-	}
+	simManager = std::make_unique<SimManager>(s);
 
 	cam = std::make_unique<Camera>(se.GetWindowState().width,se.GetWindowState().height);
 
 	m_sceneRenderer.SetCamera(cam.get());
 
-	for (auto &obj : m_currentScene->m_vehicles)
+	for (auto &obj : simManager->GetCurrentScene()->m_vehicles)
 	{
 		std::function<float()> angleCallback = [&]() {
 			return atan2(obj->m_body->GetWorldVector(b2Vec2(0, 1)).y, obj->m_body->GetWorldVector(b2Vec2(0, 1)).x);
 		};
 
 		std::function<float()> distCallback = [&]() {
-			return b2Distance(obj->m_body->GetPosition(), m_currentScene->m_lights[0].GetPosition());
+			return b2Distance(obj->m_body->GetPosition(), simManager->GetCurrentScene()->m_lights[0].GetPosition());
 		};
 
 		//add statistics watchers
@@ -73,18 +65,16 @@ void MainState::Init(SimEngine & se)
 		sm.AddStat(std::move(p1));
 		sm.AddStat(std::move(p2));
 		sm.AddStat(std::move(p3));
-	}
 
-	worldBoundary = std::make_unique<Boundary>(world.get(), b2Vec2(-150.0f, 150.0f), 300.0f, 300.0f,50.0f);
-	
-	CSVRow headerRow;
-	headerRow.m_cellData.push_back("t");
-	headerRow.m_cellData.push_back("x");
-	headerRow.m_cellData.push_back("y");
-	headerRow.m_cellData.push_back("angle");
-	headerRow.m_cellData.push_back("distance travelled");
-	headerRow.m_cellData.push_back("events");
-	dr.BeginFile(headerRow);
+		CSVRow headerRow;
+		headerRow.m_cellData.push_back("t");
+		headerRow.m_cellData.push_back("x");
+		headerRow.m_cellData.push_back("y");
+		headerRow.m_cellData.push_back("angle");
+		headerRow.m_cellData.push_back("distance travelled");
+		headerRow.m_cellData.push_back("events");
+		dr.BeginFile(headerRow,obj->GetName());
+	}
 
 	m_baseSettings.startTime = glfwGetTime();
 
@@ -105,30 +95,41 @@ void MainState::Update(SimEngine & se)
 		return;
 	}
 
-	world->Step(1.0f/60, 8, 3);
-;	for (auto &obj : m_currentScene->m_vehicles)
+	//60 hz timestep
+	simManager->Step(1.0f / 60);
+
+	for (auto &obj : simManager->GetCurrentScene()->m_vehicles)
 	{
-		obj->Update(m_currentScene->m_lights,worldBoundary->GetRect());
+		CSVRow dataRow;
+		std::stringstream conv;
+		
+		//time
+		conv << glfwGetTime();
+		dataRow.m_cellData.push_back(conv.str());
+		conv.str(std::string());
+		conv.clear();
+
+		//x
+		conv << obj->GetPosition().x;
+		dataRow.m_cellData.push_back(conv.str());
+		conv.str(std::string());
+		conv.clear();
+
+		//y
+		conv << obj->GetPosition().y;
+		dataRow.m_cellData.push_back(conv.str());
+		conv.str(std::string());
+		conv.clear();
+
+		//angle
+		dataRow.m_cellData.push_back("");
+		//distance travelled
+		dataRow.m_cellData.push_back("");
+		//events
+		dataRow.m_cellData.push_back("");
+
+		dr.Record(dataRow,obj->GetName());
 	}
-
-	CSVRow dataRow;
-	std::stringstream conv;
-	conv << glfwGetTime();
-
-	dataRow.m_cellData.push_back(conv.str());
-
-	conv.str(std::string());
-	conv.clear();
-
-	dataRow.m_cellData.push_back("");
-	dataRow.m_cellData.push_back("");
-	dataRow.m_cellData.push_back("");
-	dataRow.m_cellData.push_back("");
-	dataRow.m_cellData.push_back("");
-
-	dr.Record(dataRow);
-
-	worldBoundary->Update();
 
 	sm.Update();
 }
@@ -140,19 +141,8 @@ void MainState::Draw(SimEngine & se)
 	//flip y axis
 	nvgScale(vg, 1.0f, -1.0f);
 
-	//render vehicles
-
-	for (auto &obj : m_currentScene->m_lights)
-	{
-		obj.Render(vg, m_sceneRenderer);
-	}
-
-	for (auto &obj : m_currentScene->m_vehicles)
-	{
-		obj->Render(vg, m_sceneRenderer);
-	}
-
-	worldBoundary->Render(vg, m_sceneRenderer);
+	//render simulation objects
+	simManager->Render(vg, m_sceneRenderer);
 
 	//unflip y-axis
 	nvgScale(vg, 1.0f, -1.0f);
@@ -224,9 +214,4 @@ void MainState::OnScroll(double scrollOffset)
 	{
 		cam->SetZoom(zoom * fabs(scrollOffset * 0.5));
 	}
-}
-
-void MainState::LoadScene(ScenePtr & ptr_scene)
-{
-	m_currentScene = std::move(ptr_scene);
 }

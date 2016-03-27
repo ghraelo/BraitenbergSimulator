@@ -97,18 +97,24 @@ void SimEngine::HandleEvents()
 void SimEngine::Update(double frameTime)
 {
 	m_frameTime = frameTime;
+	double u0 = glfwGetTime();
 	states.front()->Update(*this);
+	double u1 = glfwGetTime();
+	m_updateTime = u1 - u0;
 }
 
 void SimEngine::Render()
 {
+	double u0 = glfwGetTime();
 	glViewport(0, 0, (int)windowState.width, (int)windowState.height);
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT);
-
+	
 	nvgBeginFrame(nvg, windowState.width, windowState.height,1.0);
 	states.front()->Draw(*this);
 	nvgEndFrame(nvg);
+	double u1 = glfwGetTime();
+	m_drawTime = u1 - u0;
 }
 
 void SimEngine::Exit()
@@ -175,6 +181,16 @@ NVGcontext * SimEngine::GetContext()
 double SimEngine::GetFrameTime()
 {
 	return m_frameTime;
+}
+
+double SimEngine::GetUpdateTime()
+{
+	return m_updateTime;
+}
+
+double SimEngine::GetDrawTime()
+{
+	return m_drawTime;
 }
 
 void SimEngine::OnScroll(double yoffset)

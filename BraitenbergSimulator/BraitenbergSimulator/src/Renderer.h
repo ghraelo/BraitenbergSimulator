@@ -4,6 +4,7 @@
 #include "LightSource.h"
 #include "Camera.h"
 #include "Boundary.h"
+#include "SimManager.h"
 
 #include <nanovg\nanovg.h>
 
@@ -21,4 +22,7 @@ private:
 	Camera* m_cam;
 	void DrawPolygon(NVGcontext * vg, const std::vector<b2Vec2>& poly, const NVGcolor& color);
 	void DrawFilledPolygon(NVGcontext * vg, const std::vector<b2Vec2>& poly, const NVGcolor& color);
+	float flashTimer = 60.0f;
+	float flashTimerMax = 60.0f;
+	bool flashing = false;
 };
