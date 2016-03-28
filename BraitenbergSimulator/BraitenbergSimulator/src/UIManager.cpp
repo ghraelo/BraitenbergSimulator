@@ -134,7 +134,7 @@ void UIManager::DrawBaseUI(BaseUISettings& settings, const WindowState& ws)
 
 void UIManager::DrawNoVisUI(NoVisUISettings & settings, const WindowState & ws)
 {
-	imguiBeginScrollArea("Simulator v0.1a", 0, 0, ws.width*0.2, ws.height, &settings.scroll);
+	imguiBeginScrollArea("Simulator v0.2", 0, 0, ws.width*0.2, ws.height, &settings.scroll);
 
 	std::stringstream sStream2;
 
