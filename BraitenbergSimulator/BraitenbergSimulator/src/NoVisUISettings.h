@@ -6,6 +6,7 @@
 struct NoVisUISettings
 {
 	bool paused = false; //pause simulation
+	std::string sceneName;
 	std::string activeSceneFilename; //filename of active scene
 	bool shouldExit = false; //exit to menu at end of current draw cycle
 	bool mouseDrag = false; //enable mouse dragging of sim objects

@@ -34,7 +34,7 @@ public:
 	void HandleEvents(SimEngine& se) override;
 	void OnScroll(double scrollOffset) override;
 private:
-	void LoadScene(ScenePtr& ptr_scene);
+	void LoadScene(std::string fileName);
 	UIManager uim;
 	NoVisUISettings m_baseSettings;
 	GUIRenderer guiRenderer;
@@ -46,6 +46,8 @@ private:
 	MouseState prevMouseState;
 	BoundaryPtr worldBoundary;
 	double simTime = 0.0;
+
+	std::string m_currentSceneFileName;
 
 	SimulationThreadPtr simThread;
 

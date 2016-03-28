@@ -138,6 +138,12 @@ void UIManager::DrawNoVisUI(NoVisUISettings & settings, const WindowState & ws)
 
 	std::stringstream sStream2;
 
+	sStream2 << "Current scene: " << std::setprecision(2) << std::fixed << settings.sceneName << " s";
+	imguiLabel(sStream2.str().c_str());
+
+	sStream2.str(std::string());
+	sStream2.clear();
+
 	sStream2 << "Elapsed sim time: " << std::setprecision(2) << std::fixed << settings.simTime << " s";
 	imguiLabel(sStream2.str().c_str());
 

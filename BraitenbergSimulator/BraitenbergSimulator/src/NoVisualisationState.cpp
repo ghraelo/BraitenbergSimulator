@@ -29,12 +29,7 @@ void NoVisualisationState::Init(SimEngine & se)
 		printf("error: no scene files found\n");
 	}
 
-	ScenePtr s = ResourceManager::LoadScene(m_baseSettings.activeSceneFilename);
-
-	simThread = std::make_unique<SimulationThread>(std::move(s), 60000);
-	m_baseSettings.running = true;
-
-	m_baseSettings.startTime = glfwGetTime();
+	LoadScene(m_baseSettings.activeSceneFilename);
 
 	prevMouseState = se.GetMouseState();
 
@@ -58,12 +53,33 @@ void NoVisualisationState::Update(SimEngine & se)
 		return;
 	}
 
+	if (m_currentSceneFileName != m_baseSettings.activeSceneFilename)
+	{
+		LoadScene(m_baseSettings.activeSceneFilename);
+	}
+
 	if (simThread->IsDone())
 		m_baseSettings.running = false;
 
 	m_baseSettings.simTime = simThread->GetElapsedTime();
 	
 	//printf("simTime: %f s\n", simTime);	
+}
+
+void NoVisualisationState::LoadScene(std::string fileName)
+{
+	//terminate current sim
+	if(simThread)
+		simThread->Exit();
+
+	ScenePtr s = ResourceManager::LoadScene(fileName);
+	m_currentSceneFileName = fileName;
+	m_baseSettings.sceneName = s->m_name;
+
+	simThread = std::make_unique<SimulationThread>(std::move(s), 60000);
+	m_baseSettings.running = true;
+
+	m_baseSettings.startTime = glfwGetTime();
 }
 
 void NoVisualisationState::Draw(SimEngine & se)
@@ -89,9 +105,4 @@ void NoVisualisationState::HandleEvents(SimEngine & se)
 
 void NoVisualisationState::OnScroll(double scrollOffset)
 {
-}
-
-void NoVisualisationState::LoadScene(ScenePtr & ptr_scene)
-{
-	m_currentScene = std::move(ptr_scene);
 }
