@@ -180,6 +180,7 @@
     <ClInclude Include="src\MathUtils.h" />
     <ClInclude Include="src\MenuState.h" />
     <ClInclude Include="src\NoVisualisationState.h" />
+    <ClInclude Include="src\NoVisUISettings.h" />
     <ClInclude Include="src\PeriodicityDetectionProcessor.h" />
     <ClInclude Include="src\Processor.h" />
     <ClInclude Include="src\Raycaster.h" />
@@ -192,6 +193,7 @@
     <ClInclude Include="src\SimObject.h" />
     <ClInclude Include="src\SimObjectInfo.h" />
     <ClInclude Include="src\SimState.h" />
+    <ClInclude Include="src\SimulationThread.h" />
     <ClInclude Include="src\SingleCSLStrategy.h" />
     <ClInclude Include="src\Statistic.h" />
     <ClInclude Include="src\Statistics.h" />
@@ -246,6 +248,7 @@
     <ClCompile Include="src\SimManager.cpp" />
     <ClCompile Include="src\SimObject.cpp" />
     <ClCompile Include="src\SimState.cpp" />
+    <ClCompile Include="src\SimulationThread.cpp" />
     <ClCompile Include="src\SingleCSLStrategy.cpp" />
     <ClCompile Include="src\Statistic.cpp" />
     <ClCompile Include="src\StatisticsManager.cpp" />
@@ -267,6 +270,8 @@
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)lib\%(Filename).dll</AdditionalInputs>
     </CustomBuild>
     <None Include="ClassDiagram.cd" />
+    <None Include="src\csl1Scene.yaml" />
+    <None Include="yaml\singlecsl1scene.yaml" />
     <None Include="yaml\testScene.yaml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

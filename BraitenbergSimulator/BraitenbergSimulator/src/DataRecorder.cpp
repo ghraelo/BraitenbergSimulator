@@ -29,28 +29,38 @@ void DataRecorder::BeginFile(CSVRow headerRow, std::string identifier)
 	oss << dt->tm_min;
 	oss << dt->tm_sec;
 
-	std::string currentFile = "logs/log-" + identifier + "-" + oss.str() + ".csv";
+	StreamDataPtr s = std::make_unique<StreamData>();
+	s->m_stream;
+	s->m_filePath = "logs/log-" + identifier + "-" + oss.str() + ".csv";
+	s->m_columns = headerRow.m_cellData.size();
 
-	m_filePaths.insert(std::pair<std::string,std::string>(identifier, currentFile));
+	m_streams.emplace(identifier, std::move(s));
 
-	m_outputStream.open(m_directoryPath + currentFile);
-	if (m_outputStream.fail())
-	{
-		int a = 5;
-	}
-	m_outputStream << headerRow.GetRow();
-	m_outputStream.close();
+	//open each stream and write header row
+	
+	m_streams[identifier]->m_stream.open(m_directoryPath + m_streams[identifier]->m_filePath);
+	m_streams[identifier]->m_stream << headerRow.GetRow();
 
-	m_columns = headerRow.m_cellData.size();
 }
 
 void DataRecorder::Record(CSVRow row, std::string identifier)
 {
-	assert(row.m_cellData.size() == m_columns);
+	assert(row.m_cellData.size() == m_streams[identifier]->m_columns);
 
-	m_outputStream.open(m_directoryPath + m_filePaths[identifier], std::ios::app);
-	m_outputStream << row.GetRow();
-	m_outputStream.close();
+	m_streams[identifier]->m_stream << row.GetRow();
+}
+
+void DataRecorder::EndFile(std::string identifier)
+{
+	m_streams[identifier]->m_stream.close();
+}
+
+void DataRecorder::CloseAll()
+{
+	for (auto& streamData : m_streams)
+	{
+		streamData.second->m_stream.close();
+	}
 }
 
 std::string CSVRow::GetRow()

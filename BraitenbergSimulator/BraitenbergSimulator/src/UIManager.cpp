@@ -132,6 +132,77 @@ void UIManager::DrawBaseUI(BaseUISettings& settings, const WindowState& ws)
 	}
 }
 
+void UIManager::DrawNoVisUI(NoVisUISettings & settings, const WindowState & ws)
+{
+	imguiBeginScrollArea("Simulator v0.1a", 0, 0, ws.width*0.2, ws.height, &settings.scroll);
+
+	std::stringstream sStream2;
+
+	sStream2 << "Elapsed sim time: " << std::setprecision(2) << std::fixed << settings.simTime << " s";
+	imguiLabel(sStream2.str().c_str());
+
+	sStream2.str(std::string());
+	sStream2.clear();
+
+	double accel = !(settings.simTime == 0.0 || settings.running == false) ? settings.simTime / (glfwGetTime() - settings.startTime) : 0.0;
+
+	sStream2 << "Time acceleration: " << std::setprecision(2) << std::fixed << accel << "x";
+	imguiLabel(sStream2.str().c_str());
+
+	imguiLabel("Select scene: ");
+	if (imguiButton(settings.activeSceneFilename.c_str(), true))
+	{
+		settings.selectPanelOpen = true;
+	}
+	if (settings.paused == false)
+	{
+		if (imguiButton("Pause", true))
+		{
+			settings.paused = true;
+		}
+	}
+	else
+	{
+		if (imguiButton("Unpause", true))
+		{
+			settings.paused = false;
+		}
+	}
+	if (imguiCheck("Enable dragging", settings.mouseDrag, true))
+	{
+		settings.mouseDrag = !settings.mouseDrag;
+	}
+
+	settings.shouldExit = imguiButton("Exit to menu", true);
+	imguiEndScrollArea();
+
+	if (settings.running == false)
+	{
+		imguiBeginScrollArea("Message", ws.width - ws.width*0.6, ws.height - ws.height*0.6, ws.width*0.2, ws.height*0.1, &settings.scroll);
+		imguiLabel("Simulation complete!");
+		imguiEndScrollArea();
+	}
+
+	//draw scene select panel
+	if (settings.selectPanelOpen == true)
+	{
+		imguiBeginScrollArea("Select scene", ws.width*0.2, 0, ws.width*0.2, ws.height, &settings.scroll2);
+
+		std::vector<std::string> files;
+		ResourceManager::GetFilesInDirectory(files, "yaml");
+		for (auto& file : files)
+		{
+			if (imguiButton(file.c_str(), true))
+			{
+				settings.activeSceneFilename = file.c_str();
+				settings.selectPanelOpen = false;
+			}
+		}
+
+		imguiEndScrollArea();
+	}
+}
+
 void UIManager::DrawStatsPane(const StatisticsManager & sm, const WindowState& ws)
 {
 	int testScroll = 0;

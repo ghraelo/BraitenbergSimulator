@@ -4,6 +4,7 @@
 #include "Vehicle.h"
 #include  "Rectangle.h"
 #include "BaseUISettings.h"
+#include "NoVisUISettings.h"
 #include "WMState.h"
 
 #include "StatisticsManager.h"
@@ -19,6 +20,7 @@ public:
 	void DeselectVehicle();
 	void DrawVehicleUI(Vehicle* veh);
 	void DrawBaseUI(BaseUISettings& settings, const WindowState& ws);
+	void DrawNoVisUI(NoVisUISettings& settings, const WindowState& ws);
 	void DrawStatsPane(const StatisticsManager& sm, const WindowState& ws);
 	bool InRegion(const b2Vec2& point);
 private:
