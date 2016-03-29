@@ -28,6 +28,16 @@ void CSL::SetCoefficients(float gf, float gi)
 	coeff_gi = gi;
 }
 
+CSLInternalData CSL::GetInternalData()
+{
+	CSLInternalData cid;
+	cid.m_delay = m_last_delay;
+	cid.m_input = m_last_input;
+	cid.m_output = m_last_output;
+
+	return cid;
+}
+
 float CSL::Clamp(float input)
 {
 	if (input < -1.0f)

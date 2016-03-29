@@ -2,6 +2,7 @@
 
 #include "SimManager.h"
 #include "DataRecorder.h"
+#include "MonitorManager.h"
 
 #include <sstream>
 
@@ -37,21 +38,15 @@ void SimulationThread::ThreadMethod(ScenePtr& scene, int iterations)
 {
 	//create sim manager and data recorder
 	SimManager simManager(scene);
+	MonitorManager monitorManager("logs");
+	
+	monitorManager.Init(simManager.GetCurrentScene());
 
-	DataRecorder dr;
+	BoundaryCallbackFunc func = [&](BoundaryType boundary, b2Vec2 coords, double time, Vehicle* vehicle) {
+		monitorManager.AddBoundaryCollision(boundary, coords, time, vehicle);
+	};
 
-	//open files for writing
-	for (auto &obj : simManager.GetCurrentScene()->m_vehicles)
-	{
-		CSVRow headerRow;
-		headerRow.m_cellData.push_back("events");
-		headerRow.m_cellData.push_back("t");
-		headerRow.m_cellData.push_back("x");
-		headerRow.m_cellData.push_back("y");
-		headerRow.m_cellData.push_back("angle");
-		headerRow.m_cellData.push_back("distance travelled");
-		dr.BeginFile(headerRow, obj->GetName());
-	}
+	simManager.GetBoundary()->RegisterCallback(func);
 
 	//run simulation
 	for (int i = 0; i < iterations; i++)
@@ -61,52 +56,14 @@ void SimulationThread::ThreadMethod(ScenePtr& scene, int iterations)
 		//60 hz timestep
 		simManager.Step(1.0f / 60);
 
-		//record data
-		for (auto &obj : simManager.GetCurrentScene()->m_vehicles)
-		{
-			CSVRow dataRow;
-			std::stringstream conv;
-
-			//events
-			if (simManager.GetEventFlags() == EF_BoundaryCollision)
-			{
-				conv << "B";
-			}
-			dataRow.m_cellData.push_back(conv.str());
-			conv.str(std::string());
-			conv.clear();
-
-			//time
-			conv << m_elapsedTime;
-			dataRow.m_cellData.push_back(conv.str());
-			conv.str(std::string());
-			conv.clear();
-
-			//x
-			conv << obj->GetPosition().x;
-			dataRow.m_cellData.push_back(conv.str());
-			conv.str(std::string());
-			conv.clear();
-
-			//y
-			conv << obj->GetPosition().y;
-			dataRow.m_cellData.push_back(conv.str());
-			conv.str(std::string());
-			conv.clear();
-
-			//angle
-			dataRow.m_cellData.push_back("");
-			//distance travelled
-			dataRow.m_cellData.push_back("");
-
-			dr.Record(dataRow, obj->GetName());
-		}
+		//write csv
+		monitorManager.RecordCSV();
 
 		if (m_threadShouldExit == true)
 			break;
 	}
-	//close files
-	dr.CloseAll();
+	monitorManager.SaveYAML();
+	monitorManager.Close();
 	m_threadComplete = true;
 	//printf("simulation done!\n");
 }

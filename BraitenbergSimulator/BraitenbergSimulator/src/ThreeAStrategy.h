@@ -6,4 +6,5 @@ class ThreeAStrategy : public ControlStrategy
 public:
 	ThreeAStrategy();
 	void Update() override;
+	void InitMap() override;
 };

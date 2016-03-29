@@ -43,7 +43,9 @@ void SimManager::Step(float timeStep)
 		obj->Update(m_currentScene->m_lights, m_boundary->GetRect());
 	}
 
-	m_boundary->Update();
+	m_boundary->Update(m_elapsedTime);
+
+	m_elapsedTime++;
 }
 
 void SimManager::Render(NVGcontext * vg, Renderer & renderer)
@@ -71,4 +73,9 @@ EventFlags SimManager::GetEventFlags()
 	{
 		return EF_None;
 	}
+}
+
+Boundary * SimManager::GetBoundary()
+{
+	return m_boundary.get();
 }

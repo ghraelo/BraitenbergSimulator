@@ -179,6 +179,7 @@
     <ClInclude Include="src\MainState.h" />
     <ClInclude Include="src\MathUtils.h" />
     <ClInclude Include="src\MenuState.h" />
+    <ClInclude Include="src\MonitorManager.h" />
     <ClInclude Include="src\NoVisualisationState.h" />
     <ClInclude Include="src\NoVisUISettings.h" />
     <ClInclude Include="src\PeriodicityDetectionProcessor.h" />
@@ -200,6 +201,7 @@
     <ClInclude Include="src\StatisticsManager.h" />
     <ClInclude Include="src\stb_truetype.h" />
     <ClInclude Include="src\Strategies.h" />
+    <ClInclude Include="src\TestQueue.h" />
     <ClInclude Include="src\ThreeAStrategy.h" />
     <ClInclude Include="src\ThreeBStrategy.h" />
     <ClInclude Include="src\Triangulate.h" />
@@ -236,6 +238,7 @@
     <ClCompile Include="src\MainState.cpp" />
     <ClCompile Include="src\MathUtils.cpp" />
     <ClCompile Include="src\MenuState.cpp" />
+    <ClCompile Include="src\MonitorManager.cpp" />
     <ClCompile Include="src\nanovg.cpp" />
     <ClCompile Include="src\NoVisualisationState.cpp" />
     <ClCompile Include="src\PeriodicityDetectionProcessor.cpp" />
@@ -252,6 +255,7 @@
     <ClCompile Include="src\SingleCSLStrategy.cpp" />
     <ClCompile Include="src\Statistic.cpp" />
     <ClCompile Include="src\StatisticsManager.cpp" />
+    <ClCompile Include="src\TestQueue.cpp" />
     <ClCompile Include="src\ThreeAStrategy.cpp" />
     <ClCompile Include="src\ThreeBStrategy.cpp" />
     <ClCompile Include="src\Triangulate.cpp" />
@@ -259,6 +263,7 @@
     <ClCompile Include="src\TwoBStrategy.cpp" />
     <ClCompile Include="src\UIManager.cpp" />
     <ClCompile Include="src\Vehicle.cpp" />
+    <ClCompile Include="src\VehicleMonitor.cpp" />
     <ClCompile Include="src\Watcher.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -6,4 +6,5 @@ class TwoAStrategy : public ControlStrategy
 public:
 	TwoAStrategy();
 	void Update() override;
+	void InitMap() override;
 };

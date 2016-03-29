@@ -21,11 +21,13 @@ public:
 	void Step(float timeStep);
 	void Render(NVGcontext* vg, Renderer& renderer) override;
 	EventFlags GetEventFlags();
+	Boundary* GetBoundary();
 private:
 	b2WorldPtr m_world;
 	ScenePtr m_currentScene;
 	BoundaryPtr m_boundary;
 	std::vector<char> m_eventFlags;
+	double m_elapsedTime = 0.0;
 };
 
 typedef std::unique_ptr<SimManager> SimManagerPtr;
