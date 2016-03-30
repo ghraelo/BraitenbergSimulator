@@ -535,10 +535,15 @@ bool imguiCollapse(const char* text, const char* subtext, bool checked, bool ena
 
 void imguiLabel(const char* text)
 {
+	imguiLabel(text, false);
+}
+
+void imguiLabel(const char * text, bool highlight)
+{
 	int x = s_state.widgetX;
 	int y = s_state.widgetY;
 	s_state.widgetY += BUTTON_HEIGHT + DEFAULT_SPACING;
-	g_rend->AddGfxCmdText(x, y + BUTTON_HEIGHT / 2 - TEXT_HEIGHT / 2,  text, NVG_ALIGN_LEFT, nvgRGBA(255, 255, 255, 255));
+	g_rend->AddGfxCmdText(x, y + BUTTON_HEIGHT / 2 - TEXT_HEIGHT / 2, text, NVG_ALIGN_LEFT, highlight ? nvgRGBA(255, 196, 0, 255) : nvgRGBA(255, 255, 255, 255));
 }
 
 void imguiValue(const char* text)

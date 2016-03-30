@@ -9,8 +9,8 @@ VehicleMonitor::VehicleMonitor()
 {
 }
 
-VehicleMonitor::VehicleMonitor(Vehicle * vehicle, std::string directoryPath)
-	:m_vehicle(vehicle), m_directoryPath(directoryPath)
+VehicleMonitor::VehicleMonitor(Vehicle * vehicle, std::string directoryPath, std::string sceneFileName)
+	:m_vehicle(vehicle), m_directoryPath(directoryPath), m_fileName(sceneFileName)
 {
 	m_timeStamp = GetTimeStamp();
 	//open csv
@@ -71,6 +71,8 @@ void VehicleMonitor::WriteYAML()
 {
 	YAML::Emitter out;
 	out << YAML::BeginMap;
+	out << YAML::Key << "scene";
+	out << YAML::Value << m_fileName;
 	out << YAML::Key << "vehicle";
 	out << YAML::Value << m_vehicle->GetName();
 	out << YAML::Key << "numericData";

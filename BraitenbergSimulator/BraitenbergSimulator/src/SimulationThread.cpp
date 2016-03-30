@@ -11,6 +11,7 @@ SimulationThread::SimulationThread()
 }
 
 SimulationThread::SimulationThread(ScenePtr scene, int iterations)
+	:m_iterations(iterations)
 {
 	m_thread = std::thread(&SimulationThread::ThreadMethod, this, std::move(scene), iterations);
 }
@@ -18,6 +19,11 @@ SimulationThread::SimulationThread(ScenePtr scene, int iterations)
 double SimulationThread::GetElapsedTime()
 {
 	return m_elapsedTime;
+}
+
+double SimulationThread::GetMaxTime()
+{
+	return m_iterations * m_timeStep;
 }
 
 bool SimulationThread::IsDone()
@@ -51,10 +57,10 @@ void SimulationThread::ThreadMethod(ScenePtr& scene, int iterations)
 	//run simulation
 	for (int i = 0; i < iterations; i++)
 	{
-		m_elapsedTime = m_elapsedTime + 1.0f / 60;
+		m_elapsedTime = m_elapsedTime + m_timeStep;
 
 		//60 hz timestep
-		simManager.Step(1.0f / 60);
+		simManager.Step(m_timeStep);
 
 		//write csv
 		monitorManager.RecordCSV();
@@ -65,5 +71,5 @@ void SimulationThread::ThreadMethod(ScenePtr& scene, int iterations)
 	monitorManager.SaveYAML();
 	monitorManager.Close();
 	m_threadComplete = true;
-	//printf("simulation done!\n");
+	printf("simulation done!\n");
 }

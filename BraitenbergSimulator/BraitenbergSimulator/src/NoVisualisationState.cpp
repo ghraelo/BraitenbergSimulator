@@ -10,7 +10,6 @@
 
 
 NoVisualisationState::NoVisualisationState()
-	:sm(30)
 {
 
 }
@@ -22,23 +21,34 @@ void NoVisualisationState::Init(SimEngine & se)
 	ResourceManager::GetFilesInDirectory(out, "yaml");
 	if (out.size() > 0)
 	{
-		m_baseSettings.activeSceneFilename = out[0];
+		uim.PopulateList(out);
 	}
 	else
 	{
 		printf("error: no scene files found\n");
 	}
 
-	LoadScene(m_baseSettings.activeSceneFilename);
-
 	prevMouseState = se.GetMouseState();
 
 	printf("number of cores: %s\n", getenv("NUMBER_OF_PROCESSORS"));
+
+	//register events
+	StringVectorFunc runFunc = [&](StringVector& str){
+		testQueue.Begin(str);
+		printf("help!\n");
+	};
+
+	VoidFunc exitFunc = [&]() {
+		exiting = true;
+	};
+
+	uim.RegisterRun(runFunc);
+	uim.RegisterExit(exitFunc);
 }
 
 void NoVisualisationState::Cleanup()
 {
-	simThread->Exit();
+	testQueue.End();
 }
 
 void NoVisualisationState::Update(SimEngine & se)
@@ -46,53 +56,36 @@ void NoVisualisationState::Update(SimEngine & se)
 
 	m_baseSettings.frameTime = se.GetFrameTime();
 	
-	if (m_baseSettings.shouldExit)
+	testQueue.Update();
+
+	if (testQueue.IsRunning())
+	{
+		m_baseSettings.testNumber = testQueue.GetTestNo();
+		m_baseSettings.simTime = testQueue.GetCurrentThread()->GetElapsedTime();
+	}
+
+	if (testQueue.IsFinished() && m_baseSettings.testsDone == false)
+	{
+		m_baseSettings.testNumber = testQueue.GetTestNo();
+		m_baseSettings.endTime = glfwGetTime();
+		m_baseSettings.testsDone = true;
+	}
+
+	if (exiting)
 	{
 		SimStatePtr p = std::make_unique<MenuState>();
 		ChangeState(se, p);
 		return;
 	}
-
-	if (m_currentSceneFileName != m_baseSettings.activeSceneFilename)
-	{
-		LoadScene(m_baseSettings.activeSceneFilename);
-	}
-
-	if (simThread->IsDone())
-		m_baseSettings.running = false;
-
-	m_baseSettings.simTime = simThread->GetElapsedTime();
-	
-	//printf("simTime: %f s\n", simTime);	
-}
-
-void NoVisualisationState::LoadScene(std::string fileName)
-{
-	//terminate current sim
-	if(simThread)
-		simThread->Exit();
-
-	ScenePtr s = ResourceManager::LoadScene(fileName);
-	m_currentSceneFileName = fileName;
-	m_baseSettings.sceneName = s->m_name;
-
-	simThread = std::make_unique<SimulationThread>(std::move(s), 60000);
-	m_baseSettings.running = true;
-
-	m_baseSettings.startTime = glfwGetTime();
 }
 
 void NoVisualisationState::Draw(SimEngine & se)
 {
-	//printf("frame time: %0.2f s\n", se.GetFrameTime());
-	//printf("update time: %0.2f s\n", se.GetUpdateTime());
-	//printf("draw time: %0.2f s\n", se.GetDrawTime());
-
 	NVGcontext* vg = se.GetContext();
 
 	// draw interface here
 	imguiBeginFrame(se.GetMouseState().xPos, se.GetMouseState().yPos, se.GetMouseState().leftMouse, 0, &guiRenderer);
-	uim.DrawNoVisUI(m_baseSettings, se.GetWindowState());
+	uim.Draw(m_baseSettings, se.GetWindowState());
 
 	imguiEndFrame();
 

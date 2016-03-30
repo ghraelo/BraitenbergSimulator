@@ -181,6 +181,7 @@
     <ClInclude Include="src\MenuState.h" />
     <ClInclude Include="src\MonitorManager.h" />
     <ClInclude Include="src\NoVisualisationState.h" />
+    <ClInclude Include="src\NoVisualisationUI.h" />
     <ClInclude Include="src\NoVisUISettings.h" />
     <ClInclude Include="src\PeriodicityDetectionProcessor.h" />
     <ClInclude Include="src\Processor.h" />
@@ -241,6 +242,7 @@
     <ClCompile Include="src\MonitorManager.cpp" />
     <ClCompile Include="src\nanovg.cpp" />
     <ClCompile Include="src\NoVisualisationState.cpp" />
+    <ClCompile Include="src\NoVisualisationUI.cpp" />
     <ClCompile Include="src\PeriodicityDetectionProcessor.cpp" />
     <ClCompile Include="src\Processor.cpp" />
     <ClCompile Include="src\Raycaster.cpp" />

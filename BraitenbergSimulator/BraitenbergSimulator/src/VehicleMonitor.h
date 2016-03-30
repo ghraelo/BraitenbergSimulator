@@ -30,7 +30,7 @@ class VehicleMonitor
 {
 public:
 	VehicleMonitor();
-	VehicleMonitor(Vehicle* vehicle, std::string directoryPath);
+	VehicleMonitor(Vehicle* vehicle, std::string directoryPath, std::string sceneFileName);
 	~VehicleMonitor();
 	void WriteCSV();
 	void AddCollision(BoundaryType type, b2Vec2 position, double time);
@@ -43,6 +43,7 @@ private:
 	Vehicle* m_vehicle;
 	std::string m_directoryPath;
 	std::string m_timeStamp;
+	std::string m_fileName;
 };
 
 typedef std::unique_ptr<VehicleMonitor> VehicleMonitorPtr;

@@ -17,4 +17,7 @@ struct NoVisUISettings
 	double frameTime = 0.0;
 	double startTime = 0.0;
 	bool running = false;
+	int testNumber = -1;
+	bool testsDone = false;
+	double endTime = 0.0;
 };

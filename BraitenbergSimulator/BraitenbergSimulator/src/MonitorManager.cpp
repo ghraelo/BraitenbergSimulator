@@ -13,7 +13,7 @@ void MonitorManager::Init(const Scene * theScene)
 {
 	for (auto& vehicle : theScene->m_vehicles)
 	{
-		VehicleMonitorPtr monitor = std::make_unique<VehicleMonitor>(vehicle.get(), m_directoryPath);
+		VehicleMonitorPtr monitor = std::make_unique<VehicleMonitor>(vehicle.get(), m_directoryPath,theScene->m_fileName);
 		m_monitors.push_back(std::move(monitor));
 	}
 }

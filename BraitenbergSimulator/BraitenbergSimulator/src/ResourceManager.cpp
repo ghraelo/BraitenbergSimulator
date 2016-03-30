@@ -24,8 +24,9 @@ ScenePtr ResourceManager::LoadScene(std::string fileName)
 	const std::string theString = baseNode["name"].as<std::string>();
 
 	theScene->m_name = theString;
+	theScene->m_fileName = fileName.substr(fileName.find_last_of('/')+1, std::string::npos);
 	printf("Scene name: %s\n",theString.c_str());
-
+	printf("File name: %s\n", theScene->m_fileName.c_str());
 	
 	//get vehicles
 	int vehicleNum = baseNode["vehicles"].size();

@@ -2,15 +2,16 @@
 
 #include "SimState.h"
 #include "NoVisUISettings.h"
-#include "UIManager.h"
+#include "NoVisualisationUI.h"
 #include "GUIRenderer.h"
 #include "Renderer.h"
 #include "Scene.h"
 #include "Camera.h"
 #include "Boundary.h"
 #include "SimManager.h"
-#include "DataRecorder.h"
+
 #include "SimulationThread.h"
+#include "TestQueue.h"
 
 #include <Box2D\Box2D.h>
 #include <memory>
@@ -35,21 +36,15 @@ public:
 	void HandleEvents(SimEngine& se) override;
 	void OnScroll(double scrollOffset) override;
 private:
-	void LoadScene(std::string fileName);
-	UIManager uim;
+	NoVisualisationUI uim;
 	NoVisUISettings m_baseSettings;
 	GUIRenderer guiRenderer;
-	b2WorldPtr world;
-	ScenePtr m_currentScene;
 	Renderer m_sceneRenderer;
-	StatisticsManager sm;
-	bool m_dragging = false;
 	MouseState prevMouseState;
-	BoundaryPtr worldBoundary;
 	double simTime = 0.0;
 
 	std::string m_currentSceneFileName;
-
-	SimulationThreadPtr simThread;
+	bool exiting = false;
+	TestQueue testQueue;
 
 };
