@@ -9,6 +9,7 @@ public:
 	SingleCSLStrategy();
 	SingleCSLStrategy(float gi, float gf);
 	void Update() override;
+	void InitMap() override;
 private:
 	CSL m_CSL;
 };

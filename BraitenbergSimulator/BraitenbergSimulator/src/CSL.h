@@ -1,5 +1,12 @@
 #pragma once
 
+struct CSLInternalData
+{
+	float m_input;
+	float m_output;
+	float m_delay;
+};
+
 class CSL
 {
 public:
@@ -7,6 +14,7 @@ public:
 	CSL(float gf, float gi);
 	float Update(float input);
 	void SetCoefficients(float gf, float gi);
+	CSLInternalData GetInternalData();
 private:
 	float coeff_gi;
 	float coeff_gf;

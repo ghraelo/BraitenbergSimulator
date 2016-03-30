@@ -179,7 +179,9 @@
     <ClInclude Include="src\MainState.h" />
     <ClInclude Include="src\MathUtils.h" />
     <ClInclude Include="src\MenuState.h" />
+    <ClInclude Include="src\MonitorManager.h" />
     <ClInclude Include="src\NoVisualisationState.h" />
+    <ClInclude Include="src\NoVisUISettings.h" />
     <ClInclude Include="src\PeriodicityDetectionProcessor.h" />
     <ClInclude Include="src\Processor.h" />
     <ClInclude Include="src\Raycaster.h" />
@@ -192,12 +194,14 @@
     <ClInclude Include="src\SimObject.h" />
     <ClInclude Include="src\SimObjectInfo.h" />
     <ClInclude Include="src\SimState.h" />
+    <ClInclude Include="src\SimulationThread.h" />
     <ClInclude Include="src\SingleCSLStrategy.h" />
     <ClInclude Include="src\Statistic.h" />
     <ClInclude Include="src\Statistics.h" />
     <ClInclude Include="src\StatisticsManager.h" />
     <ClInclude Include="src\stb_truetype.h" />
     <ClInclude Include="src\Strategies.h" />
+    <ClInclude Include="src\TestQueue.h" />
     <ClInclude Include="src\ThreeAStrategy.h" />
     <ClInclude Include="src\ThreeBStrategy.h" />
     <ClInclude Include="src\Triangulate.h" />
@@ -234,6 +238,7 @@
     <ClCompile Include="src\MainState.cpp" />
     <ClCompile Include="src\MathUtils.cpp" />
     <ClCompile Include="src\MenuState.cpp" />
+    <ClCompile Include="src\MonitorManager.cpp" />
     <ClCompile Include="src\nanovg.cpp" />
     <ClCompile Include="src\NoVisualisationState.cpp" />
     <ClCompile Include="src\PeriodicityDetectionProcessor.cpp" />
@@ -246,9 +251,11 @@
     <ClCompile Include="src\SimManager.cpp" />
     <ClCompile Include="src\SimObject.cpp" />
     <ClCompile Include="src\SimState.cpp" />
+    <ClCompile Include="src\SimulationThread.cpp" />
     <ClCompile Include="src\SingleCSLStrategy.cpp" />
     <ClCompile Include="src\Statistic.cpp" />
     <ClCompile Include="src\StatisticsManager.cpp" />
+    <ClCompile Include="src\TestQueue.cpp" />
     <ClCompile Include="src\ThreeAStrategy.cpp" />
     <ClCompile Include="src\ThreeBStrategy.cpp" />
     <ClCompile Include="src\Triangulate.cpp" />
@@ -256,6 +263,7 @@
     <ClCompile Include="src\TwoBStrategy.cpp" />
     <ClCompile Include="src\UIManager.cpp" />
     <ClCompile Include="src\Vehicle.cpp" />
+    <ClCompile Include="src\VehicleMonitor.cpp" />
     <ClCompile Include="src\Watcher.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -267,6 +275,8 @@
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)lib\%(Filename).dll</AdditionalInputs>
     </CustomBuild>
     <None Include="ClassDiagram.cd" />
+    <None Include="src\csl1Scene.yaml" />
+    <None Include="yaml\singlecsl1scene.yaml" />
     <None Include="yaml\testScene.yaml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

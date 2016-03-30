@@ -182,3 +182,8 @@ bool Vehicle::ControlStatus()
 {
 	return m_controllerEnabled;
 }
+
+std::map<std::string, float> Vehicle::GetInternalData()
+{
+	return m_ctrl_strat->GetInternalData();
+}

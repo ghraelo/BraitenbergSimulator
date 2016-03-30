@@ -16,3 +16,8 @@ void ControlStrategy::GetOutput(float & left, float & right)
 	left = m_leftOutput;
 	right = m_rightOutput;
 }
+
+std::map<std::string, float> ControlStrategy::GetInternalData()
+{
+	return m_internalData;
+}

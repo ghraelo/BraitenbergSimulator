@@ -57,9 +57,6 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\ResourceManager.h">
-      <Filter>Source Files\Resources</Filter>
-    </ClInclude>
     <ClInclude Include="src\YAMLConverters.h">
       <Filter>Source Files\Resources</Filter>
     </ClInclude>
@@ -219,6 +216,21 @@
     <ClInclude Include="src\EventFlags.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\SimulationThread.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NoVisUISettings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ResourceManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TestQueue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MonitorManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BraitenbergSimulator.cpp">
@@ -356,10 +368,28 @@
     <ClCompile Include="src\UIManager.cpp">
       <Filter>Source Files\GUI</Filter>
     </ClCompile>
+    <ClCompile Include="src\SimulationThread.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TestQueue.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\VehicleMonitor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MonitorManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
     <None Include="yaml\testScene.yaml">
+      <Filter>YAML</Filter>
+    </None>
+    <None Include="src\csl1Scene.yaml">
+      <Filter>YAML</Filter>
+    </None>
+    <None Include="yaml\singlecsl1scene.yaml">
       <Filter>YAML</Filter>
     </None>
   </ItemGroup>

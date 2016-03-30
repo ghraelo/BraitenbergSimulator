@@ -1,5 +1,5 @@
-yaml_file='H:/Users/Jack/Source/Repos/BraitenbergSimulator/BraitenbergSimulator/BraitenbergSimulator/yaml/testScene.yaml';
-csv_file ='H:/Users/Jack/Source/Repos/BraitenbergSimulator/BraitenbergSimulator/BraitenbergSimulator/logs/log-testVehicle-2016327_214436.csv';
+yaml_file='H:/Users/Jack/Source/Repos/BraitenbergSimulator/BraitenbergSimulator/BraitenbergSimulator/yaml/singlecsl1scene.yaml';
+csv_file ='H:/Users/Jack/Source/Repos/BraitenbergSimulator/BraitenbergSimulator/BraitenbergSimulator/logs/log-testVehicle-2016328_185725.csv';
 SceneStruct = yaml.ReadYaml(yaml_file);
 
 % get light position
@@ -34,20 +34,23 @@ viscircles(centres,radii);
 
 %plot vehicle track
 val = 1;
-for b = 1 : 1: size(indices,1)
-    datax = vehicleTrackData(val : indices(b)-2,3);
-    datay = vehicleTrackData(val : indices(b)-2,2);
-    %ax = gca;
-    %ax.ColorOrderIndex = 1;
-    plot(datax,datay);
+if(size(indices,1) > 0)
+    for b = 1 : 1: size(indices,1)
+        datax = vehicleTrackData(val : indices(b)-2,3);
+        datay = vehicleTrackData(val : indices(b)-2,2);
+        %ax = gca;
+        %ax.ColorOrderIndex = 1;
+        plot(datax,datay);
 
-    if (b + 1) > size(indices,1)
-        val = indices(b)-1;
-    else
-        val = indices(b);
+        if (b + 1) > size(indices,1)
+            val = indices(b)-1;
+        else
+            val = indices(b);
+        end
     end
+else
+    plot(vehicleTrackData(:,2),vehicleTrackData(:,3));
 end
-
 
 title(strcat(SceneStruct.name, ' coverage plot'));
 axis square;

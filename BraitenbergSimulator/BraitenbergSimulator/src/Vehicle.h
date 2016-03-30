@@ -7,7 +7,9 @@
 #include "SimObject.h"
 #include "ControlStrategy.h"
 #include "SimObjectInfo.h"
+
 #include <string>
+#include <map>
 
 //forward declarations
 class Renderer;
@@ -35,6 +37,7 @@ public:
 	void EnableControl();
 	void DisableControl();
 	bool ControlStatus();
+	std::map<std::string, float> GetInternalData();
 	
 private:
 	std::string m_name;
