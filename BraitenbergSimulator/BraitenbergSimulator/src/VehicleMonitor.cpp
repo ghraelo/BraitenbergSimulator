@@ -3,14 +3,15 @@
 #include <ctime>
 #include <cassert>
 #include <sstream>
+#include "YAMLConverters.h"	
 
 VehicleMonitor::VehicleMonitor()
 	:m_directoryPath("")
 {
 }
 
-VehicleMonitor::VehicleMonitor(Vehicle * vehicle, std::string directoryPath, std::string sceneFileName)
-	:m_vehicle(vehicle), m_directoryPath(directoryPath), m_fileName(sceneFileName)
+VehicleMonitor::VehicleMonitor(Vehicle * vehicle, std::string directoryPath)
+	:m_vehicle(vehicle), m_directoryPath(directoryPath)
 {
 	m_timeStamp = GetTimeStamp();
 	//open csv
@@ -18,7 +19,7 @@ VehicleMonitor::VehicleMonitor(Vehicle * vehicle, std::string directoryPath, std
 	m_csvStream.open(fileName);
 
 	//write header row
-	std::string headerRow = "events,x,y,angle,";
+	std::string headerRow = "events,time,x,y,angle,";
 
 	for (auto& datum : m_vehicle->GetInternalData())
 	{
@@ -35,10 +36,11 @@ VehicleMonitor::~VehicleMonitor()
 	m_csvStream.close();
 }
 
-void VehicleMonitor::WriteCSV()
+void VehicleMonitor::WriteCSV(double elapsedTime)
 {
 	std::ostringstream row;
 	row << ",";
+	row << elapsedTime << ",";
 	row << m_vehicle->GetPosition().x << ",";
 	row << m_vehicle->GetPosition().y << ",";
 	row << m_vehicle->m_body->GetAngle() << ",";
@@ -67,42 +69,29 @@ YAML::Emitter& operator << (YAML::Emitter& out, const b2Vec2& v) {
 	return out;
 };
 
-void VehicleMonitor::WriteYAML()
+YAML::Node VehicleMonitor::GetYAML()
 {
-	YAML::Emitter out;
-	out << YAML::BeginMap;
-	out << YAML::Key << "scene";
-	out << YAML::Value << m_fileName;
-	out << YAML::Key << "vehicle";
-	out << YAML::Value << m_vehicle->GetName();
-	out << YAML::Key << "numericData";
-	out << YAML::Value << (m_vehicle->GetName() + m_timeStamp + ".csv");
-	out << YAML::Key << "boundaryCollisions" << YAML::Value << YAML::BeginSeq;
-
-	for (auto& collision : boundaryCollisions)
+	YAML::Node node;
+	node["name"] = m_vehicle->GetName();
+	node["numericData"] = m_vehicle->GetName() + m_timeStamp + ".csv";
+	if (boundaryCollisions.size() > 0)
 	{
-		out << YAML::BeginMap;
+		for (auto& collision : boundaryCollisions)
+		{
+			YAML::Node col;
+			col["type"] = collision.m_type;
+			col["position"] = collision.m_position;
+			col["time"] = collision.m_time;
 
-		out << YAML::Key << "type";
-		out << YAML::Value << collision.m_type;
-
-		out << YAML::Key << "position";
-		out << YAML::Value << collision.m_position;
-
-		out << YAML::Key << "time";
-		out << YAML::Value << collision.m_time;
-
-		out << YAML::EndMap;
+			node["boundaryCollisions"].push_back(col);
+		}
+	}
+	else
+	{
+		node["boundaryCollisions"].push_back("");
 	}
 
-	out << YAML::EndSeq;
-	out << YAML::EndMap;
-
-	std::ofstream yamlFile;
-	yamlFile.open(m_directoryPath + "/" + m_vehicle->GetName() + m_timeStamp + ".yaml");
-	yamlFile << out.c_str();
-	yamlFile.close();
-	
+	return node;
 }
 
 std::string VehicleMonitor::GetVehicleName()

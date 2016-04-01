@@ -36,6 +36,8 @@ void SimManager::LoadScene(ScenePtr & scene)
 
 void SimManager::Step(float timeStep)
 {
+	m_elapsedTime += timeStep;
+
 	m_world->Step(timeStep, 8, 3);
 
 	for (auto &obj : m_currentScene->m_vehicles)
@@ -44,8 +46,6 @@ void SimManager::Step(float timeStep)
 	}
 
 	m_boundary->Update(m_elapsedTime);
-
-	m_elapsedTime++;
 }
 
 void SimManager::Render(NVGcontext * vg, Renderer & renderer)

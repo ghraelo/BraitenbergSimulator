@@ -13,7 +13,7 @@ public:
 	static ScenePtr LoadScene(std::string fileName);
 	static void GetFilesInDirectory(std::vector<std::string> &out, const std::string &directory);
 private:
-	static VehiclePtr LoadVehicle(YAML::Node vehicleNode, std::string vehicleName);
+	static VehiclePtr LoadVehicle(YAML::Node vehicleNode);
 	static LightSource LoadLight(YAML::Node lightNode);
 	static bool LoadSensor(YAML::Node& sensorNode, sensorInfo& info);
 

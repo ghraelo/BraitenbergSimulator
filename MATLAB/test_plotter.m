@@ -1,5 +1,5 @@
-yaml_file='H:/Users/Jack/Source/Repos/BraitenbergSimulator/BraitenbergSimulator/BraitenbergSimulator/yaml/singlecsl1scene.yaml';
-csv_file ='H:/Users/Jack/Source/Repos/BraitenbergSimulator/BraitenbergSimulator/BraitenbergSimulator/logs/log-testVehicle-2016328_185725.csv';
+yaml_file='H:/Users/Jack/Source/Repos/BraitenbergSimulator/BraitenbergSimulator/BraitenbergSimulator/yaml/testScene.yaml';
+csv_file ='H:/Users/Jack/Source/Repos/BraitenbergSimulator/BraitenbergSimulator/BraitenbergSimulator/logs/testVehicle201641-1245.csv';
 SceneStruct = yaml.ReadYaml(yaml_file);
 
 % get light position

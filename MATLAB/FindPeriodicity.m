@@ -23,7 +23,7 @@ for n = 1 : length(startIndices)
 
     endIndices = endIndices(endIndices > startIndices(n));
     endIndices = endIndices(y(endIndices+1) == 0);
-    endIndices = endIndices(y(endIndices+2) == 0);
+    endIndices = endIndices(y(endIndices+2) == 0); 
     endIndices = endIndices(y(endIndices+3) == 0);
     endIndices = endIndices(y(endIndices+4) == 0);
     if size(endIndices) > 0

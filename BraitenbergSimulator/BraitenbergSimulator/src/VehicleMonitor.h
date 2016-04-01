@@ -30,11 +30,11 @@ class VehicleMonitor
 {
 public:
 	VehicleMonitor();
-	VehicleMonitor(Vehicle* vehicle, std::string directoryPath, std::string sceneFileName);
+	VehicleMonitor(Vehicle* vehicle, std::string directoryPath);
 	~VehicleMonitor();
-	void WriteCSV();
+	void WriteCSV(double elapsedTime);
 	void AddCollision(BoundaryType type, b2Vec2 position, double time);
-	void WriteYAML();
+	YAML::Node GetYAML();
 	std::string GetVehicleName();
 private:
 	std::string GetTimeStamp();
@@ -43,7 +43,6 @@ private:
 	Vehicle* m_vehicle;
 	std::string m_directoryPath;
 	std::string m_timeStamp;
-	std::string m_fileName;
 };
 
 typedef std::unique_ptr<VehicleMonitor> VehicleMonitorPtr;

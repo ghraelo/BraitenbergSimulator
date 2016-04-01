@@ -2,6 +2,7 @@
 
 #include <yaml-cpp\yaml.h>
 #include <Box2D\Common\b2Math.h>
+#include "Boundary.h"
 
 namespace YAML
 {
@@ -28,4 +29,48 @@ namespace YAML
 			return true;
 		}
 	};
+
+	template<>
+	struct convert<BoundaryType> {
+		static Node encode(const BoundaryType& rhs) {
+			Node node;
+			switch (rhs)
+			{
+				case BT_TOP:
+					node.push_back("top");
+					break;
+				case BT_BOTTOM:
+					node.push_back("bottom");
+					break;
+				case BT_LEFT:
+					node.push_back("left");
+					break;
+				case BT_RIGHT:
+					node.push_back("right");
+					break;
+				default:
+					node.push_back("ERROR");
+			}
+			return node;
+		}
+
+		static bool decode(const Node& node, BoundaryType& rhs) {
+			if (!node.IsScalar()) {
+				return false;
+			}
+			if (node.as<std::string>() == "top")
+				rhs = BT_TOP;
+			else if (node.as<std::string>() == "bottom")
+				rhs = BT_BOTTOM;
+			else if (node.as<std::string>() == "left")
+				rhs = BT_LEFT;
+			else if (node.as<std::string>() == "right")
+				rhs = BT_RIGHT;
+			else return false;
+
+			return true;
+		}
+	};
+
+
 }

@@ -63,7 +63,7 @@ void SimulationThread::ThreadMethod(ScenePtr& scene, int iterations)
 		simManager.Step(m_timeStep);
 
 		//write csv
-		monitorManager.RecordCSV();
+		monitorManager.RecordCSV(m_elapsedTime);
 
 		if (m_threadShouldExit == true)
 			break;

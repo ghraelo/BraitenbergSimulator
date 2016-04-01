@@ -29,47 +29,53 @@ ScenePtr ResourceManager::LoadScene(std::string fileName)
 	printf("File name: %s\n", theScene->m_fileName.c_str());
 	
 	//get vehicles
-	int vehicleNum = baseNode["vehicles"].size();
-	printf("Attempting to load %d vehicles...\n", vehicleNum);
-	for (int i = 0; i < vehicleNum; i++)
+	YAML::Node vehicleNode = baseNode["vehicles"];
+	assert(vehicleNode.IsSequence());
+
+	printf("Attempting to load %d vehicles...\n", vehicleNode.size());
+	for(auto& vehicle : vehicleNode)
 	{
-		std::string vehicleName = baseNode["vehicles"][i].as<std::string>();
-		YAML::Node vehicleNode = baseNode[vehicleName];
-		VehiclePtr v = LoadVehicle(vehicleNode, vehicleName);
+		VehiclePtr v = LoadVehicle(vehicle);
 		theScene->m_vehicles.push_back(std::move(v));
 	}
 	printf("Done!\n");
+
 	//get lights
-	int lightNum = baseNode["lights"].size();
-	printf("Attempting to load %d lights...\n", lightNum);
-	for (int i = 0; i < lightNum; i++)
+	YAML::Node lightNode = baseNode["lights"];
+	assert(lightNode.IsSequence());
+
+	printf("Attempting to load %d lights...\n", lightNode.size());
+	for(auto& light : lightNode)
 	{
-		std::string lightName = baseNode["lights"][i].as<std::string>();
-		YAML::Node lightNode = baseNode[lightName];
-		theScene->m_lights.push_back(LoadLight(lightNode));
+		theScene->m_lights.push_back(LoadLight(light));
 	}
 	printf("Done!\n");
 	return theScene;
 }
 
-VehiclePtr ResourceManager::LoadVehicle(YAML::Node vehicleNode, std::string vehicleName)
+VehiclePtr ResourceManager::LoadVehicle(YAML::Node vehicleNode)
 {
 	b2Vec2 vehicle_pos;
-
+	std::string name;
 	if (vehicleNode.IsNull())
 		throw std::exception("YAML:Vehicle node not found");
+
+	assert(vehicleNode.IsMap());
+
+	//get name
+	name = vehicleNode["name"].as<std::string>();
 
 	//get position
 	vehicle_pos = vehicleNode["position"].as<b2Vec2>();
 
 	//get left sensor
-	YAML::Node leftSensorNode = vehicleNode["leftsensor"];
+	YAML::Node leftSensorNode = vehicleNode["left-sensor"];
 	sensorInfo leftInfo;
 	LoadSensor(leftSensorNode, leftInfo);
 
 
 	//get right sensor
-	YAML::Node rightSensorNode = vehicleNode["rightsensor"];
+	YAML::Node rightSensorNode = vehicleNode["right-sensor"];
 	sensorInfo rightInfo;
 	LoadSensor(rightSensorNode, rightInfo);
 
@@ -121,7 +127,7 @@ VehiclePtr ResourceManager::LoadVehicle(YAML::Node vehicleNode, std::string vehi
 	}
 
 	//got all information, create vehicle
-	return std::make_unique<Vehicle>(leftInfo, rightInfo, cs_ptr, vehicleName);
+	return std::make_unique<Vehicle>(leftInfo, rightInfo, cs_ptr,name);
 }
 
 LightSource ResourceManager::LoadLight(YAML::Node lightNode)
@@ -147,7 +153,7 @@ bool ResourceManager::LoadSensor(YAML::Node& sensorNode, sensorInfo& info)
 
 					  //create sensorInfo struct
 	info.m_offset = sensorNode["offset"].as<b2Vec2>();
-	info.m_aperture = sensorNode["apertureAngle"].as<float>();
+	info.m_aperture = sensorNode["aperture-angle"].as<float>();
 	info.m_direction = sensorNode["direction"].as<b2Vec2>();
 
 	return true;
