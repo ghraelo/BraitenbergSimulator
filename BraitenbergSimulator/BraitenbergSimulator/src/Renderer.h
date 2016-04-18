@@ -5,6 +5,7 @@
 #include "Camera.h"
 #include "Boundary.h"
 #include "SimManager.h"
+#include "Obstacle.h"
 
 #include <nanovg\nanovg.h>
 
@@ -16,7 +17,7 @@ public:
 	void RenderLightSource(NVGcontext* vg, LightSource& renderable);
 	void RenderLightSensor(NVGcontext* vg, LightSensor& renderable);
 	void RenderBoundary(NVGcontext *vg, Boundary& renderable);
-
+	void RenderObstacle(NVGcontext *vg, Obstacle& renderable);
 	void SetCamera(Camera* cam);
 private:
 	Camera* m_cam;

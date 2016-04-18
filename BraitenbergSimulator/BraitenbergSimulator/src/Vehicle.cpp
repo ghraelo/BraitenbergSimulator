@@ -7,8 +7,8 @@ Vehicle::Vehicle()
 {
 }
 
-Vehicle::Vehicle(sensorInfo leftInfo, sensorInfo rightInfo, ControlStrategyPtr& strategy, std::string name)
-	:SimObject(), leftSensor(this, leftInfo), rightSensor(this, rightInfo), m_ctrl_strat(std::move(strategy)), m_name(name)
+Vehicle::Vehicle(b2Vec2 position, sensorInfo leftInfo, sensorInfo rightInfo, ControlStrategyPtr& strategy, std::string name)
+	:SimObject(position, name), leftSensor(this, leftInfo,0.05), rightSensor(this, rightInfo,0.05), m_ctrl_strat(std::move(strategy))
 {
 }
 
@@ -61,14 +61,43 @@ void Vehicle::SetPosition(b2Vec2 pos)
 	int s = 4;
 }
 
+void Vehicle::SetAngle(float ang)
+{
+	void* data = m_body->GetUserData();
+	b2Vec2 pos = m_body->GetPosition();
+	theWorld->DestroyBody(m_body);
+
+	bodyDef.position = pos;
+	bodyDef.angle = ang;
+	m_body = (*theWorld).CreateBody(&bodyDef);
+
+	//init shape
+
+	b2Vec2 vertices[3];
+	vertices[0].Set(-1.0f, 0.0f);
+	vertices[1].Set(1.0f, 0.0f);
+	vertices[2].Set(0.0f, 3.0f);
+	int32 count = 3;
+
+	vehicleShape.Set(vertices, count);
+
+	//init fixture
+
+	fixtureDef.shape = &vehicleShape;
+	fixtureDef.density = 1.0f;
+	fixtureDef.friction = 0.3f;
+
+	//create fixture
+	b2Fixture* theFixture = m_body->CreateFixture(&fixtureDef);
+
+	m_body->SetUserData(data);
+	m_position = m_body->GetPosition();
+	int s = 4;
+}
+
 b2Vec2 Vehicle::GetCOM()
 {
 	return m_body->GetWorldCenter();
-}
-
-std::string Vehicle::GetName()
-{
-	return m_name;
 }
 
 void Vehicle::SetUserData()
@@ -85,7 +114,7 @@ void Vehicle::BindPhysics(b2World* world)
 	theWorld = world;
 	//init body
 	bodyDef.type = b2_dynamicBody;
-	bodyDef.position.Set(0.0f, 0.0f);
+	bodyDef.position = m_position;
 	bodyDef.gravityScale = 0.0f;
 	bodyDef.angularDamping = 0.5f;
 	bodyDef.linearDamping = 0.5f;
@@ -111,6 +140,8 @@ void Vehicle::BindPhysics(b2World* world)
 
 	//create fixture
 	b2Fixture* theFixture = m_body->CreateFixture(&fixtureDef); 
+
+	m_physicsBound = true;
 }
 
 void Vehicle::LeftForce(float magnitude)
@@ -142,22 +173,25 @@ void Vehicle::Update()
 
 }
 
-void Vehicle::Update(std::vector<LightSource> ls, Rectangle bounds)
+void Vehicle::Update(std::vector<LightSourcePtr>& ls, Rectangle bounds)
 {
-	float leftLight = leftSensor.GetLight(ls, bounds);
-	float rightLight = rightSensor.GetLight(ls, bounds);
-	//printf("leftlight: %f, rightlight: %f\n", leftLight, rightLight);
-	float leftForce = 0;
-	float rightForce = 0;
-
-	if (m_controllerEnabled)
+	if (m_physicsBound)
 	{
-		m_ctrl_strat->SetInputs(leftLight, rightLight);
-		m_ctrl_strat->Update();
-		m_ctrl_strat->GetOutput(leftForce, rightForce);
-		//printf("leftforce: %f, rightforce: %f\n", leftForce, rightForce);
-		LeftForce(leftForce);
-		RightForce(rightForce);
+		float leftLight = leftSensor.GetLight(ls, bounds);
+		float rightLight = rightSensor.GetLight(ls, bounds);
+		//printf("leftlight: %f, rightlight: %f\n", leftLight, rightLight);
+		float leftForce = 0;
+		float rightForce = 0;
+
+		if (m_controllerEnabled)
+		{
+			m_ctrl_strat->SetInputs(leftLight, rightLight);
+			m_ctrl_strat->Update();
+			m_ctrl_strat->GetOutput(leftForce, rightForce);
+			//printf("leftforce: %f, rightforce: %f\n", leftForce, rightForce);
+			LeftForce(leftForce);
+			RightForce(rightForce);
+		}
 	}
 }
 

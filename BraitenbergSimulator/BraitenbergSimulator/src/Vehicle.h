@@ -18,18 +18,18 @@ class Vehicle : public SimObject
 {
 public:
 	Vehicle();
-	Vehicle(sensorInfo leftInfo, sensorInfo rightInfo, ControlStrategyPtr& strategy,std::string name);
+	Vehicle(b2Vec2 position, sensorInfo leftInfo, sensorInfo rightInfo, ControlStrategyPtr& strategy,std::string name);
 	//Vehicle(b2World* world, VehicleDef vehicleDef);
 	~Vehicle();
 	void BindPhysics(b2World* world);
 	void LeftForce(float magnitude);
 	void RightForce(float magnitude);
 	void Update() override;
-	void Update(std::vector<LightSource> ls, Rectangle bounds);
+	void Update(std::vector<LightSourcePtr>& ls, Rectangle bounds);
 	b2Vec2 GetPosition() override;
 	void SetPosition(b2Vec2 pos);
+	void SetAngle(float ang);
 	b2Vec2 GetCOM();
-	std::string GetName();
 	b2Body* m_body;
 	LightSensor leftSensor;
 	LightSensor rightSensor;

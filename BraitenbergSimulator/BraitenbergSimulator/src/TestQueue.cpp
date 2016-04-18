@@ -6,8 +6,9 @@ TestQueue::TestQueue()
 {
 }
 
-void TestQueue::Begin(const std::vector<std::string>& fileNames)
+void TestQueue::Begin(const std::vector<std::string>& fileNames,int iterations)
 {
+	m_iterations = iterations;
 	for (auto& file : fileNames)
 	{
 		m_testQueue.push(ResourceManager::LoadScene(file));
@@ -26,7 +27,7 @@ void TestQueue::Update()
 		if (!m_testQueue.empty())
 		{
 			//create sim thread from scene at front of queue
-			m_currTest = std::make_unique<SimulationThread>(std::move(m_testQueue.front()), 60000);
+			m_currTest = std::make_unique<SimulationThread>(std::move(m_testQueue.front()), m_iterations);
 			m_testQueue.pop(); //pop empty ptr off queue
 			m_testNo++;
 		}

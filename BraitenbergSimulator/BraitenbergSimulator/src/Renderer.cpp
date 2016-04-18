@@ -46,10 +46,9 @@ void Renderer::RenderLightSource(NVGcontext* vg, LightSource & renderable)
 
 	float rad = b2Distance(pos, pos2);
 
-	NVGpaint grad = nvgRadialGradient(vg, pos.x, pos.y, rad/2, rad, nvgRGBA(255, 255, 255, 255), nvgRGBA(0, 0, 0, 0));
+	NVGcolor grn = nvgRGBA(0, 255, 0, 255);
 	nvgCircle(vg, pos.x, pos.y, rad);
-
-	nvgFillPaint(vg, grad);
+	nvgFillColor(vg, grn);
 	nvgFill(vg);
 }
 
@@ -77,7 +76,7 @@ void Renderer::RenderLightSensor(NVGcontext* vg, LightSensor& renderable)
 	nvgStroke(vg);
 
 	//draw visibility polygon
-	//DrawFilledPolygon(vg,renderable.GetRayCastPolygon(), nvgRGBA(255, 255, 255, 128));
+	DrawFilledPolygon(vg,renderable.GetRayCastPolygon(), nvgRGBA(255, 255, 255, 128));
 
 }
 
@@ -142,6 +141,43 @@ void Renderer::RenderBoundary(NVGcontext * vg, Boundary & renderable)
 		flashTimer = flashTimer + 1.0;
 	}
 
+}
+
+void Renderer::RenderObstacle(NVGcontext * vg, Obstacle & renderable)
+{
+	ObstacleType type = renderable.GetType();
+	if (type == OT_CIRCLE)
+	{
+		b2CircleShape* circ = (b2CircleShape*)renderable.GetShape();
+
+		nvgBeginPath(vg);
+		b2Vec2 pos = m_cam->ConvertWorldToScreen(renderable.m_body->GetWorldPoint(circ->m_p));
+
+		b2Vec2 pos2 = m_cam->ConvertWorldToScreen(renderable.GetPosition() + b2Vec2(0, circ->m_radius));
+
+		float rad = b2Distance(pos, pos2);
+
+		NVGpaint grad = nvgRadialGradient(vg, pos.x, pos.y, rad / 2, rad, nvgRGBA(255, 255, 255, 255), nvgRGBA(0, 0, 0, 0));
+		
+		nvgCircle(vg, pos.x, pos.y, rad);
+		nvgFillColor(vg, nvgRGBA(0, 0, 255, 255));
+		nvgFill(vg);
+
+	}
+	else
+	{
+		b2PolygonShape* shape = (b2PolygonShape*)renderable.GetShape();
+		std::vector<b2Vec2> vertices;
+		vertices.assign(shape->m_vertices, shape->m_vertices + shape->GetVertexCount());
+		std::transform(vertices.begin(), vertices.end(), vertices.begin(),
+			[&](b2Vec2 a) {
+			return renderable.m_body->GetWorldPoint(a);
+		}
+		);
+
+		DrawPolygon(vg, vertices, nvgRGBA(0, 0, 255, 255));
+		DrawFilledPolygon(vg, vertices, nvgRGBA(0, 0, (unsigned char)(255 * 0.75f), 255));
+	}
 }
 
 void Renderer::SetCamera(Camera * cam)

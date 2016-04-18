@@ -9,10 +9,12 @@ class SimObject : public IRenderable
 {
 public:
 	SimObject();
-	SimObject(b2Vec2 position);
+	SimObject(b2Vec2 position, std::string name);
 	virtual b2Vec2 GetPosition();
 	virtual void Update();
 	virtual void Render(NVGcontext* vg, Renderer& r);
+	virtual std::string GetName();
 protected:
 	b2Vec2 m_position;
+	std::string m_name;
 };

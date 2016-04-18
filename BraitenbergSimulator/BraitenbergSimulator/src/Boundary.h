@@ -29,6 +29,7 @@ struct BoundaryData
 	b2AABB m_aabb;
 	b2Vec2 m_force;
 	BoundaryType m_type;
+	b2Vec2 m_midPt;
 };
 
 typedef std::function<void(BoundaryType boundary, b2Vec2 coords, double time, Vehicle* vehicle)> BoundaryCallbackFunc;
@@ -38,13 +39,12 @@ class Boundary : public IRenderable
 public:
 	Boundary(b2World* world, b2Vec2 topLeft, float width, float height, float influence);
 	void RegisterCallback(BoundaryCallbackFunc func);
-	void Update(double time);
-	void Render(NVGcontext* vg, Renderer& r) override;
+	virtual void Update(double time) = 0;
+	virtual void Render(NVGcontext* vg, Renderer& r) = 0;
 	Rectangle GetRect();
-	float GetInfluence();
-	std::vector<BoundaryData> edges;
+	float GetInfluence();	
 	bool IsColliding();
-private:
+protected:
 	void OnCollision(BoundaryType boundary, b2Vec2 coords, double time, Vehicle* vehicle);
 	b2World* m_world;
 	float m_influence;
@@ -53,6 +53,7 @@ private:
 	float m_height;
 	bool m_isColliding = false;
 	BoundaryCallbackFunc m_bcf;
+	std::vector<BoundaryData> edges;
 };
 
 typedef std::unique_ptr<Boundary> BoundaryPtr;

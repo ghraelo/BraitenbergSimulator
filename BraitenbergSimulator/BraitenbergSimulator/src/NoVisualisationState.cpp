@@ -34,7 +34,7 @@ void NoVisualisationState::Init(SimEngine & se)
 
 	//register events
 	StringVectorFunc runFunc = [&](StringVector& str){
-		testQueue.Begin(str);
+		testQueue.Begin(str,m_baseSettings.slider);
 		printf("help!\n");
 	};
 

@@ -8,12 +8,12 @@ ThreeBStrategy::ThreeBStrategy()
 
 void ThreeBStrategy::Update()
 {
-	m_leftOutput = 5 * (1 - m_rightInput);
+	m_leftOutput = (1 - m_rightInput);
 
 	m_internalData["rightInput"] = m_rightInput;
 	m_internalData["leftOutput"] = m_leftOutput;
 
-	m_rightOutput = 5 * (1 - m_leftInput);
+	m_rightOutput = (1 - m_leftInput);
 
 	m_internalData["leftInput"] = m_leftInput;
 	m_internalData["rightOutput"] = m_rightOutput;

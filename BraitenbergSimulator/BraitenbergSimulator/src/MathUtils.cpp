@@ -217,3 +217,17 @@ float MathUtils::AngleToFraction(float min, float angle, float max)
 	return (dist) / range;
 
 }
+
+float MathUtils::WrapAngle(float angle)
+{
+	float abs_ang = fabs(angle);
+
+	if (angle > 0.0f)
+	{
+		return fmod(abs_ang, M_PI);
+	}
+	else
+	{
+		return -fmod(abs_ang, M_PI);
+	}
+}

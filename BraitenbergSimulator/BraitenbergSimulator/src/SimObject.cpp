@@ -8,8 +8,8 @@ SimObject::SimObject()
 
 }
 
-SimObject::SimObject(b2Vec2 position)
-	:m_position(position)
+SimObject::SimObject(b2Vec2 position, std::string name)
+	:m_position(position), m_name(name)
 {
 
 }
@@ -26,4 +26,9 @@ void SimObject::Update()
 
 void SimObject::Render(NVGcontext* vg, Renderer & r)
 {
+}
+
+std::string SimObject::GetName()
+{
+	return m_name;
 }

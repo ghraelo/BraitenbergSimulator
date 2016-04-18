@@ -37,19 +37,19 @@ namespace YAML
 			switch (rhs)
 			{
 				case BT_TOP:
-					node.push_back("top");
+					node = ("top");
 					break;
 				case BT_BOTTOM:
-					node.push_back("bottom");
+					node = ("bottom");
 					break;
 				case BT_LEFT:
-					node.push_back("left");
+					node = ("left");
 					break;
 				case BT_RIGHT:
-					node.push_back("right");
+					node = ("right");
 					break;
 				default:
-					node.push_back("ERROR");
+					node = ("ERROR");
 			}
 			return node;
 		}

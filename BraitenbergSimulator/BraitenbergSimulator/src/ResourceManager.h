@@ -14,7 +14,8 @@ public:
 	static void GetFilesInDirectory(std::vector<std::string> &out, const std::string &directory);
 private:
 	static VehiclePtr LoadVehicle(YAML::Node vehicleNode);
-	static LightSource LoadLight(YAML::Node lightNode);
+	static LightSourcePtr LoadLight(YAML::Node lightNode);
+	static ObstaclePtr LoadObstacle(YAML::Node obstacleNode);
 	static bool LoadSensor(YAML::Node& sensorNode, sensorInfo& info);
 
 	ResourceManager();

@@ -1,10 +1,10 @@
 ---
 name: Test Scene
 vehicles:
-    - name: testLight
+    - name: vehicle1
       position: [0.0, 25.0]
       strategy:
-         type: 3b
+         type: csl
          gi: 0.9
          gf: 1.1
       left-sensor:

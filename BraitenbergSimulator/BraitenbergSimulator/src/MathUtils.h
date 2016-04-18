@@ -20,6 +20,7 @@ public:
 	static bool PointInPoly(const std::vector<b2Vec2>& polygon, const b2Vec2& point);
 	static bool AngleWithinRange(float angle, float limit1, float limit2);
 	static float AngleToFraction(float min, float angle, float max);
+	static float WrapAngle(float angle);
 private:
 	MathUtils();
 };

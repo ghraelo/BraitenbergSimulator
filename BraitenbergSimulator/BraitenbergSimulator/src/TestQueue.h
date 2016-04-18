@@ -11,7 +11,7 @@ class TestQueue
 {
 public:
 	TestQueue();
-	void Begin(const std::vector<std::string>& fileNames);
+	void Begin(const std::vector<std::string>& fileNames, int iterations);
 	bool IsRunning();
 	void Update();
 	void End();
@@ -24,4 +24,5 @@ private:
 	bool m_next = true;
 	int m_testNo = -1;
 	bool m_finished = false;
+	int m_iterations = 0;
 };

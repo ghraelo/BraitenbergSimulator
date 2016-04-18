@@ -22,7 +22,7 @@ public:
 	void RegisterClear(VoidFunc clear);
 	void RegisterRun(StringVectorFunc run);
 	void RegisterExit(VoidFunc exit);
-	void Draw(NoVisUISettings settings, WindowState& ws);
+	void Draw(NoVisUISettings& settings, WindowState& ws);
 	void PopulateList(StringVector& fileNames);
 private:
 	void OnClear();

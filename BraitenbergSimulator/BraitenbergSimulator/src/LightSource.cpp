@@ -7,8 +7,8 @@ LightSource::LightSource()
 
 }
 
-LightSource::LightSource(b2Vec2 position, float radius)
-	:SimObject(position), m_radius(radius)
+LightSource::LightSource(b2Vec2 position, float radius, std::string name)
+	:SimObject(position, name), m_radius(radius)
 {
 
 }

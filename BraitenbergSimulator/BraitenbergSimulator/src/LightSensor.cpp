@@ -7,11 +7,22 @@
 #include <stack>
 #include <algorithm>
 #include <iostream>
+#include <random>
 
 LightSensor::LightSensor(Vehicle * parent, sensorInfo info)
 	:m_parent(parent), m_offset(info.m_offset), m_aperture_angle(info.m_aperture), m_direction_vector(info.m_direction)
 {
 }
+
+LightSensor::LightSensor(Vehicle * parent, sensorInfo info, float randFraction)
+	: m_parent(parent), m_offset(info.m_offset), m_aperture_angle(info.m_aperture), m_direction_vector(info.m_direction)
+{
+	random = true;
+	std::random_device rd;
+	mt = std::make_unique<std::mt19937>(rd());
+	dist = std::make_unique<std::normal_distribution<double>>(0, randFraction);
+}
+
 
 LightSensor::LightSensor()
 {
@@ -70,7 +81,7 @@ bool compareIntervals(Interval a, Interval b)
 }
 
 
-float LightSensor::GetLight(std::vector<LightSource>& lightSources, Rectangle bounds)
+float LightSensor::GetLight(std::vector<LightSourcePtr>& lightSources, Rectangle bounds)
 {
 	b2World* world = m_parent->m_body->GetWorld();
 	Raycaster r(world, GetPosition(), bounds);
@@ -98,7 +109,7 @@ float LightSensor::GetLight(std::vector<LightSource>& lightSources, Rectangle bo
 		relLightPos rlp;
 		std::vector<Interval> temp;
 
-		GetLightBoundary(ls.GetPosition(), ls.GetRadius(), temp, m_rayCastPoly);
+		GetLightBoundary(ls->GetPosition(), ls->GetRadius(), temp, m_rayCastPoly);
 		intervals.insert(intervals.end(),temp.begin(),temp.end());
 	}
 
@@ -141,6 +152,11 @@ float LightSensor::GetLight(std::vector<LightSource>& lightSources, Rectangle bo
 		theStack.pop();
 	}
 	//std::cout << "\r";
+
+	if (random)
+	{
+		acc += (*dist)(*mt);
+	}
 
 	return acc;
 }

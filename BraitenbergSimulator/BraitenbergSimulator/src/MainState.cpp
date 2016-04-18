@@ -28,6 +28,7 @@ void MainState::Init(SimEngine & se)
 	{
 		printf("error: no scene files found\n");
 	}
+	activeSceneName = m_baseSettings.activeSceneFilename;
 
 	ScenePtr s = ResourceManager::LoadScene(m_baseSettings.activeSceneFilename);
 
@@ -37,52 +38,22 @@ void MainState::Init(SimEngine & se)
 
 	m_sceneRenderer.SetCamera(cam.get());
 
-	for (auto &obj : simManager->GetCurrentScene()->m_vehicles)
-	{
-		std::function<float()> angleCallback = [&]() {
-			return atan2(obj->m_body->GetWorldVector(b2Vec2(0, 1)).y, obj->m_body->GetWorldVector(b2Vec2(0, 1)).x);
-		};
-
-		std::function<float()> distCallback = [&]() {
-			return b2Distance(obj->m_body->GetPosition(), simManager->GetCurrentScene()->m_lights[0].GetPosition());
-		};
-
-		//add statistics watchers
-		StatisticPtr s = std::make_unique<FixedWatcher>(obj->GetName() + " - angle", 10, 180,
-			angleCallback, -M_PI, M_PI);
-
-		StatisticPtr s2 = std::make_unique<Watcher>(obj->GetName() + " - distance", 10, 180,
-			distCallback);
-
-		StatisticPtr p1 = std::make_unique<AutocorrelationProcessor>(obj->GetName() + " - acor(distance)", dynamic_cast<Watcher*>(s2.get()));
-
-		StatisticPtr p2 = std::make_unique<AutocorrelationProcessor>(obj->GetName() + " - acor(angle)", dynamic_cast<FixedWatcher*>(s.get()));
-
-		StatisticPtr p3 = std::make_unique<PeriodicityDetectionProcessor>(obj->GetName() + " - dct(angle)", dynamic_cast<Watcher*>(s.get()));
-
-		sm.AddStat(std::move(s));
-		sm.AddStat(std::move(s2));
-		sm.AddStat(std::move(p1));
-		sm.AddStat(std::move(p2));
-		sm.AddStat(std::move(p3));
-
-		CSVRow headerRow;
-		headerRow.m_cellData.push_back("t");
-		headerRow.m_cellData.push_back("x");
-		headerRow.m_cellData.push_back("y");
-		headerRow.m_cellData.push_back("angle");
-		headerRow.m_cellData.push_back("distance travelled");
-		headerRow.m_cellData.push_back("events");
-		dr.BeginFile(headerRow,obj->GetName());
-	}
-
 	m_baseSettings.startTime = glfwGetTime();
 
+	BoundaryCallbackFunc func = [&](BoundaryType boundary, b2Vec2 coords, double time, Vehicle* vehicle) {
+		int i = 0;
+	};
+
+	simManager->GetBoundary()->RegisterCallback(func);
+
 	prevMouseState = se.GetMouseState();
+	
+	//wrap angle test
 }
 
 void MainState::Cleanup()
 {
+
 }
 
 void MainState::Update(SimEngine & se)
@@ -95,48 +66,20 @@ void MainState::Update(SimEngine & se)
 		return;
 	}
 
-	//60 hz timestep
-	simManager->Step(1.0f / 60);
-
-	for (auto &obj : simManager->GetCurrentScene()->m_vehicles)
+	if (activeSceneName != m_baseSettings.activeSceneFilename)
 	{
-		CSVRow dataRow;
-		std::stringstream conv;
-		
-		//time
-		conv << glfwGetTime();
-		dataRow.m_cellData.push_back(conv.str());
-		conv.str(std::string());
-		conv.clear();
+		ScenePtr s = ResourceManager::LoadScene(m_baseSettings.activeSceneFilename);
+		simManager = std::make_unique<SimManager>(s);
+		BoundaryCallbackFunc func = [&](BoundaryType boundary, b2Vec2 coords, double time, Vehicle* vehicle) {
+			int i = 0;
+		};
 
-		//x
-		conv << obj->GetPosition().x;
-		dataRow.m_cellData.push_back(conv.str());
-		conv.str(std::string());
-		conv.clear();
-
-		//y
-		conv << obj->GetPosition().y;
-		dataRow.m_cellData.push_back(conv.str());
-		conv.str(std::string());
-		conv.clear();
-
-		//angle
-		dataRow.m_cellData.push_back("");
-		//distance travelled
-		dataRow.m_cellData.push_back("");
-		//events
-
-		if(simManager->GetEventFlags() == EF_BoundaryCollision)
-		{
-			conv << "B";
-		}
-		dataRow.m_cellData.push_back(conv.str());
-
-		dr.Record(dataRow,obj->GetName());
+		simManager->GetBoundary()->RegisterCallback(func);
+		activeSceneName = m_baseSettings.activeSceneFilename;
 	}
 
-	sm.Update();
+	//60 hz timestep
+	simManager->Step(1.0f / 60);
 }
 
 void MainState::Draw(SimEngine & se)

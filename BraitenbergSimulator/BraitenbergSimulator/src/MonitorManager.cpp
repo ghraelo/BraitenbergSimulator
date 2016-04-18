@@ -14,11 +14,20 @@ MonitorManager::MonitorManager(std::string directoryPath)
 
 void MonitorManager::Init(const Scene * theScene)
 {
+	m_scene = theScene;
+
 	m_sceneFile = theScene->m_fileName;
 	for (auto& vehicle : theScene->m_vehicles)
 	{
 		VehicleMonitorPtr monitor = std::make_unique<VehicleMonitor>(vehicle.get(), m_directoryPath);
 		m_monitors.push_back(std::move(monitor));
+	}
+
+	for (auto& light : m_scene->m_lights)
+	{
+		MinDistData m;
+		m.minDist = 200000.0f;
+		m_lightMinDistances[light->GetName()] = m;
 	}
 }
 
@@ -28,29 +37,71 @@ void MonitorManager::RecordCSV(double elapsedTime)
 	{
 		monitor->WriteCSV(elapsedTime);
 	}
+
+	for (auto& light : m_scene->m_lights)
+	{
+		float min_dist = m_lightMinDistances[light->GetName()].minDist;
+		std::string vehicleName;
+		for (auto& vehicle : m_scene->m_vehicles)
+		{
+			vehicleName = vehicle->GetName();
+			float dist = b2Distance(light->GetPosition(), vehicle->GetPosition());
+			//printf("dist: %f \n", dist);
+			if (dist < min_dist)
+			{
+				min_dist = dist;
+
+			}
+		}
+		MinDistData m;
+		m.minDist = min_dist;
+		m.vehicleName = vehicleName;
+
+		m_lightMinDistances[light->GetName()] = m;
+
+	}
 }
 
 void MonitorManager::SaveYAML()
 {
 	YAML::Emitter out;
 	out << YAML::BeginMap;
-	out << YAML::Key << "sceneFile:";
+	out << YAML::Key << "scene-file";
 	out << YAML::Value << m_sceneFile;
-	out << YAML::Key << "vehicleData:";
+	out << YAML::Key << "vehicle-data";
 	out << YAML::Value << YAML::BeginSeq;
 	for (auto& monitor : m_monitors)
 	{
 		out << monitor->GetYAML();
 	}
 	out << YAML::EndSeq;
-	out << YAML::EndMap;
 
+	out << YAML::Key << "min-light-dists";
+	out << YAML::Value << YAML::BeginSeq;
+	for (auto& light : m_scene->m_lights)
+	{
+		out << YAML::BeginMap;
+		std::string name = light->GetName();
+		out << YAML::Key << "light-name";
+		out << YAML::Value << name;
+
+		out << YAML::Key << "min-dist";
+		out << YAML::Value << m_lightMinDistances[name].minDist;
+
+		out << YAML::Key << "vehicle-name";
+		out << YAML::Value << m_lightMinDistances[name].vehicleName;
+		out << YAML::EndMap;
+	}
+	out << YAML::EndSeq;
+	out << YAML::EndMap;
 	std::string x = m_sceneFile;
 	x = x.substr(0,x.find_last_of('.'));
 
 	std::ofstream yamlFile;
 	yamlFile.open(m_directoryPath + "/" + x + "-" + GetTimeStamp() + ".yaml");
+	yamlFile << "---\n";
 	yamlFile << out.c_str();
+	yamlFile << "\n...\n";
 	yamlFile.close();
 }
 

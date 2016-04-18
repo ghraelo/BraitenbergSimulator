@@ -50,7 +50,53 @@ ScenePtr ResourceManager::LoadScene(std::string fileName)
 		theScene->m_lights.push_back(LoadLight(light));
 	}
 	printf("Done!\n");
+
+	YAML::Node obstacleNode = baseNode["obstacles"];
+	if (!obstacleNode.IsNull())
+	{
+		printf("Attempting to load %d obstacles...\n", obstacleNode.size());
+		for (auto& obstacle : obstacleNode)
+		{
+			theScene->m_obstacles.push_back(LoadObstacle(obstacle));
+		}
+	}
+
+	printf("Done!\n");
+
 	return theScene;
+}
+
+ObstaclePtr ResourceManager::LoadObstacle(YAML::Node obstacleNode)
+{
+	b2Vec2 obstacle_pos;
+	float obstacle_size;
+	std::string obstacle_name;
+	ObstacleType obstacle_type;
+
+	if (obstacleNode.IsNull())
+		throw std::exception("YAML:Vehicle node not found");
+
+	//get position,radius
+	obstacle_pos = obstacleNode["position"].as<b2Vec2>();
+	obstacle_size = obstacleNode["size"].as<float>();
+	obstacle_name = obstacleNode["name"].as<std::string>();
+
+	std::string type = obstacleNode["type"].as<std::string>();
+	if (type == "circle")
+	{
+		obstacle_type = OT_CIRCLE;
+	}
+	else if (type == "square")
+	{
+		obstacle_type = OT_SQUARE;
+	}
+	else
+	{
+		throw std::exception("unrecognised obstacle type!\n");
+	}
+
+	//got all information, create obstacle
+	return std::make_unique<Obstacle>(obstacle_pos, obstacle_type, obstacle_size, obstacle_name);
 }
 
 VehiclePtr ResourceManager::LoadVehicle(YAML::Node vehicleNode)
@@ -66,6 +112,11 @@ VehiclePtr ResourceManager::LoadVehicle(YAML::Node vehicleNode)
 	name = vehicleNode["name"].as<std::string>();
 
 	//get position
+	YAML::Node n = vehicleNode["position"];
+	bool im = n.IsMap();
+	bool isc = n.IsScalar();
+	bool isq = n.IsSequence();
+	bool in = n.IsNull();
 	vehicle_pos = vehicleNode["position"].as<b2Vec2>();
 
 	//get left sensor
@@ -127,13 +178,14 @@ VehiclePtr ResourceManager::LoadVehicle(YAML::Node vehicleNode)
 	}
 
 	//got all information, create vehicle
-	return std::make_unique<Vehicle>(leftInfo, rightInfo, cs_ptr,name);
+	return std::make_unique<Vehicle>(vehicle_pos, leftInfo, rightInfo, cs_ptr,name);
 }
 
-LightSource ResourceManager::LoadLight(YAML::Node lightNode)
+LightSourcePtr ResourceManager::LoadLight(YAML::Node lightNode)
 {
 	b2Vec2 light_pos;
 	float light_radius;
+	std::string light_name;
 
 	if (lightNode.IsNull())
 		throw std::exception("YAML:Vehicle node not found");
@@ -141,9 +193,10 @@ LightSource ResourceManager::LoadLight(YAML::Node lightNode)
 	//get position,radius
 	light_pos = lightNode["position"].as<b2Vec2>();
 	light_radius = lightNode["radius"].as<float>();
+	light_name = lightNode["name"].as<std::string>();
 
 	//got all information, create light
-	return LightSource(light_pos, light_radius);
+	return std::make_unique<LightSource>(light_pos, light_radius,light_name);
 }
 
 bool ResourceManager::LoadSensor(YAML::Node& sensorNode, sensorInfo& info)

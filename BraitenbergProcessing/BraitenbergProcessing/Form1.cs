@@ -9,119 +9,63 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using System.Numerics;
+
 using OxyPlot;
 using OxyPlot.Series;
+using OxyPlot.WindowsForms;
+using OxyPlot.Axes;
 
 using BraitenbergProcessing.DataStructures;
 
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
+using MathNet.Numerics.Statistics;
+
 namespace BraitenbergProcessing
 {
     public partial class Form1 : Form
     {
+        YStats stats;
         public Form1()
         {
             InitializeComponent();
+            ContextMenu cm = new ContextMenu();
+            cm.MenuItems.Add("Save plot...", new EventHandler(savePlotsToolStripMenuItem_Click));
+            plotView1.ContextMenu = cm;
+            treeView1.NodeMouseClick += TreeView1_NodeMouseClick;
 
-            string path = @"H:\Users\Jack\Source\Repos\BraitenbergSimulator\BraitenbergSimulator\BraitenbergSimulator\logs\testVehicle201641-1414.csv";
-
-            string name = @"H:\Users\Jack\Source\Repos\BraitenbergSimulator\BraitenbergSimulator\BraitenbergSimulator\yaml\testScene.yaml";
-            //var order = YamlTest(name);
-            var scene = MakeScene(name);
-
-            var reader = new StreamReader(File.OpenRead(path));
-            VehicleData v = new VehicleData();
-            //skip first line (header
-            reader.ReadLine();
-            while (reader.EndOfStream == false)
-            {
-                var line = reader.ReadLine();
-                var pieces = line.Split(',');
-                v.Events.Add(pieces[0]);
-                v.Time.Add(Convert.ToDouble(pieces[1]));
-                v.Position.Add(new XYPoint(Convert.ToDouble(pieces[2]), Convert.ToDouble(pieces[3])));
-            }
-
-             //detect discontinuities in position and split lists accordingly
-            var prevPos = v.Position[0];
-            var sections = new List<List<XYPoint>>();
-
-            //set up first list and point
-            sections.Add(new List<XYPoint>());
-            int currList = 0;
-            sections[0].Add(prevPos);
-
-            for(int i =1;i<v.Position.Count;i++)
-            {
-                var currPos = v.Position[i];
-                if (IsDiscontinuity(prevPos, currPos, 2.0f))
-                {
-                    currList++;
-                    sections.Add(new List<XYPoint>());
-                }
-                sections[currList].Add(currPos);
-                prevPos = currPos;
-            }
-
-            var myModel = new PlotModel { Title = "Example 1" };
-
-            foreach (var section in sections)
-            {
-                var positionData = new LineSeries();
-                positionData.Color = Color.Red.ToOxyColor();
-                positionData.Points.AddRange(section.Select(xy => (DataPoint)xy));
-                myModel.Series.Add(positionData);
-            }
-            //var lights = new ScatterSeries();
-            //lights.MarkerType = MarkerType.Circle;
-            foreach (var light in scene.Lights)
-            {
-                var circle = MakeCircle(light.Position[0], light.Position[1], light.Radius);
-                circle.Color = Color.Black.ToOxyColor();
-                myModel.Series.Add(circle);
-
-                //lights.Points.Add(new ScatterPoint(light.Position[0], light.Position[1],light.Radius));
-            }
-            //myModel.Series.Add(lights);
-            this.plot1.Model = myModel;
         }
 
-        public Order YamlTest(string fileName)
+        private void TreeView1_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
-            var sr = new StreamReader(File.OpenRead(fileName));
-            var deserializer = new Deserializer(namingConvention: new CamelCaseNamingConvention());
+            if(e.Button == MouseButtons.Right)
+            {
 
-            return deserializer.Deserialize<Order>(sr);
+                plotView1.Model.Title = e.Node.Text;
+                plotView1.Invalidate();
+                System.Diagnostics.Debug.WriteLine("yo yo yo");
+            }
         }
 
-        public LineSeries MakeCircle(double xCentre, double yCentre, double radius)
+        LineSeries MakeCircle(double xCentre, double yCentre, double radius)
         {
             var ret = new LineSeries();
             ret.CanTrackerInterpolatePoints = true;
-
-            var points = new List<DataPoint>();
-            for(int x= -(int)radius;x <= radius;x++)
+            int numPoints = 36;
+            double step = 2 * Math.PI / numPoints;
+            for(int i =0; i< numPoints;i++)
             {
-                int y = (int)(Math.Sqrt(radius * radius - x * x) + 0.5);
-                points.Add(new DataPoint(xCentre + x,yCentre + y));
-                points.Add(new DataPoint(xCentre+ x, yCentre - y));
+                double x = xCentre + radius * Math.Cos(i * step);
+                double y = yCentre + radius * Math.Sin(i * step);
+                ret.Points.Add(new DataPoint(x, y));
             }
-            points.Add(points[0]);
-           ret.Points.AddRange(points.OrderBy(x => Math.Atan2(x.X - xCentre, x.Y - yCentre)).ToList());
+            ret.Points.Add(ret.Points[0]);
            return ret;
         }
 
-        public Scene MakeScene(string fileName)
-        {
-            var sr = new StreamReader(File.OpenRead(fileName));
-            var deserializer = new Deserializer(namingConvention: new CamelCaseNamingConvention());
-
-            return deserializer.Deserialize<Scene>(sr);
-        }
-
-        public static bool IsDiscontinuity(XYPoint first, XYPoint second, double threshold)
+        static bool IsDiscontinuity(XYPoint first, XYPoint second, double threshold)
         {
             if((Math.Abs(first.X) > threshold) && (Math.Abs(second.X) > threshold))
             {
@@ -138,9 +82,277 @@ namespace BraitenbergProcessing
             return false;
         }
 
-        public static bool IsSignDifference(double a, double b)
+        static bool IsSignDifference(double a, double b)
         {
             return (Math.Sign(a) > 0 && Math.Sign(b) < 0) || (Math.Sign(b) > 0 && Math.Sign(a) < 0);
+        }
+
+        private void loadButton_Click(object sender, EventArgs e)
+        {
+            treeView1.Nodes.Clear();
+            var ofd = new OpenFileDialog();
+            ofd.InitialDirectory = @"H: \Users\Jack\Source\Repos\BraitenbergSimulator\BraitenbergSimulator\BraitenbergSimulator";
+            ofd.Filter = "yaml files (*.yaml)|*.yaml|All files (.*)|*.*";
+            ofd.FilterIndex = 0;
+            ofd.Multiselect = true;
+            ofd.RestoreDirectory = true;
+
+            if(ofd.ShowDialog() == DialogResult.OK)
+            {
+               
+
+                var myModel = new PlotModel { Title = "Full graph" };
+                myModel.PlotType = PlotType.Cartesian;
+                myModel.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = -50, Maximum = 50 });
+                myModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = -50, Maximum = 50 });
+
+                var myModel2 = new PlotModel { Title = "Up to first boundary collision" };
+                myModel2.PlotType = PlotType.Cartesian;
+
+                var myModel3 = new PlotModel { Title = "Angle" };
+                myModel3.PlotType = PlotType.Cartesian;
+
+                List<OxyColor> colors = new List<OxyColor>(myModel.DefaultColors);
+                while(ofd.FileNames.Length > colors.Count)
+                {
+                    colors.AddRange(colors);
+                }
+                int i = 0;
+
+                List<double> distances = new List<double>();
+                List<double> closestApproaches = new List<double>();
+                foreach (var filename in ofd.FileNames)
+                {
+                    TestResult t = new TestResult(filename, @"H: \Users\Jack\Source\Repos\BraitenbergSimulator\BraitenbergSimulator\BraitenbergSimulator\yaml");
+                    foreach (var v in t.VehiclesData)
+                    {
+                        DrawGraph(ref myModel, v.Value, t.Scene, colors[i]);
+                    }
+                    DrawGraph2(ref myModel2, t.VehiclesData.First().Value, t.Scene, t.InnerTestResult.VehicleData[0].BoundaryCollisions != null ? t.InnerTestResult.VehicleData[0].BoundaryCollisions[0].Time : -1, colors[i]);
+                    DrawGraph3(ref myModel3, t.VehiclesData.First().Value, t.Scene, t.InnerTestResult.VehicleData[0].BoundaryCollisions != null ? t.InnerTestResult.VehicleData[0].BoundaryCollisions[0].Time : -1, colors[i]);
+                    //System.Diagnostics.Debug.WriteLine(colors[i].ToString());
+                    TreeNode tn = new TreeNode(t.Scene.Name);
+                    tn.ForeColor = colors[i].ToColor();
+                    TreeNode sub = new TreeNode("Light closest approaches:");
+                    foreach (var x in t.InnerTestResult.MinLightDists)
+                    {
+                        sub.Nodes.Add(x.LightName + ": " + x.Distance);
+                        closestApproaches.Add(x.Distance);
+                    }
+                    tn.Nodes.Add(sub);
+                    tn.Nodes.Add("Distance travelled: " + t.InnerTestResult.VehicleData[0].Distance);
+                    distances.Add(t.InnerTestResult.VehicleData[0].Distance);
+                    treeView1.Nodes.Add(tn);
+                    i++;
+                }
+
+                stats = new YStats {TestCount = ofd.FileNames.Length, Test = treeView1.Nodes[0].Text};
+
+
+                TreeNode distStats = new TreeNode("distance stats");
+                DescriptiveStatistics ds = new DescriptiveStatistics(distances);
+                distStats.Nodes.Add("Mean: " + ds.Mean);
+                distStats.Nodes.Add("Standard deviation: " + ds.StandardDeviation);
+
+                stats.Distance.Max = ds.Maximum;
+                stats.Distance.Min = ds.Maximum;
+                stats.Distance.StandardDeviation = ds.StandardDeviation;
+                stats.Distance.Mean = ds.Mean;
+
+                treeView1.Nodes.Add(distStats);
+
+                TreeNode approachNode = new TreeNode("closest approach stats");
+                DescriptiveStatistics cs = new DescriptiveStatistics(closestApproaches);
+                approachNode.Nodes.Add("Mean: " + cs.Mean);
+                approachNode.Nodes.Add("Standard deviation: " + cs.StandardDeviation);
+                treeView1.Nodes.Add(approachNode);
+
+                stats.ClosestApproach.Max = cs.Maximum;
+                stats.ClosestApproach.Min = cs.Maximum;
+                stats.ClosestApproach.StandardDeviation = cs.StandardDeviation;
+                stats.ClosestApproach.Mean = cs.Mean;
+
+                this.plotView1.Model = myModel;
+                this.plotView2.Model = myModel2;
+                this.plotView3.Model = myModel3;
+            }
+        }
+
+        Task<List<List<double>>> SlidePeriodsAsync(List<double> data, int windowLength)
+        {
+            return Task.Run(() =>
+            {
+                var od = new OscillationDetector(data);
+                var res = od.SlidePeriods(windowLength);
+                return res;
+            });
+        }
+
+        private void DrawGraph(ref PlotModel myModel, VehicleData v, Scene scene, OxyColor c)
+        {
+            //detect discontinuities in position and split lists accordingly
+            var prevPos = v.Position[0];
+            var sections = new List<List<XYPoint>>();
+
+            //set up first list and point
+            sections.Add(new List<XYPoint>());
+            int currList = 0;
+            sections[0].Add(prevPos);
+
+            for (int i = 1; i < v.Position.Count; i++)
+            {
+                var currPos = v.Position[i];
+                if (IsDiscontinuity(prevPos, currPos, 2.0f))
+                {
+                    currList++;
+                    sections.Add(new List<XYPoint>());
+                }
+                sections[currList].Add(currPos);
+                prevPos = currPos;
+            }
+
+            foreach (var section in sections)
+            {
+                var positionData = new LineSeries();
+                positionData.Color = c;
+                positionData.Points.AddRange(section.Select(xy => (DataPoint)xy));
+
+                myModel.Series.Add(positionData);
+            }
+            //var lights = new ScatterSeries();
+            //lights.MarkerType = MarkerType.Circle;
+            foreach (var light in scene.Lights)
+            {
+                var circle = MakeCircle(light.Position[0], light.Position[1], light.Radius);
+                circle.Color = Color.Black.ToOxyColor();
+                myModel.Series.Add(circle);
+
+                //lights.Points.Add(new ScatterPoint(light.Position[0], light.Position[1],light.Radius));
+            }
+            //myModel.Series.Add(lights);
+           
+        }
+
+        private void DrawGraph2(ref PlotModel myModel, VehicleData v, Scene scene, double time, OxyColor c)
+        {
+            //detect discontinuities in position and split lists accordingly
+            var prevPos = v.Position[0];
+            var sections = new List<List<XYPoint>>();
+
+            //set up first list and point
+            sections.Add(new List<XYPoint>());
+            int currList = 0;
+            sections[0].Add(prevPos);
+
+            for (int i = 1; i < v.Position.Count; i++)
+            {
+                var currPos = v.Position[i];
+                if (IsDiscontinuity(prevPos, currPos, 2.0f))
+                {
+                    currList++;
+                    sections.Add(new List<XYPoint>());
+                }
+                sections[currList].Add(currPos);
+                prevPos = currPos;
+
+                if(time > 0 && v.Time[i] > time)
+                {
+                    break;
+                }
+            }
+
+            foreach (var section in sections)
+            {
+                var positionData = new LineSeries();
+                positionData.Color = c;
+                positionData.Points.AddRange(section.Select(xy => (DataPoint)xy));
+
+                myModel.Series.Add(positionData);
+            }
+            //var lights = new ScatterSeries();
+            //lights.MarkerType = MarkerType.Circle;
+            foreach (var light in scene.Lights)
+            {
+                var circle = MakeCircle(light.Position[0], light.Position[1], light.Radius);
+                circle.Color = Color.Black.ToOxyColor();
+                myModel.Series.Add(circle);
+
+                //lights.Points.Add(new ScatterPoint(light.Position[0], light.Position[1],light.Radius));
+            }
+            //myModel.Series.Add(lights);
+
+        }
+
+        private void DrawGraph3(ref PlotModel myModel, VehicleData v, Scene scene, double time, OxyColor c)
+        {
+            //detect discontinuities in position and split lists accordingly
+            var prevPos = v.Position[0];
+            var sections = new List<List<XYPoint>>();
+
+            //set up first list and point
+            sections.Add(new List<XYPoint>());
+            int currList = 0;
+            sections[0].Add(prevPos);
+
+            var positionData = new LineSeries();
+            positionData.Color = c;
+
+            for (int i = 1; i < v.Position.Count; i++)
+            {
+                positionData.Points.Add(new DataPoint(v.Time[i], v.Angle[i]));
+
+                if (time > 0 && v.Time[i] > time)
+                {
+                    break;
+                }
+            }
+
+            myModel.Series.Add(positionData);
+        }
+
+        private void generateButton_Click(object sender, EventArgs e)
+        {
+            Generator g = new Generator();
+            g.Show();
+        }
+
+        private void savePlotsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var sfd = new SaveFileDialog();
+            sfd.InitialDirectory = @"H: \Users\Jack\Source\Repos\BraitenbergSimulator\BraitenbergSimulator\BraitenbergSimulator";
+            sfd.Filter = "PNG files (*.png)|*.png|All files (.*)|*.*";
+            sfd.FilterIndex = 0;
+            sfd.RestoreDirectory = true;
+
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                var pngExporter = new PngExporter { Width = 500, Height = 500, Background = OxyColors.White };
+                pngExporter.ExportToFile(plotView1.Model, sfd.FileName);
+            }
+        }
+
+        private void saveButton_Click(object sender, EventArgs e)
+        {
+            var sfd = new SaveFileDialog();
+            sfd.InitialDirectory = @"H: \Users\Jack\Source\Repos\BraitenbergSimulator\BraitenbergSimulator\BraitenbergSimulator";
+            sfd.Filter = "PNG files (*.png)|*.png|All files (.*)|*.*";
+            sfd.FilterIndex = 0;
+            sfd.RestoreDirectory = true;
+
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                var pngExporter = new PngExporter { Width = 500, Height = 500, Background = OxyColors.White };
+                pngExporter.ExportToFile(plotView1.Model, sfd.FileName);
+
+                string subName = Path.Combine(Path.GetDirectoryName(sfd.FileName), Path.GetFileNameWithoutExtension(sfd.FileName) + "pip" + Path.GetExtension(sfd.FileName));
+                pngExporter.ExportToFile(plotView2.Model, subName);
+
+                using (var writer = File.CreateText(Path.ChangeExtension(sfd.FileName, "yaml")))
+                {
+                    Serializer s = new Serializer(namingConvention: new CamelCaseNamingConvention());
+                    s.Serialize(writer, stats);
+                }
+            }
         }
     }
 
@@ -149,6 +361,11 @@ namespace BraitenbergProcessing
         public static OxyColor ToOxyColor(this Color c)
         {
             return OxyColor.FromArgb(c.A, c.R, c.G, c.B);
+        }
+
+        public static Color ToColor(this OxyColor o)
+        {
+            return Color.FromArgb(o.A, o.R, o.G, o.B);
         }
     }
 }

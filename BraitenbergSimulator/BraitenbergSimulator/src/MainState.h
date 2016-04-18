@@ -38,4 +38,5 @@ private:
 	bool m_dragging = false;
 	MouseState prevMouseState;
 	DataRecorder dr;
+	std::string activeSceneName;
 };

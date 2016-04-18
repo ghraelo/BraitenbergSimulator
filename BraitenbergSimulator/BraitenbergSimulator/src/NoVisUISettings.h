@@ -20,4 +20,5 @@ struct NoVisUISettings
 	int testNumber = -1;
 	bool testsDone = false;
 	double endTime = 0.0;
+	int slider = 60000;
 };

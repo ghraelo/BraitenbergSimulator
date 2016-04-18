@@ -1,4 +1,6 @@
 #include "SimManager.h"
+#include "WrappingBoundary.h"
+#include "RepulsionBoundary.h"
 
 SimManager::SimManager()
 {
@@ -19,8 +21,13 @@ SimManager::SimManager(ScenePtr& initialScene)
 		obj->BindPhysics(m_world.get());
 	}
 
+	for (auto &obj : m_currentScene->m_obstacles)
+	{
+		obj->BindPhysics(m_world.get());
+	}
+
 	//create test boundary
-	m_boundary = std::make_unique<Boundary>(m_world.get(), b2Vec2(-50.0f, 50.0f), 100.0f, 100.0f, 20.0f);
+	m_boundary = std::make_unique<RepulsionBoundary>(m_world.get(), b2Vec2(-50.0f, 50.0f), 100.0f, 100.0f, 5.0f);
 
 }
 
@@ -52,10 +59,15 @@ void SimManager::Render(NVGcontext * vg, Renderer & renderer)
 {
 	for (auto &obj : m_currentScene->m_lights)
 	{
-		obj.Render(vg,renderer);
+		obj->Render(vg, renderer);
 	}
 
 	for (auto &obj : m_currentScene->m_vehicles)
+	{
+		obj->Render(vg, renderer);
+	}
+
+	for (auto &obj : m_currentScene->m_obstacles)
 	{
 		obj->Render(vg, renderer);
 	}

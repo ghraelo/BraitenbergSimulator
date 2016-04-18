@@ -231,44 +231,18 @@ std::vector<float> PeriodicityDetectionProcessor::InverseDiscreteCosine(const st
 	std::vector<double> x_cent(x.size());
 	std::copy(x.begin(), x.end(), x_cent.begin());
 
-	//float mean = std::accumulate(x.begin(), x.end(), 0.0f) / (float)x.size();
-
-	////centre x
-	//std::transform(x.begin(), x.end(), x_cent.begin(),
-	//	[&](float a) {
-	//	return a - mean;
-	//}
-	//);
-
 	//create plan
 	fftw_plan dct_plan;
 	dct_plan = fftw_plan_r2r_1d(N, in, out, FFTW_REDFT01, FFTW_MEASURE);
 
 	//initialise in (as fftw plan overwrites it)
 	std::copy(x_cent.begin(), x_cent.end(), stdext::checked_array_iterator<double*>(in, N));
-	/*for (int i = 0; i < N; i++)
-	{
-		in[i] = x_cent[i];
-	}*/
 
 	fftw_execute(dct_plan);
 
 	std::vector<float> result;
 	result.reserve(N);
 	result.assign(out, out + N);
-
-	//calculate std deviation
-
-	//normalise#
-
-	/*double max = abs(*std::max_element(result.begin(), result.end()));
-	double min = abs(*std::max_element(result.begin(), result.end()));
-
-	std::transform(result.begin(), result.end(), result.begin(),
-	[&](float a) {
-	return a / fmax(max,min);
-	}
-	);*/
 
 	fftw_destroy_plan(dct_plan);
 

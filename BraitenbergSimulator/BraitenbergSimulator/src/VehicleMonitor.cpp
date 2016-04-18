@@ -29,6 +29,8 @@ VehicleMonitor::VehicleMonitor(Vehicle * vehicle, std::string directoryPath)
 	headerRow.pop_back();
 
 	m_csvStream << headerRow << "\n";
+
+	prevPos = vehicle->GetPosition();
 }
 
 VehicleMonitor::~VehicleMonitor()
@@ -51,6 +53,9 @@ void VehicleMonitor::WriteCSV(double elapsedTime)
 	}
 	row.str().pop_back();
 	m_csvStream << row.str() << "\n";
+
+	m_dist_travelled += b2Distance(prevPos, m_vehicle->GetPosition());
+	prevPos = m_vehicle->GetPosition();
 }
 
 void VehicleMonitor::AddCollision(BoundaryType type, b2Vec2 position, double time)
@@ -73,22 +78,21 @@ YAML::Node VehicleMonitor::GetYAML()
 {
 	YAML::Node node;
 	node["name"] = m_vehicle->GetName();
-	node["numericData"] = m_vehicle->GetName() + m_timeStamp + ".csv";
+	node["distance"] = m_dist_travelled;
+	node["numeric-data"] = m_vehicle->GetName() + m_timeStamp + ".csv";
 	if (boundaryCollisions.size() > 0)
 	{
-		for (auto& collision : boundaryCollisions)
+
+		for (int i = 0; i < (boundaryCollisions.size() < 10000 ? boundaryCollisions.size() : 10000);i++)
 		{
+			BoundaryCollisionData& collision = boundaryCollisions[i];
 			YAML::Node col;
 			col["type"] = collision.m_type;
 			col["position"] = collision.m_position;
 			col["time"] = collision.m_time;
 
-			node["boundaryCollisions"].push_back(col);
+			node["boundary-collisions"].push_back(col);
 		}
-	}
-	else
-	{
-		node["boundaryCollisions"].push_back("");
 	}
 
 	return node;
@@ -97,6 +101,16 @@ YAML::Node VehicleMonitor::GetYAML()
 std::string VehicleMonitor::GetVehicleName()
 {
 	return m_vehicle->GetName();
+}
+
+void VehicleMonitor::SetIsColliding(bool state)
+{
+	m_IsColliding = state;
+}
+
+Vehicle * VehicleMonitor::GetVehiclePointer()
+{
+	return m_vehicle;
 }
 
 std::string VehicleMonitor::GetTimeStamp()

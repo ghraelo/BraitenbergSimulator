@@ -25,7 +25,7 @@ void NoVisualisationUI::RegisterExit(VoidFunc exit)
 	m_exit = exit;
 }
 
-void NoVisualisationUI::Draw(NoVisUISettings settings, WindowState & ws)
+void NoVisualisationUI::Draw(NoVisUISettings& settings, WindowState & ws)
 {
 	imguiBeginScrollArea("Simulator v0.2", 0, 0, ws.width*0.2, ws.height, &settings.scroll);
 
@@ -34,9 +34,17 @@ void NoVisualisationUI::Draw(NoVisUISettings settings, WindowState & ws)
 		OnExit();
 	}
 
+	imguiSlider("Iterations:", &settings.slider, 0, 960000, 1000, true);
+
 	imguiSeparatorLine();
 	imguiLabel("Available tests:");
-
+	if (imguiButton("Add all", true))
+	{
+		for (int i = 0; i < m_availableFileNames.size(); i++)
+		{
+			m_inUseNames.push_back(m_availableFileNames[i]);
+		}
+	}
 	for (int i = 0; i < m_availableFileNames.size(); i++)
 	{
 		std::string fileName = m_availableFileNames[i];

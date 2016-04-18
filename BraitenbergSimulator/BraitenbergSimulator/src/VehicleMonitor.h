@@ -36,6 +36,8 @@ public:
 	void AddCollision(BoundaryType type, b2Vec2 position, double time);
 	YAML::Node GetYAML();
 	std::string GetVehicleName();
+	void SetIsColliding(bool state);
+	Vehicle* GetVehiclePointer();
 private:
 	std::string GetTimeStamp();
 	std::ofstream m_csvStream;
@@ -43,6 +45,9 @@ private:
 	Vehicle* m_vehicle;
 	std::string m_directoryPath;
 	std::string m_timeStamp;
+	float m_dist_travelled = 0.0f;
+	b2Vec2 prevPos;
+	bool m_IsColliding = false;
 };
 
 typedef std::unique_ptr<VehicleMonitor> VehicleMonitorPtr;
