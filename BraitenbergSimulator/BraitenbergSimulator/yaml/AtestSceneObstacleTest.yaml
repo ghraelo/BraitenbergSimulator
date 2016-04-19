@@ -1,0 +1,31 @@
+---
+name: Test Scene
+vehicles:
+    - name: testVehicle
+      position: [0.0, 0.0]
+      strategy:
+         type: singlecsl
+         gi: 0.9
+         gf: 1.1
+      left-sensor:
+         offset: [-1.0, 0.0]
+         aperture-angle: 1.5
+         direction: [0.0, 1.0]
+      right-sensor:
+         offset: [1.0, 0.0]
+         aperture-angle: 1.5
+         direction: [0.0, 1.0]
+lights:
+    - name: testLight
+      position: [5.0, 25.0]
+      radius: 4.0
+obstacles:
+    - name: testObstacle
+      position: [25.0, 25.0]
+      size: 4.0
+      type: square
+    - name: testObstacle2
+      position: [0.0, 15.0]
+      size: 5.0
+      type: square
+...

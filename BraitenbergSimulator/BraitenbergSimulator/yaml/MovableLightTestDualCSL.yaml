@@ -1,0 +1,28 @@
+---
+name: Movable Light Dual CSL
+vehicles:
+    - name: cslVehicle
+      position: [0.0, 0.0]
+      strategy:
+         type: csl
+         gi: 0.9
+         gf: 1.1
+      left-sensor:
+         offset: [-1.0, 0.0]
+         aperture-angle: 1.0
+         direction: [-0.2, 1.0]
+      right-sensor:
+         offset: [1.0, 0.0]
+         aperture-angle: 1.0
+         direction: [0.2, 1.0]
+lights:
+    - name: testLight
+      radius: 4.0
+      path:
+        - [0.0, 25.0]
+        - [25.0, 25.0]
+        - [25.0,-25.0]
+        - [-25.0,-25.0]
+        - [-25.0,25.0]
+      speed: 0.01
+...

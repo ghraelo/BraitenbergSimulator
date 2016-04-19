@@ -1,0 +1,23 @@
+---
+name: Dual CSL Contraction Mode 2
+vehicles:
+    - name: cslVehicle
+      position: [5.0, 25.0]
+      strategy:
+         type: csl
+         gi: 0.9
+         gf: 1.1
+      left-sensor:
+         offset: [-1.0, 0.0]
+         aperture-angle: 1.2
+         direction: [0.0, 1.0]
+      right-sensor:
+         offset: [1.0, 0.0]
+         aperture-angle: 1.2
+         direction: [0.0, 1.0]
+
+lights:
+    - name: testLight
+      position: [0.0, 25.0]
+      radius: 4.0
+...
