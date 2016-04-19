@@ -18,7 +18,8 @@ class Vehicle : public SimObject
 {
 public:
 	Vehicle();
-	Vehicle(b2Vec2 position, sensorInfo leftInfo, sensorInfo rightInfo, ControlStrategyPtr& strategy,std::string name);
+	Vehicle(b2Vec2 position, sensorInfo leftInfo, sensorInfo rightInfo, ControlStrategyPtr& strategy, std::string name);
+	Vehicle(b2Vec2 position, sensorInfo leftInfo, sensorInfo rightInfo, ControlStrategyPtr& strategy,std::string name, unsigned int seedLeft, unsigned int seedRight);
 	//Vehicle(b2World* world, VehicleDef vehicleDef);
 	~Vehicle();
 	void BindPhysics(b2World* world);
@@ -36,6 +37,7 @@ public:
 	void Render(NVGcontext* vg, Renderer& r) override;
 	void EnableControl();
 	void DisableControl();
+	b2World* GetWorld();
 	bool ControlStatus();
 	std::map<std::string, float> GetInternalData();
 	

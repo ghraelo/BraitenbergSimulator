@@ -4,7 +4,7 @@
 
 //#include "Shader.h"
 #include "Strategies.h"	
-
+#include "MovingLightSource.h"
 #include <Windows.h>
 
 ResourceManager::ResourceManager()
@@ -32,10 +32,17 @@ ScenePtr ResourceManager::LoadScene(std::string fileName)
 	YAML::Node vehicleNode = baseNode["vehicles"];
 	assert(vehicleNode.IsSequence());
 
+
+	std::random_device rd;
+	std::mt19937 generator(rd());
+
 	printf("Attempting to load %d vehicles...\n", vehicleNode.size());
+
+
+
 	for(auto& vehicle : vehicleNode)
 	{
-		VehiclePtr v = LoadVehicle(vehicle);
+		VehiclePtr v = LoadVehicle(vehicle,&generator);
 		theScene->m_vehicles.push_back(std::move(v));
 	}
 	printf("Done!\n");
@@ -99,7 +106,7 @@ ObstaclePtr ResourceManager::LoadObstacle(YAML::Node obstacleNode)
 	return std::make_unique<Obstacle>(obstacle_pos, obstacle_type, obstacle_size, obstacle_name);
 }
 
-VehiclePtr ResourceManager::LoadVehicle(YAML::Node vehicleNode)
+VehiclePtr ResourceManager::LoadVehicle(YAML::Node vehicleNode, std::mt19937* randGen)
 {
 	b2Vec2 vehicle_pos;
 	std::string name;
@@ -177,8 +184,14 @@ VehiclePtr ResourceManager::LoadVehicle(YAML::Node vehicleNode)
 		cs_ptr = std::make_unique<ThreeBStrategy>();
 	}
 
+	//create seed values
+	unsigned int leftSeed = (*randGen)();
+	unsigned int rightSeed = (*randGen)();
+
+	printf("left seed: %u, right seed: %u\n", leftSeed, rightSeed);
+
 	//got all information, create vehicle
-	return std::make_unique<Vehicle>(vehicle_pos, leftInfo, rightInfo, cs_ptr,name);
+	return std::make_unique<Vehicle>(vehicle_pos, leftInfo, rightInfo, cs_ptr,name,leftSeed,rightSeed);
 }
 
 LightSourcePtr ResourceManager::LoadLight(YAML::Node lightNode)
@@ -190,13 +203,34 @@ LightSourcePtr ResourceManager::LoadLight(YAML::Node lightNode)
 	if (lightNode.IsNull())
 		throw std::exception("YAML:Vehicle node not found");
 
-	//get position,radius
-	light_pos = lightNode["position"].as<b2Vec2>();
+	//get radius, name
 	light_radius = lightNode["radius"].as<float>();
 	light_name = lightNode["name"].as<std::string>();
 
-	//got all information, create light
-	return std::make_unique<LightSource>(light_pos, light_radius,light_name);
+	YAML::Node pathNode = lightNode["path"];
+
+	if (!pathNode.IsNull() && pathNode.IsDefined())
+	{
+		std::vector<b2Vec2> light_path;
+
+		printf("%d path points detected...\n", pathNode.size());
+		for (auto& point : pathNode)
+		{
+			light_path.push_back(point.as<b2Vec2>());
+		}
+		float light_speed = lightNode["speed"].as<float>();
+		//create movable light	
+		printf("movable light source created\n");
+		return std::make_unique<MovingLightSource>(light_radius, light_name, light_path, light_speed);
+	}
+	else
+	{
+		light_pos = lightNode["position"].as<b2Vec2>();
+		//got all information, create light
+		printf("static light source created\n");
+		return std::make_unique<LightSource>(light_pos, light_radius, light_name);
+		
+	}
 }
 
 bool ResourceManager::LoadSensor(YAML::Node& sensorNode, sensorInfo& info)

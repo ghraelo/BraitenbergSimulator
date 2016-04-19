@@ -52,6 +52,11 @@ void SimManager::Step(float timeStep)
 		obj->Update(m_currentScene->m_lights, m_boundary->GetRect());
 	}
 
+	for (auto &obj : m_currentScene->m_lights)
+	{
+		obj->Update();
+	}
+
 	m_boundary->Update(m_elapsedTime);
 }
 

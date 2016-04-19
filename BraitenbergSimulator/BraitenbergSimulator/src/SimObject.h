@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Box2D\Common\b2Math.h>
+#include <string>
 
 #include "IRenderable.h"
 class Renderer;

@@ -10,6 +10,7 @@
 #include "ControlStrategy.h"
 #include "Vehicle.h"
 #include "Boundary.h"
+#include "VehicleContactListener.h"
 
 struct BoundaryCollisionData
 {
@@ -38,6 +39,7 @@ public:
 	std::string GetVehicleName();
 	void SetIsColliding(bool state);
 	Vehicle* GetVehiclePointer();
+	void SetObstacleName(std::string name);
 private:
 	std::string GetTimeStamp();
 	std::ofstream m_csvStream;
@@ -48,6 +50,9 @@ private:
 	float m_dist_travelled = 0.0f;
 	b2Vec2 prevPos;
 	bool m_IsColliding = false;
+	bool m_prevIsColliding = false;
+	std::string m_obstacleName;
+	VehicleContactListener vcl;
 };
 
 typedef std::unique_ptr<VehicleMonitor> VehicleMonitorPtr;

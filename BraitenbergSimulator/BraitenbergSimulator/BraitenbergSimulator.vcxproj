@@ -273,6 +273,7 @@
     <ClCompile Include="src\TwoBStrategy.cpp" />
     <ClCompile Include="src\UIManager.cpp" />
     <ClCompile Include="src\Vehicle.cpp" />
+    <ClCompile Include="src\VehicleContactListener.cpp" />
     <ClCompile Include="src\VehicleMonitor.cpp" />
     <ClCompile Include="src\Watcher.cpp" />
     <ClCompile Include="src\WrappingBoundary.cpp" />

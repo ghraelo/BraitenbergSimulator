@@ -6,12 +6,12 @@
 #include "YAMLConverters.h"	
 
 VehicleMonitor::VehicleMonitor()
-	:m_directoryPath("")
+	:m_directoryPath(""), vcl(this)
 {
 }
 
 VehicleMonitor::VehicleMonitor(Vehicle * vehicle, std::string directoryPath)
-	:m_vehicle(vehicle), m_directoryPath(directoryPath)
+	:m_vehicle(vehicle), m_directoryPath(directoryPath), vcl(this)
 {
 	m_timeStamp = GetTimeStamp();
 	//open csv
@@ -31,6 +31,8 @@ VehicleMonitor::VehicleMonitor(Vehicle * vehicle, std::string directoryPath)
 	m_csvStream << headerRow << "\n";
 
 	prevPos = vehicle->GetPosition();
+
+	vehicle->GetWorld()->SetContactListener(&vcl);
 }
 
 VehicleMonitor::~VehicleMonitor()
@@ -41,7 +43,12 @@ VehicleMonitor::~VehicleMonitor()
 void VehicleMonitor::WriteCSV(double elapsedTime)
 {
 	std::ostringstream row;
-	row << ",";
+	//events
+	if (m_IsColliding == true)
+		row << "C:" << m_obstacleName << ";";
+	else
+		row << ",";
+
 	row << elapsedTime << ",";
 	row << m_vehicle->GetPosition().x << ",";
 	row << m_vehicle->GetPosition().y << ",";
@@ -111,6 +118,11 @@ void VehicleMonitor::SetIsColliding(bool state)
 Vehicle * VehicleMonitor::GetVehiclePointer()
 {
 	return m_vehicle;
+}
+
+void VehicleMonitor::SetObstacleName(std::string name)
+{
+	m_obstacleName = name;
 }
 
 std::string VehicleMonitor::GetTimeStamp()

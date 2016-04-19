@@ -39,7 +39,7 @@ public:
 	LightSensor();
 	LightSensor(Vehicle* parent);
 	LightSensor(Vehicle* parent, sensorInfo info);
-	LightSensor(Vehicle* parent, sensorInfo info, float randFraction);
+	LightSensor(Vehicle* parent, sensorInfo info, float randFraction, unsigned int seed);
 	LightSensor(Vehicle* parent,b2Vec2 offset, float aperture, b2Vec2 direction);
 
 	b2Body* GetParentBody();

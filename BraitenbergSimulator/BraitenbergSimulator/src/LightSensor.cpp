@@ -14,12 +14,11 @@ LightSensor::LightSensor(Vehicle * parent, sensorInfo info)
 {
 }
 
-LightSensor::LightSensor(Vehicle * parent, sensorInfo info, float randFraction)
+LightSensor::LightSensor(Vehicle * parent, sensorInfo info, float randFraction, unsigned int seed)
 	: m_parent(parent), m_offset(info.m_offset), m_aperture_angle(info.m_aperture), m_direction_vector(info.m_direction)
 {
 	random = true;
-	std::random_device rd;
-	mt = std::make_unique<std::mt19937>(rd());
+	mt = std::make_unique<std::mt19937>(seed);
 	dist = std::make_unique<std::normal_distribution<double>>(0, randFraction);
 }
 
@@ -119,6 +118,16 @@ float LightSensor::GetLight(std::vector<LightSourcePtr>& lightSources, Rectangle
 	//sort ascending
 	std::sort(intervals.begin(), intervals.end(), compareIntervals);
 
+	for(auto& interval : intervals)
+	{
+		if (interval.first > interval.second)
+		{
+			float temp = interval.first;
+			interval.first = interval.second;
+			interval.second = temp;
+		}
+	}
+
 	std::stack<Interval> theStack;
 
 	theStack.push(intervals[0]);
@@ -152,12 +161,16 @@ float LightSensor::GetLight(std::vector<LightSourcePtr>& lightSources, Rectangle
 		theStack.pop();
 	}
 	//std::cout << "\r";
-
+	assert(acc >= 0);
 	if (random)
 	{
 		acc += (*dist)(*mt);
+		if (acc < 0)
+			acc = 0;
+		if (acc > 1.0)
+			acc = 1.0;
 	}
-
+	assert(acc >= 0);
 	return acc;
 }
 
@@ -241,6 +254,7 @@ void LightSensor::GetLightBoundary(b2Vec2& lightPos, float lightRadius, std::vec
 				Interval temp;
 				temp.first = ang2;
 				temp.second = ang;
+				//assert(ang2 < ang);
 				intervals.push_back(temp);
 
 				//g_debugDraw.DrawSegment(i1, i2, b2Color(0, 1, 1));

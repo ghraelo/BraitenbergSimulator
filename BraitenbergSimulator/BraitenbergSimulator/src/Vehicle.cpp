@@ -8,7 +8,12 @@ Vehicle::Vehicle()
 }
 
 Vehicle::Vehicle(b2Vec2 position, sensorInfo leftInfo, sensorInfo rightInfo, ControlStrategyPtr& strategy, std::string name)
-	:SimObject(position, name), leftSensor(this, leftInfo,0.05), rightSensor(this, rightInfo,0.05), m_ctrl_strat(std::move(strategy))
+	: SimObject(position, name), leftSensor(this, leftInfo), rightSensor(this, rightInfo), m_ctrl_strat(std::move(strategy))
+{
+}
+
+Vehicle::Vehicle(b2Vec2 position, sensorInfo leftInfo, sensorInfo rightInfo, ControlStrategyPtr& strategy, std::string name, unsigned int seedLeft, unsigned int seedRight)
+	:SimObject(position, name), leftSensor(this, leftInfo,0.05, seedLeft), rightSensor(this, rightInfo,0.05, seedRight), m_ctrl_strat(std::move(strategy))
 {
 }
 
@@ -210,6 +215,11 @@ void Vehicle::EnableControl()
 void Vehicle::DisableControl()
 {
 	m_controllerEnabled = false;
+}
+
+b2World * Vehicle::GetWorld()
+{
+	return theWorld;
 }
 
 bool Vehicle::ControlStatus()

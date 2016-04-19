@@ -223,7 +223,20 @@ namespace BraitenbergProcessing
             //lights.MarkerType = MarkerType.Circle;
             foreach (var light in scene.Lights)
             {
-                var circle = MakeCircle(light.Position[0], light.Position[1], light.Radius);
+                LineSeries circle;
+                if (light.Position != null)
+                {
+                    circle = MakeCircle(light.Position[0], light.Position[1], light.Radius);
+                }
+                else
+                {
+                    circle = new LineSeries();
+                    foreach(List<double> d in light.Path)
+                    {
+                        circle.Points.Add(new DataPoint(d[0], d[1]));
+                    }
+                    circle.Points.Add(new DataPoint(light.Path[0][0], light.Path[0][1]));
+                }
                 circle.Color = Color.Black.ToOxyColor();
                 myModel.Series.Add(circle);
 
@@ -273,7 +286,15 @@ namespace BraitenbergProcessing
             //lights.MarkerType = MarkerType.Circle;
             foreach (var light in scene.Lights)
             {
-                var circle = MakeCircle(light.Position[0], light.Position[1], light.Radius);
+                LineSeries circle;
+                if (light.Position != null)
+                {
+                    circle = MakeCircle(light.Position[0], light.Position[1], light.Radius);
+                }
+                else
+                {
+                    circle = MakeCircle(light.Path[0][0], light.Path[0][1], light.Radius);
+                }
                 circle.Color = Color.Black.ToOxyColor();
                 myModel.Series.Add(circle);
 
