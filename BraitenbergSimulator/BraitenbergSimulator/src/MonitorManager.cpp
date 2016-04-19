@@ -2,6 +2,9 @@
 
 #include <yaml-cpp\yaml.h>
 #include <ctime>
+#include "VehicleMonitor.h"
+#include "LightMonitor.h"
+#include "Monitor.h"
 
 MonitorManager::MonitorManager()
 {
@@ -19,15 +22,14 @@ void MonitorManager::Init(const Scene * theScene)
 	m_sceneFile = theScene->m_fileName;
 	for (auto& vehicle : theScene->m_vehicles)
 	{
-		VehicleMonitorPtr monitor = std::make_unique<VehicleMonitor>(vehicle.get(), m_directoryPath);
+		MonitorPtr monitor = std::make_unique<VehicleMonitor>(vehicle.get(), m_directoryPath);
 		m_monitors.push_back(std::move(monitor));
 	}
 
 	for (auto& light : m_scene->m_lights)
 	{
-		MinDistData m;
-		m.minDist = 200000.0f;
-		m_lightMinDistances[light->GetName()] = m;
+		MonitorPtr monitor = std::make_unique<LightMonitor>(light.get(), m_directoryPath);
+		m_monitors.push_back(std::move(monitor));
 	}
 }
 
@@ -36,29 +38,6 @@ void MonitorManager::RecordCSV(double elapsedTime)
 	for (auto& monitor : m_monitors)
 	{
 		monitor->WriteCSV(elapsedTime);
-	}
-
-	for (auto& light : m_scene->m_lights)
-	{
-		float min_dist = m_lightMinDistances[light->GetName()].minDist;
-		std::string vehicleName;
-		for (auto& vehicle : m_scene->m_vehicles)
-		{
-			vehicleName = vehicle->GetName();
-			float dist = b2Distance(light->GetPosition(), vehicle->GetPosition());
-			//printf("dist: %f \n", dist);
-			if (dist < min_dist)
-			{
-				min_dist = dist;
-
-			}
-		}
-		MinDistData m;
-		m.minDist = min_dist;
-		m.vehicleName = vehicleName;
-
-		m_lightMinDistances[light->GetName()] = m;
-
 	}
 }
 
@@ -70,27 +49,25 @@ void MonitorManager::SaveYAML()
 	out << YAML::Value << m_sceneFile;
 	out << YAML::Key << "vehicle-data";
 	out << YAML::Value << YAML::BeginSeq;
+
 	for (auto& monitor : m_monitors)
 	{
-		out << monitor->GetYAML();
+		if (dynamic_cast<VehicleMonitor*>(monitor.get()) != nullptr)
+		{
+			out << monitor->GetYAML();
+		}
 	}
 	out << YAML::EndSeq;
 
-	out << YAML::Key << "min-light-dists";
+	out << YAML::Key << "light-data";
 	out << YAML::Value << YAML::BeginSeq;
-	for (auto& light : m_scene->m_lights)
+
+	for (auto& monitor : m_monitors)
 	{
-		out << YAML::BeginMap;
-		std::string name = light->GetName();
-		out << YAML::Key << "light-name";
-		out << YAML::Value << name;
-
-		out << YAML::Key << "min-dist";
-		out << YAML::Value << m_lightMinDistances[name].minDist;
-
-		out << YAML::Key << "vehicle-name";
-		out << YAML::Value << m_lightMinDistances[name].vehicleName;
-		out << YAML::EndMap;
+		if (dynamic_cast<LightMonitor*>(monitor.get()) != nullptr)
+		{
+			out << monitor->GetYAML();
+		}
 	}
 	out << YAML::EndSeq;
 	out << YAML::EndMap;
@@ -133,14 +110,22 @@ void MonitorManager::Close()
 
 void MonitorManager::AddBoundaryCollision(BoundaryType type, b2Vec2 position, double time, Vehicle * vehicle)
 {
-	std::vector<VehicleMonitorPtr>::iterator collided = std::find_if(m_monitors.begin(), m_monitors.end(),
-		[&](VehicleMonitorPtr& monitor_ptr) {
-			return (monitor_ptr->GetVehicleName() == vehicle->GetName());
+	std::vector<MonitorPtr>::iterator collided = std::find_if(m_monitors.begin(), m_monitors.end(),
+		[&](MonitorPtr& monitor_ptr) {
+			return (monitor_ptr->GetName() == vehicle->GetName());
 		}
 	);
 
-	if (collided != m_monitors.end())
-		(*collided)->AddCollision(type, position, time);
-	else
-		printf("error: vehicle not found\n");
+	VehicleMonitor* vehMon = dynamic_cast<VehicleMonitor*>((*collided).get());
+	if (vehMon != nullptr)
+	{
+		if (collided != m_monitors.end())
+		{
+			vehMon->AddCollision(type, position, time);
+		}
+		else
+		{
+			printf("error: vehicle not found\n");
+		}
+	}
 }

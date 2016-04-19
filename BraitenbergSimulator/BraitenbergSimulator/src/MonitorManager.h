@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Scene.h"
-#include "VehicleMonitor.h"
+#include "Monitor.h"
 #include "Boundary.h"
 
 struct MinDistData
@@ -24,7 +24,7 @@ private:
 	std::string GetTimeStamp();
 	std::string m_directoryPath;
 	std::string m_sceneFile;
-	std::vector<VehicleMonitorPtr> m_monitors;
+	std::vector<MonitorPtr> m_monitors;
 	std::map<std::string, MinDistData> m_lightMinDistances;
 	const Scene* m_scene;
 };

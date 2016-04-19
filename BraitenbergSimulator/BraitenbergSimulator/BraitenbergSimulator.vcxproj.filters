@@ -249,6 +249,12 @@
     <ClInclude Include="src\VehicleContactListener.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Monitor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LightMonitor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BraitenbergSimulator.cpp">
@@ -414,6 +420,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\VehicleContactListener.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Monitor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LightMonitor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

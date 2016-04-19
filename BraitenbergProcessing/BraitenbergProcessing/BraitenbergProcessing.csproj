@@ -67,6 +67,8 @@
     <Compile Include="DataStructures\BoundaryCollision.cs" />
     <Compile Include="CsvReader.cs" />
     <Compile Include="DataStructures\Light.cs" />
+    <Compile Include="DataStructures\LightData.cs" />
+    <Compile Include="DataStructures\YLightData.cs" />
     <Compile Include="DataStructures\MinDist.cs" />
     <Compile Include="DataStructures\OrderTest.cs" />
     <Compile Include="DataStructures\Scene.cs" />
@@ -96,6 +98,7 @@
     <Compile Include="OscillationDetector.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResultModels.cs" />
     <Compile Include="SceneGenerator.cs" />
     <Compile Include="TestResult.cs" />
     <EmbeddedResource Include="Form1.resx">

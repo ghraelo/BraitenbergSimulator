@@ -11,6 +11,7 @@
 #include "Vehicle.h"
 #include "Boundary.h"
 #include "VehicleContactListener.h"
+#include "Monitor.h"
 
 struct BoundaryCollisionData
 {
@@ -27,26 +28,18 @@ struct VehicleData
 	std::map<std::string, float> internalState;
 };
 
-class VehicleMonitor
+class VehicleMonitor : public Monitor
 {
 public:
 	VehicleMonitor();
 	VehicleMonitor(Vehicle* vehicle, std::string directoryPath);
-	~VehicleMonitor();
-	void WriteCSV(double elapsedTime);
+	void WriteCSV(double elapsedTime) override;
 	void AddCollision(BoundaryType type, b2Vec2 position, double time);
-	YAML::Node GetYAML();
-	std::string GetVehicleName();
+	YAML::Node GetYAML() override;
 	void SetIsColliding(bool state);
-	Vehicle* GetVehiclePointer();
 	void SetObstacleName(std::string name);
 private:
-	std::string GetTimeStamp();
-	std::ofstream m_csvStream;
 	std::vector<BoundaryCollisionData> boundaryCollisions;
-	Vehicle* m_vehicle;
-	std::string m_directoryPath;
-	std::string m_timeStamp;
 	float m_dist_travelled = 0.0f;
 	b2Vec2 prevPos;
 	bool m_IsColliding = false;

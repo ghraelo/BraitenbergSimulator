@@ -6,22 +6,18 @@
 #include "YAMLConverters.h"	
 
 VehicleMonitor::VehicleMonitor()
-	:m_directoryPath(""), vcl(this)
+	:Monitor(), vcl(this)
 {
 }
 
 VehicleMonitor::VehicleMonitor(Vehicle * vehicle, std::string directoryPath)
-	:m_vehicle(vehicle), m_directoryPath(directoryPath), vcl(this)
+	:Monitor(vehicle,directoryPath), vcl(this)
 {
-	m_timeStamp = GetTimeStamp();
-	//open csv
-	std::string fileName = m_directoryPath + "/" + m_vehicle->GetName() + m_timeStamp + ".csv";
-	m_csvStream.open(fileName);
 
 	//write header row
 	std::string headerRow = "events,time,x,y,angle,";
 
-	for (auto& datum : m_vehicle->GetInternalData())
+	for (auto& datum : ((Vehicle*)m_simObject)->GetInternalData())
 	{
 		headerRow = headerRow + datum.first + ",";
 	}
@@ -30,14 +26,9 @@ VehicleMonitor::VehicleMonitor(Vehicle * vehicle, std::string directoryPath)
 
 	m_csvStream << headerRow << "\n";
 
-	prevPos = vehicle->GetPosition();
+	prevPos = ((Vehicle*)m_simObject)->GetPosition();
 
-	vehicle->GetWorld()->SetContactListener(&vcl);
-}
-
-VehicleMonitor::~VehicleMonitor()
-{
-	m_csvStream.close();
+	((Vehicle*)m_simObject)->GetWorld()->SetContactListener(&vcl);
 }
 
 void VehicleMonitor::WriteCSV(double elapsedTime)
@@ -50,19 +41,19 @@ void VehicleMonitor::WriteCSV(double elapsedTime)
 		row << ",";
 
 	row << elapsedTime << ",";
-	row << m_vehicle->GetPosition().x << ",";
-	row << m_vehicle->GetPosition().y << ",";
-	row << m_vehicle->m_body->GetAngle() << ",";
+	row << m_simObject->GetPosition().x << ",";
+	row << m_simObject->GetPosition().y << ",";
+	row << ((Vehicle*)m_simObject)->m_body->GetAngle() << ",";
 	//internal data
-	for (auto& datum : m_vehicle->GetInternalData())
+	for (auto& datum : ((Vehicle*)m_simObject)->GetInternalData())
 	{
 		row << datum.second << ",";
 	}
 	row.str().pop_back();
 	m_csvStream << row.str() << "\n";
 
-	m_dist_travelled += b2Distance(prevPos, m_vehicle->GetPosition());
-	prevPos = m_vehicle->GetPosition();
+	m_dist_travelled += b2Distance(prevPos, m_simObject->GetPosition());
+	prevPos = m_simObject->GetPosition();
 }
 
 void VehicleMonitor::AddCollision(BoundaryType type, b2Vec2 position, double time)
@@ -84,9 +75,9 @@ YAML::Emitter& operator << (YAML::Emitter& out, const b2Vec2& v) {
 YAML::Node VehicleMonitor::GetYAML()
 {
 	YAML::Node node;
-	node["name"] = m_vehicle->GetName();
+	node["name"] = m_simObject->GetName();
 	node["distance"] = m_dist_travelled;
-	node["numeric-data"] = m_vehicle->GetName() + m_timeStamp + ".csv";
+	node["numeric-data"] = m_simObject->GetName() + m_timeStamp + ".csv";
 	if (boundaryCollisions.size() > 0)
 	{
 
@@ -105,39 +96,12 @@ YAML::Node VehicleMonitor::GetYAML()
 	return node;
 }
 
-std::string VehicleMonitor::GetVehicleName()
-{
-	return m_vehicle->GetName();
-}
-
 void VehicleMonitor::SetIsColliding(bool state)
 {
 	m_IsColliding = state;
 }
 
-Vehicle * VehicleMonitor::GetVehiclePointer()
-{
-	return m_vehicle;
-}
-
 void VehicleMonitor::SetObstacleName(std::string name)
 {
 	m_obstacleName = name;
-}
-
-std::string VehicleMonitor::GetTimeStamp()
-{
-	time_t now = time(0);
-	tm* dt = localtime(&now);
-
-	std::ostringstream oss;
-
-	oss << 1900 + dt->tm_year;
-	oss << 1 + dt->tm_mon;
-	oss << dt->tm_mday;
-	oss << "-";
-	oss << dt->tm_hour;
-	oss << dt->tm_min;
-
-	return oss.str();
 }

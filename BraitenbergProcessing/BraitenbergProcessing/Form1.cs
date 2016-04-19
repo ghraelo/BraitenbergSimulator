@@ -99,8 +99,7 @@ namespace BraitenbergProcessing
 
             if(ofd.ShowDialog() == DialogResult.OK)
             {
-               
-
+          
                 var myModel = new PlotModel { Title = "Full graph" };
                 myModel.PlotType = PlotType.Cartesian;
                 myModel.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = -50, Maximum = 50 });
@@ -133,13 +132,6 @@ namespace BraitenbergProcessing
                     //System.Diagnostics.Debug.WriteLine(colors[i].ToString());
                     TreeNode tn = new TreeNode(t.Scene.Name);
                     tn.ForeColor = colors[i].ToColor();
-                    TreeNode sub = new TreeNode("Light closest approaches:");
-                    foreach (var x in t.InnerTestResult.MinLightDists)
-                    {
-                        sub.Nodes.Add(x.LightName + ": " + x.Distance);
-                        closestApproaches.Add(x.Distance);
-                    }
-                    tn.Nodes.Add(sub);
                     tn.Nodes.Add("Distance travelled: " + t.InnerTestResult.VehicleData[0].Distance);
                     distances.Add(t.InnerTestResult.VehicleData[0].Distance);
                     treeView1.Nodes.Add(tn);

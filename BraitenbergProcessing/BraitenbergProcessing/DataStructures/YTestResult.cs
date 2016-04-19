@@ -15,7 +15,7 @@ namespace BraitenbergProcessing.DataStructures
         public string SceneFile { get; set; }
         [YamlAlias("vehicle-data")]
         public List<YVehicleData> VehicleData { get; set; }
-        [YamlAlias("min-light-dists")]
-        public List<MinDist> MinLightDists { get; set; }
-    }
+        [YamlAlias("light-data")]
+        public List<YLightData> LightData { get; set; }
+     }
 }
